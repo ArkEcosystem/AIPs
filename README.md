@@ -10,7 +10,7 @@ First review *AIP-1 (TODO)*. Then clone the repository and add your AIP to it. T
 | 1 | AIP Purpose and Guidelines | Guillaume Verbal | Meta | | Active |
 | [2](AIPS/aip-2.md) | Number of Votes per Account | Guillaume Verbal | Standard | Consensus (hard-fork) | [Draft](https://github.com/ArkEcosystem/AIPs/issues/1) |
 | 3 | Anonymous Vote | Guillaume Verbal | Standard | Consensus (hard-fork) | Draft |
-| 4 | Incremental Forging Delegates | Guillaume Verbal | Standard | Consensus (hard-fork) | Draft |
+| 4 | Number of Forging Delegates | Guillaume Verbal | Standard | Consensus (hard-fork) | [Draft](https://github.com/ArkEcosystem/AIPs/issues/3) |
 | 5 | Forging Secret | Guillaume Verbal | Standard | Consensus (hard-fork) | Draft |
 | 6 | Lightning Networks | Guillaume Verbal | Standard | Consensus (hard-fork) | Draft |
 | 7 | Proxy Voting | Guillaume Verbal | Standard | Consensus (hard-fork) | [Draft](https://github.com/ArkEcosystem/AIPs/issues/2) |
