@@ -13,3 +13,4 @@ First review *AIP-1 (TODO)*. Then clone the repository and add your AIP to it. T
 | 4 | Incremental Forging Delegates | Guillaume Verbal | Standard | Consensus (hard-fork) | Draft |
 | 5 | Forging Secret | Guillaume Verbal | Standard | Consensus (hard-fork) | Draft |
 | 6 | Lightning Networks | Guillaume Verbal | Standard | Consensus (hard-fork) | Draft |
+| 7 | Proxy Voting | Guillaume Verbal | Standard | Consensus (hard-fork) | Draft |
