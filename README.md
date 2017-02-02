@@ -14,3 +14,4 @@ First review *AIP-1 (TODO)*. Then clone the repository and add your AIP to it. T
 | 5 | Forging Secret | Guillaume Verbal | Standard | Consensus (hard-fork) | [Draft](https://github.com/ArkEcosystem/AIPs/issues/6) |
 | 6 | Lightning Networks | Guillaume Verbal | Standard | Consensus (hard-fork) | Draft |
 | 7 | Proxy Voting | Guillaume Verbal | Standard | Consensus (hard-fork) | [Draft](https://github.com/ArkEcosystem/AIPs/issues/2) |
+| 8 | An improvement of transaction protocol | Toons | Standard | Network | [Draft](https://github.com/ArkEcosystem/AIPs/issues/7) |
