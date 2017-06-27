@@ -35,5 +35,13 @@ voters at the time a block is forged will receive Ark.
 Specifications
 ==============
 
-A delegate, or node, would specify their promised profit sharing, from 0 to 1. When that delegate forges a block Ark is automatically added to their
-voters accounts in the correct proportion. 
+Using a transaction, a delegate would specify their promised profit sharing, from 0 to 1 (allowing decimals, ex: 0.8). I propose a fee of 1 Ark. 
+
+Determine at each round the forging delegates and their voters. This should be done by the round, with rewards paid out if the voters chosen delegate successfully receives a reward. Rationale here is because we only care about voters who successfully put a delegate into a round, so changing your vote mid round will only affect rewards in the following round. 
+
+We will need to create a profit sharing module that gets a delegate's voters and their vote amounts as a proportion of the delegates total votes. We can grab the list of voters and their amounts from sql/rounds.js, but will need to add a field to each voter to update their share of rewards. 
+
+When that delegate forges a block, Ark is automatically added to their voters accounts in the correct proportion at each forged block.
+
+
+
