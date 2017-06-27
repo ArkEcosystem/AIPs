@@ -14,6 +14,10 @@ Abstract
 Delegates would be able to explicitly state their profit sharing in a public way such that the Ark they forge is 
 automatically shared with their voters. 
 
+- Add a transaction type to specify profit sharing amount (0% - 100%).
+- Determine voter share at each round.
+- Proportionally reward delegate and voters  upon a successfully forged block. 
+
 
 Motivation
 ==========
