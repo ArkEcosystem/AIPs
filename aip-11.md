@@ -14,6 +14,7 @@ Abstract
 ========
 
 This AIP proposes changing the API language of "passphrase" to "Seed."
+It the beginning of an effort to refresh ARK's dialog, providing a cleaner and more friendly UX.
 
 
 
