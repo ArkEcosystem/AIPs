@@ -1,5 +1,5 @@
 <pre>
-  AIP: 11
+  AIP: 12
   Title: Delegate Withdrawal
   Authors: dafty
   Status: Draft
