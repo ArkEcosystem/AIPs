@@ -16,4 +16,4 @@ First review *AIP-1 (TODO)*. Then clone the repository and add your AIP to it. T
 | 7 | Proxy Voting | Guillaume Verbal | Standard | Consensus (hard-fork) | [Draft](https://github.com/ArkEcosystem/AIPs/issues/2) |
 | 8 | An improvement of transaction protocol | Toons | Standard | Network | [Draft](https://github.com/ArkEcosystem/AIPs/issues/7) |
 | 10 | Automatic Profit Sharing | Ryano | Standard | Consensus (hard-fork) | [Draft](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-10.md) |
-| 12 | Delegate Resignation | dafty | Standard | Consensus (hard-fork) | [Draft]](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-12.md)
+| 12 | Delegate Resignation | dafty | Standard | Consensus (hard-fork) | [Draft](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-12.md)
