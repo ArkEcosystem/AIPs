@@ -121,14 +121,29 @@ In the case of ark only there is only one possible vote, so the payload is maxim
 | timelock            | 4             | 0x0087e5a8                                                           |
 | recipient address   | 21            | 0x171dfc69b54c7fe901e91d5a9ab78388645e2427ea                         |
 
-
-*Type > 6 (private transaction, 1-65536 bytes)*
+*Type 7 (multipayment, 2-65546 bytes)*
 
 | Description         | Size (bytes)  | Example                                                              |
 | -------------       | ------------- | :-------                                                             |
-| Length payload      | 2             | 0xea00                                                               |
-| payload             | 0-65535       | 0x6669786372797074                                                   |
+| N outputs           | 2             | 0x0021                                                               |
+| amount1             | 8             | 0x8096980000000000                                                   |
+| address1            | 21            | 0x171dfc69b54c7fe901e91d5a9ab78388645e2427ea                         |
+| ...                 | ...           | ...                                                                  |
+| amountN             | 8             | 0x8096980000000000                                                   |
+| addressN            | 21            | 0x171dfc69b54c7fe901e91d5a9ab78388645e2427ea                         |
 
+- N > 1 (ideally fees should be higher than type 0 if N < 2)
+- Max 2259 possible outputs. first versions of network will cap this max
+
+*Type 8 (delegate resignation)*
+
+| Description         | Size (bytes)  | Example                                                              |
+| -------------       | ------------- | :-------                                                             |
+| No payload          | 0             | .                                                                    |
+
+basically this will make:
+- impossible to vote for this delegate anymore
+- impossible to beselected as active delegate
 
 Fees calculation
 ----------------
