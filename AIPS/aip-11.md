@@ -52,6 +52,7 @@ General form (total header size excluding vendorfield: 47 bytes)
 | payload           | variable      | see details below                                                    |
 
 In application, nonce is equivalent as formerly known timestamp and can be used
+Version 0x01 will be notifying former use of protocol to serialise the tx before computing signatures.
 
 Payloads
 --------
