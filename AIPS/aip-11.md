@@ -5,7 +5,7 @@
   Status: Draft
   Type: Standards Track
   Created: 2017-09-25
-  Last Update: 2017-10-13
+  Last Update: 2017-10-23
 </pre>
 
 Abstract
@@ -144,7 +144,7 @@ In the case of ark only there is only one possible vote, so the payload is maxim
 
 basically this will make:
 - impossible to vote for this delegate anymore
-- impossible to beselected as active delegate
+- impossible to be selected as active delegate
 
 Fees calculation
 ----------------
