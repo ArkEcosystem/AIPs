@@ -1,7 +1,7 @@
 <pre>
   AIP: 11
   Title: Upgrade of Transaction Protocol
-  Authors: François-Xavier Thoorens <fx@ark.io>
+  Authors: François-Xavier Thoorens <fx@ark.io>, dafty
   Status: Draft
   Type: Standards Track
   Created: 2017-09-25
