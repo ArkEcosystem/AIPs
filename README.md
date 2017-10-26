@@ -1,5 +1,6 @@
-# AIPs
-Ark Improvement Proposal. AIPs propose and describe changes made to Ark Protocol.
+![Ark Improvement Proposals](https://cdn-images-1.medium.com/max/2000/1*vD5i8JJVGjvIAdOxSi-iFA.png)
+
+Ark Improvement Proposals. AIPs propose and describe changes made to Ark Protocol.
 
 # Contributing
 First review *AIP-1 (TODO)*. Then clone the repository and add your AIP to it. There is a *template AIP here (TODO)*. Then submit a Pull Request to Ark's [AIPs repository](https://github.com/ArkEcosystem/AIPs).
