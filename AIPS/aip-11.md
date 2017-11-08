@@ -7,6 +7,7 @@
   Created: 2017-09-25
   Last Update: 2017-10-23
 </pre>
+![Ark Improvement Proposals](https://cdn-images-1.medium.com/max/2000/1*vD5i8JJVGjvIAdOxSi-iFA.png)
 
 Abstract
 ========
