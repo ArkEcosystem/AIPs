@@ -27,7 +27,7 @@ Users/developers - would get simple lightweight and efficient rule based event-s
 
 For End Users - more dApps, more integration points, bigger adoption, easier integration with legacy systems.
 
-Scenario:
+Usage
 ==========
 Precondition: ark-node is running and listening to ARK blockchain.
 User specifies event conditions for the node to listen to in simple .json config file
@@ -35,7 +35,7 @@ ARK-NODE saves the event subscription and starts to listens to events. Condition
 When SUBSCRIBED_EVENT == TRUE; all the listeners are notified via the specified subscription conditions (callback URL [get, post] with accompanying JSON payload describing the SUBSCRIBED_EVENT data)
 Event will stay stored, and status of acceptance is monitored and resent if not accepted by callback_url party.
 
-Event Specifications:
+Event Specifications
 ===========
 The listing below includes the basic events that the ARK Ecosystem users  can subscribe to.
 Based on user specifications, the webhook notifications will be sent out, on every block update/tx/received or other timing events build upon ARK blockchain. By using this combinations users could easily set various rules (related to IOT development, just monitoring, alarm notifications, received tx monitoring, etc)...
@@ -47,43 +47,43 @@ All Events would consist of:
 - Event Payload for the listeners (what to send with notification)
 
 Some webhook examples below:
-    Vendor Field alert WebHook 
-    Conditions
-    Vendor Field Value TBD (sub conditions)
-    Sender
-    Recipient
-    Amount
-    TimeStamp
-    Callback URL
-    Structure response
+- Vendor Field alert WebHook 
+- Conditions
+- Vendor Field Value TBD (sub conditions)
+- Sender
+- Recipient
+- Amount
+- TimeStamp
+- Callback URL
+- Structure response
 
 Transaction alert WebHook
-    Conditions
-    Amount
-    Recipient
-    Sender
-    Vendor Field
-    Type
-    (Callback URL)
-    Structure response (TBD)
+- Conditions
+- Amount
+- Recipient
+- Sender
+- Vendor Field
+- Type
+- (Callback URL)
+- Structure response (TBD)
 
 Block Forged Alert WebHook
-    Conditions
-    Forger public Key
-    Callback URL
-    Structure response 
-    Forged BlockID
+- Conditions
+- Forger public Key
+- Callback URL
+- Structure response 
+- Forged BlockID
 
 Not Forging Alert WebHook
-    Conditions:
-        Forger public key
-    Callback URL
-    Structure response
+- Conditions:
+  -   Forger public key
+- Callback URL
+- Structure response
 
 Vote Alert WebHook
-    Conditions
-    PublicKey
-    Address
-    Callback URL
-    Structure response
+- Conditions
+- PublicKey
+- Address
+- Callback URL
+- Structure response
 
