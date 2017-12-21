@@ -42,9 +42,9 @@ Based on user specifications, the webhook notifications will be sent out, on eve
 More events would be added later on.
 
 All Events would consist of:
-    Conditions of event
-    Callback URI
-    Event Payload for the listeners (what to send with notification)
+- Conditions of event
+- Callback URI
+- Event Payload for the listeners (what to send with notification)
 
 Some webhook examples below:
     Vendor Field alert WebHook 
