@@ -30,7 +30,7 @@ For End Users - more dApps, more integration points, bigger adoption, easier int
 Usage
 ==========
 Precondition: ark-node is running and listening to ARK blockchain.
-User specifies event conditions for the node to listen to in simple .json config file. For example (basic):
+User specifies event conditions for the node to listen to in simple.json config file. For example (basic):
 
 ```
 "hooks": [
@@ -57,6 +57,12 @@ ARK-NODE saves the event subscription and starts to check for events upon blocks
 When SUBSCRIBED_EVENT == TRUE; all the listeners are notified via the specified subscription conditions (callback URL [get, post] with accompanying JSON payload describing the SUBSCRIBED_EVENT data)
 Event will stay stored, and status of acceptance is monitored and resent if not accepted by callback_url party.
 
+Security
+===========
+- A whitelisting option will be added to settings, so only specific hooks/callbacks are allowed.
+- A local listening node can be setup, alerting only the clients the node owner specifies
+- A public test node will also be made available
+
 Event Specifications
 ===========
 The listing below includes the basic events that the ARK Ecosystem users  can subscribe to.
@@ -67,6 +73,8 @@ All Events would consist of:
 - Conditions of event
 - Callback URI
 - Event Payload for the listeners (what to send with notification)
+
+
 
 Some webhook event examples below:
 
