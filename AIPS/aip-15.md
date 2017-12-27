@@ -12,7 +12,7 @@ Abstract
 ========
 
 This AIP proposes the implementation of a WEBHOOK API interface for dApp developers to listen to ARK Blockchain in a simple manner (event subscription chain listeners).
-In this way, the clients wouldn’t be polling the network for data, but would subscribe to an EVENT (see specifications below) via WEBHOOK system, thus taking some of the burden of the network.  When event happens the corresponding notifications will be sent to listeners.
+In this way, the clients wouldn’t be polling the network for data, but would subscribe to an EVENT (see specifications below) via WEBHOOK system, thus taking some of the burden of the network.  When event happens the corresponding notifications will be sent to listeners. Special nodes/or dedicated nodes can be started to deliver this functionality.
 
 Clients/users/dApp’s would define rules for EVENT in the config file/or api; 
 ARK-NODE with listeners enabled would run in the background, waiting for events (event information data with accompanying payload) and 
@@ -25,13 +25,35 @@ Configured listeners would be running in the background. Web hooks are also espe
 
 Users/developers - would get simple lightweight and efficient rule based event-subscription that notifies the subscribers of “events” without the need of installing additional tools, servers, etc... just to listen to the chain. Developers get event based notification; and they can continue to work with their dApp from there. 
 
-For End Users - more dApps, more integration points, bigger adoption, easier integration with legacy systems.
+For End Users - more dApps, more integration points, bigger adoption, easier integration with legacy systems/ecommmerce and other users.
 
 Usage
 ==========
 Precondition: ark-node is running and listening to ARK blockchain.
-User specifies event conditions for the node to listen to in simple .json config file
-ARK-NODE saves the event subscription and starts to listens to events. Conditions will be checked on every received block/tx.
+User specifies event conditions for the node to listen to in simple .json config file. For example (basic):
+
+```
+"hooks": [
+        {
+            "HookID" : "HOOK SENDER TEST",
+            "CallbackURI": "http://localhost/test",
+            "Type" : "POST",
+            "Payload" : "TBD-TX_Object",
+            "HookType":"slack",
+            "TriggerRule" : [
+                { 
+                    "RecipientID"  : "Axxaasd",
+                    "Type"         : 2,
+                    "SenderID"     : "asdasda"
+                },
+                "and" : {...},
+                "or" : {...},
+             ]
+        }
+    ]
+```
+
+ARK-NODE saves the event subscription and starts to check for events upon blocks. Conditions will be checked on every received block/tx.
 When SUBSCRIBED_EVENT == TRUE; all the listeners are notified via the specified subscription conditions (callback URL [get, post] with accompanying JSON payload describing the SUBSCRIBED_EVENT data)
 Event will stay stored, and status of acceptance is monitored and resent if not accepted by callback_url party.
 
@@ -46,7 +68,7 @@ All Events would consist of:
 - Callback URI
 - Event Payload for the listeners (what to send with notification)
 
-Some webhook examples below:
+Some webhook event examples below:
 
 Vendor Field alert WebHook 
 - Conditions
