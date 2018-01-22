@@ -100,7 +100,7 @@ Allow URI schemes extend by custom parameters. Parameter's value must be a UTF-8
 
 This section is non-normative and does not cover all possible syntax.
 
-`ark:<address>[?amount=<amount>][?label=<label>][?vendor=<vendor>][?otherparam=<otherparam>]`
+`ark:<address>?[amount=<amount>][&label=<label>][&vendor=<vendor>][&otherparam=<otherparam>]`
 
 ### Examples
 
@@ -114,11 +114,11 @@ Address with amount
 
 Address with label and amount
 
-` ark:AePNZAAtWhLsGFLXtztGLAPnKm98VVC8tJ?label=John-Doe?amount=20.3`
+` ark:AePNZAAtWhLsGFLXtztGLAPnKm98VVC8tJ?label=John-Doe&amount=20.3`
 
 Address with label, amount and vendor field
 
-` ark:AePNZAAtWhLsGFLXtztGLAPnKm98VVC8tJ?label=John-Doe?amount=20.3?vendorField=Message%20for%20Ark`
+` ark:AePNZAAtWhLsGFLXtztGLAPnKm98VVC8tJ?label=John-Doe&amount=20.3&vendorField=Message%20for%20Ark`
 
 Address with custom parameters
 
