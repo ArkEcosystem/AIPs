@@ -21,3 +21,4 @@ First review *AIP-1 (TODO)*. Then clone the repository and add your AIP to it. T
 | 12 | Smart Contract | FX Thoorens, Adrian Cearnau | Standard | Consensus (hard-fork) | [Draft](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-12.md) |
 | 13 | URI Scheme | William Dens | Standard  | Applications | [Draft](/AIPS/aip-13.md) |
 | 14 | RESTful API | Brian Faust | Standard  | Applications | [Draft](/AIPS/aip-14.md) |
+| 15 | Event based subscriptions (WebHooks) | Kristjan Kosic | Standard  | Applications | [Draft](/AIPS/aip-15.md) |
