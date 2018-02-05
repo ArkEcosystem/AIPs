@@ -30,7 +30,7 @@ Rationale
 
 In fact, transactions are sent as [json data](http://www.w3schools.com/js/js_json.asp) via REST protocol, using POST method, on the ARK net.
 
-ARK defines 5 types of transaction:
+ARK defines 6 types of transaction:
 
   1. token transaction
   2. delegate registering
