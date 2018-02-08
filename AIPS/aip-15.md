@@ -70,7 +70,7 @@ Implementation
 ============
 A special  configuration section in ark-node api. that defines webhook properties. If enabled a REST API listener would be set up - to listen to client-side hook subscriptions.
 
-For example, a webhook config on the ark-node would like like this:
+For example, a webhook config on the ark-node would look like this:
 ```
 rest-hooks: {
     enabled: true,
