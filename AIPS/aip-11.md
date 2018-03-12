@@ -67,8 +67,8 @@ The payload is defined according to the type of the transaction. This may be cha
 | expiration        | 4             | 0x04000000 (0x00000000 = no expiration)                              |
 | recipient address | 21            | 0x171dfc69b54c7fe901e91d5a9ab78388645e2427ea                         |
 
-Expiration is the maximum number of blocks for which the timestamp is strictly greater than ‘nonce’, during which time the transaction is valid. If it is not included within these first blocks, it never will be.
-In other words, if the block whose height is ‘expiration’ inferior to the block including the transaction has a timestamp strictly superior, the block is invalid.
+Expiration is the timestamp after which it cannot be included in a block.
+In other words, if the block timestamp is strictly superior to the transaction expiration timestamp, the block is invalid.
 
 *Type 1 (second signature registration, 33 bytes)*
 
