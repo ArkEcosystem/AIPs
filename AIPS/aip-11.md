@@ -59,7 +59,7 @@ Payloads
 --------
 The payload is defined according to the type of the transaction. This may be changed with a version change in the future.
 
-*Type 0 (transfer, 33bytes)*
+**Type 0 (transfer, 33bytes)**
 
 | Description       | Size (bytes)  | Example                                                              |
 | -------------     | ------------- | :-------                                                             |
@@ -70,20 +70,20 @@ The payload is defined according to the type of the transaction. This may be cha
 Expiration is the timestamp after which it cannot be included in a block.
 In other words, if the block timestamp is strictly superior to the transaction expiration timestamp, the block is invalid.
 
-*Type 1 (second signature registration, 33 bytes)*
+**Type 1 (second signature registration, 33 bytes)**
 
 | Description                    | Size (bytes)  | Example                                                              |
 | -------------                  | ------------- | :-------                                                             |
 | public key of second signature | 33            | 0x025f81956d5826bad7d30daed2b5c8c98e72046c1ec8323da336445476183fb7ca |
 
-*Type 2 (delegate registration, 1-256 bytes)*
+**Type 2 (delegate registration, 1-256 bytes)**
 
 | Description       | Size (bytes)  | Example                                                              |
 | -------------     | ------------- | :-------                                                             |
 | length            | 1             | 0x80 (minimum 0x03)                                                  |
 | username (utf8)   | 3-255         | 0x6669786372797074                                                   |
 
-*Type 3 (vote, 1 + 34N bytes)*
+**Type 3 (vote, 1 + 34N bytes)**
 
 | Description       | Size (bytes)  | Example                                                              |
 | -------------     | ------------- | :--------                                                             |
@@ -95,7 +95,7 @@ In other words, if the block timestamp is strictly superior to the transaction e
 - Public key of the delegate
 In the case of ark only there is only one possible vote, so the payload is maximum 69 bytes.
 
-*Type 4 (multisignature registration, 3 + 33N bytes)*
+**Type 4 (multisignature registration, 3 + 33N bytes)**
 
 | Description         | Size (bytes)  | Example                                                              |
 | -------------       | ------------- | :-------                                                             |
@@ -107,23 +107,27 @@ In the case of ark only there is only one possible vote, so the payload is maxim
 
 `Public keys` are the concatenation of public keys of the people signing on this account.
 
-*Type 5 (IPFS, 1-256 bytes)*
+**Type 5 (IPFS, 1-256 bytes)**
 
 | Description         | Size (bytes)  | Example                                                              |
 | -------------       | ------------- | :-------                                                             |
 | Length of dag       | 1             | 0xea                                                                 |
 | dag                 | 0-255         | 0x6669786372797074                                                   |
 
-*Type 6 (timelock transfer 34 bytes)*
+**Type 6 (timelock transfer 34 bytes)**
 
 | Description         | Size (bytes)  | Example                                                              |
 | -------------       | ------------- | :-------                                                             |
 | amount              | 8             | 0x8096980000000000                                                   |
-| timelock type       | 1             | 0x00                                                                 |
+| timelock type       | 1             | 0x00 (timestamp), 0x01 (blockheight)                                                                 |
 | timelock            | 4             | 0x0087e5a8                                                           |
 | recipient address   | 21            | 0x171dfc69b54c7fe901e91d5a9ab78388645e2427ea                         |
+`Timelock type` defines different types for `timelock` value field (current supported types are `0:for timestamp type` timelock and `1:for blockheight type` timelock value). If timelock type=0, timelock value shall be specified with timestamp, and if type=1, timelock value shall be specified with blockheight.
 
-*Type 7 (multipayment, 2-65546 bytes)*
+- TimeLockType=0, timelock value=timestamp: transaction will be forged when timestamp is passed
+- TimeLockType=1, timelock value=blockHeight: transaction will be forged when blockchain reaches height specified at timelock value for blockHeight
+
+**Type 7 (multipayment, 2-65546 bytes)**
 
 | Description         | Size (bytes)  | Example                                                              |
 | -------------       | ------------- | :-------                                                             |
@@ -137,7 +141,7 @@ In the case of ark only there is only one possible vote, so the payload is maxim
 - N > 1 (ideally fees should be higher than type 0 if N < 2)
 - Max 2259 possible outputs. first versions of network will cap this max
 
-*Type 8 (delegate resignation)*
+**Type 8 (delegate resignation)**
 
 | Description         | Size (bytes)  | Example                                                              |
 | -------------       | ------------- | :-------                                                             |
