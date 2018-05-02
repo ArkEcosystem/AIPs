@@ -1,6 +1,6 @@
 ```
   AIP: 15
-  Title: Event based subscriptions (RESTHooks) for easier event chain listening on client side
+  Title: Event based subscriptions (WEBHOOKs) for easier event chain listening on client side
   Authors: Kristjan Kosic - Chris <chris@ark.io>
   Status: Draft
   Type: Standards Track
@@ -11,9 +11,9 @@
 Abstract
 ========
 
-This AIP proposes the implementation of a RESTHOOK API interface for dApp developers to listen to ARK Blockchain in a simple manner (event subscription chain listeners). Pooling is just wastefull and not efficient (neither of client or server side).
+This AIP proposes the implementation of a WEBHOOK API interface for dApp developers to listen to ARK Blockchain in a simple manner (event subscription chain listeners). Pooling is just wastefull and not efficient (neither of client or server side).
 
-By delivering RESTHOOK functionality, the clients wouldn’t be polling the network for data, but would subscribe to an EVENT (see specifications below) via RESTHOOK API system, thus taking the burden of the network.  When event happens the corresponding notifications will be sent to listeners. Special nodes/or dedicated nodes can be started to deliver this functionality.
+By delivering WEBHOOK functionality, the clients wouldn’t be polling the network for data, but would subscribe to an EVENT (see specifications below) via WEBHOOK API system, thus taking the burden of the network.  When event happens the corresponding notifications will be sent to listeners. Special nodes/or dedicated nodes can be started to deliver this functionality.
 
 Clients/users/dApp’s would define rules for EVENT in the config file/or api; 
 ARK-NODE with listeners enabled would run in the background, waiting for events (event information data with accompanying payload) and 
@@ -22,7 +22,7 @@ Deliver them to all listeners via webhook notifications (e.g. callback in variou
 Benefits
 ==========
 
-Configured listeners would be running in the background. RESTHOOKS are also very important for IoT where smaller devices can listen and handle the events.
+Configured listeners would be running in the background. WEBHOOK are also very important for IoT where smaller devices can listen and handle the events.
 
 Users/developers - would get simple lightweight and efficient rule based event-subscription that notifies the subscribers of “events” without the need of installing additional tools, servers, etc... just to listen to the chain. Developers get event based notification; and they can continue to work with their dApp from there. 
 
@@ -31,7 +31,7 @@ For End Users - more dApps, more integration points, bigger adoption, easier int
 Usage
 ==========
 Precondition: ark-node is running and listening to ARK blockchain.
-User specifies event conditions for the RESTHOOK and sends them to the specified ark-node via REST api call. If ark-node is configured to enable RESTHOOKS and the specified security token is correct, subscription is saved in the database and response returned to the user, that the subscription is active.
+User specifies event conditions for the WEBHOOK and sends them to the specified ark-node via REST api call. If ark-node is configured to enable WEBHOOK and the specified security token is correct, subscription is saved in the database and response returned to the user, that the subscription is active.
 
 For example (basic hook payload):
 ```
@@ -72,7 +72,7 @@ A special  configuration section in ark-node api. that defines webhook propertie
 
 For example, a webhook config on the ark-node would look like this:
 ```
-rest-hooks: {
+web-hooks: {
     enabled: true,
     options: {
       expiration-time: 72, //subscription must be renewed every XX hours
