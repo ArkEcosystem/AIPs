@@ -68,9 +68,9 @@ After a change of forging delegates the new delegates create a new DKG public gr
 Initial price for a liquidity gate is specified upon creation by the creator. For instance if being used to do an ICO the price should be set to the lowest estimate of market cap as it will increase when more people buy the bridgechain tokens. If a group of people are creating a liquidity gate for an existing bridgechain it can be initialized with a current price taken from an exchange.
 
 Price update for a bitcoin-like exponential increase asset is performed using the following formula:
-$$p' = p *exp(A*(\frac{numLiquidTokens}{(numLiquidTokens+order}-1))$$
+$$p' = p * exp(A * order)$$
 
-where p' is the new price, p is the old price, numLiquidTokens is the number of tokens in the current local liquidity gate, order is the number of tokens being exchanged (-ve for bridgechain tokens being bought and +ve for bridgechain tokens being sold) and A is a dampening/amplification coefficient which can have any positive fractional value.
+where p' is the new price, p is the old price, numLiquidTokens is the number of tokens in the current local liquidity gate, order is the number of tokens being exchanged (-ve for bridgechain tokens being bought and +ve for bridgechain tokens being sold) and A is a dampening coefficient which can have any positive fractional value.
 
 An alternate price update formula that can be used for createing a stable coin is as follows:
 $$p' = p + \frac{MaxMCap}{numTotalTokens}*log(\frac{numLiquidTokens}{numLiquidTokens+order})$$
