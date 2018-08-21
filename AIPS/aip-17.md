@@ -4,7 +4,7 @@ title: Transaction Pool Wallet Manager
 author: Kristjan KOSIC <chris@ark.io>, François-Xavier THOORENS <fx@ark.io>
 type: Standards Track
 category: Core/Protocol
-status: Active
+status: Implemented
 created: 2018-05-01
 updated: 2018-08-21
 ```
