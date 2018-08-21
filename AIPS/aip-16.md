@@ -32,10 +32,12 @@ A user sets his exact fee he is willing to pay when sending a transaction (setti
 ## Delegates:
 Define their own C (constant) known as the `feeMultiplier`. See [Formula calculation](##formula-calculation) for fee calculation according to the formula on API11, that is related to:
 - Type of the transaction
-- Size of the serialised transaction and
+- Size of the serialised transaction
 
+Specifications
+===============
 ## Node:
-A client API can retrieve history values of fees, so market monitoring can be done based on the node config endpoint and new services can be provided to users to monitor the market behaviour. By calling [node configuration endpoint](https://docs.ark.io/developers/api/public/v2/node/retrieve-the-configuration.html#endpoint) a `feeStatistics` parameter is returned, where minimum, maximum and average fee for the last 30 days is retured, calcualted by transaction type. 
+A client API can retrieve history values of fees, so market monitoring can be done based on the node config endpoint and new services can be provided to users to monitor the market behaviour. By calling [node configuration endpoint](https://docs.ark.io/developers/api/public/v2/node/retrieve-the-configuration.html#endpoint) a `feeStatistics` parameter is returned, where minimum, maximum and average fee for the last 30 days is retured, calculated by transaction type. 
 ```
     "feeStatistics": [
       {
@@ -73,7 +75,7 @@ All client libraries will enable users to set a custom fee for the transaction(s
 
 ## Core/Node level configuration
 ### Delegate settings
-A delegate can define his formula parameters for `C-feeMultiplier` and limit incomming transactions with `minAcceptableFee` value. All settings are in ARKTOSHI per byte. Delegate settings can be found in [delegates.json](https://github.com/ArkEcosystem/core/blob/develop/packages/core/lib/config/testnet/delegates.json#L2-L4)
+A delegate can define his formula parameters for `C-feeMultiplier` and limit incoming transactions with `minAcceptableFee` value. All settings are in ARKTOSHI per byte. Delegate settings can be found in [delegates.json](https://github.com/ArkEcosystem/core/blob/develop/packages/core/lib/config/testnet/delegates.json#L2-L4)
 
 Example:
 ```
