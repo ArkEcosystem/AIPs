@@ -1,7 +1,7 @@
 <pre>
   AIP: *16*
   Title: *Dynamic Fees*
-  Authors: *François-Xavier THOORENS <fx@ark.io>, Kristjan Kosic <chris@ark.io>*
+  Authors: *François-Xavier THOORENS <fx@ark.io>, Kristjan KOSIC <chris@ark.io>, Alex BARNSLEY <alex@ark.io>*
   Status: *Active*
   Type: *Standards Track*
   Created: *2018-05-01*
@@ -54,7 +54,9 @@ All client libraries will enable users to set a custom fee for the transaction, 
 
 ## Core/Node level configuration
 ### Delegate settings
-Settings will be enabled, where delegate can define his forumla parameters. Settings can be found in [delegates.json](https://github.com/ArkEcosystem/core/blob/develop/packages/core/lib/config/testnet/delegates.json#L2-L4)
+A delegate can define his formula parameters for C and limit incomming transactions with `minAcceptableFee` value. All settings are in ARKTOSHI. Delegate settings can be found in [delegates.json](https://github.com/ArkEcosystem/core/blob/develop/packages/core/lib/config/testnet/delegates.json#L2-L4)
+
+Example:
 ```
   "dynamicFees": {
     "feeMultiplier": 1000,
@@ -62,8 +64,7 @@ Settings will be enabled, where delegate can define his forumla parameters. Sett
   }
 ```
 
-
-### Formula calulation network parameters
+### Formula calculation network parameters
 - `feeMultiplier` is C in the formula above. 
 - `minAcceptableFee` is the limit for the inclusion of transaction by the delegate. If the incomming transaction has lower fee than delegates `minAcceptableFee` then the transaction is not included in the delegates pool, but it is only broadcasted to other nodes, where other delegates can pick it up, according to the defined rules.
 
@@ -83,14 +84,12 @@ Settings will be enabled, where delegate can define his forumla parameters. Sett
    }
 ```
 
-By setting the value `dynamic` to `true` and defining block height from which the settings should go into effec - we can enable or disable the dynamic fees on the node level. Settings are also in [network.json](https://github.com/ArkEcosystem/core/blob/c7a3bc75ffed5e5b9453d0de38937540fe48bce5/packages/crypto/lib/networks/ark/testnet.json#L52-L55)
+By setting the value `dynamic` to `true` and defining block height from which the settings should go into effect - we can enable or disable the dynamic fees on the node level. Settings are in [network.json](https://github.com/ArkEcosystem/core/blob/c7a3bc75ffed5e5b9453d0de38937540fe48bce5/packages/crypto/lib/networks/ark/testnet.json#L52-L55)
 
 For example the settings below will enable dynamic fee acceptance from block height 10 onward.
-
 ```
     "height": 10,
     "fees":{
       "dynamic" : true
     }
 ```
-
