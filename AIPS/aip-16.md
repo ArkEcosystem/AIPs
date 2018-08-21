@@ -12,7 +12,7 @@ updated: 2018-08-21
 History
 ========
 - 2018-05-01 inital content (Kristjan)
-- added more detailed explanation and related information to new settings available in node configuratio (Kristjan)
+- 2018-08-21 added more detailed explanation and related information to new settings available in node configuratio (Kristjan)
 
 Abstract
 ========
