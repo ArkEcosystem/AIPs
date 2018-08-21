@@ -1,7 +1,7 @@
 ```
 AIP: 16
 title: Dynamic Fees
-author: François-Xavier THOORENS <fx@ark.io>, Kristjan KOSIC <chris@ark.io>, Alex BARNSLEY <alex@ark.io>
+author: Kristjan KOSIC <chris@ark.io>, François-Xavier THOORENS <fx@ark.io>, Alex BARNSLEY <alex@ark.io>
 type: Standards Track
 category: Core
 status: Active
@@ -27,7 +27,7 @@ Actors
 A user sets his exact fee he is willing to pay when sending a transaction (setting a custom fee in the transaction payload). An insanely low fee would result in transaction never being forged (fee will not make it into delegate pools).
 
 ## Delegates:
-Define their own C (constant) for fee calculation according to the formula on API11, that is related to:
+Define their own C (constant) `feeMultiplier` for fee calculation according to the formula on API11, that is related to:
 - Type of the transaction
 - Size of the serialised transaction
 
