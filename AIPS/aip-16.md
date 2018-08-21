@@ -37,7 +37,7 @@ Define their own C (constant) known as the `feeMultiplier`. See [Formula calcula
 Specifications
 ===============
 ## Node:
-A client API can retrieve history values of fees, so market monitoring can be done based on the node config endpoint and new services can be provided to users to monitor the market behaviour. By calling [node configuration endpoint](https://docs.ark.io/developers/api/public/v2/node/retrieve-the-configuration.html#endpoint) a `feeStatistics` parameter is returned, where minimum, maximum and average fee for the last 30 days is retured, calculated by transaction type. 
+A client API can retrieve history values of fees, so market monitoring can be done based on the node config endpoint and new services can be provided to users to monitor the market behaviour. By calling [node configuration endpoint](https://docs.ark.io/developers/api/public/v2/node/retrieve-the-configuration.html#endpoint) a `feeStatistics` parameter is returned, where minimum, maximum and average fee for the last 30 days is returned, calculated by transaction type. 
 ```json
     "feeStatistics": [
       {
