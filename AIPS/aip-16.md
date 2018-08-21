@@ -65,7 +65,7 @@ The calculation formula: `Fee = (T+S) * C`
 
 - C: fee multiplier constant (Arktoshi/byte) defined by the delegates for including the transaction in his forged block/transaction pool
 
-For more information about fomula calculation paramatere see [here](###formula-calculation-network-parameters).
+For more information about fomula calculation paramatere see [Formula calculation network parameters](###formula-calculation-network-parameters).
 
 
 Specifications
@@ -75,7 +75,7 @@ All client libraries will enable users to set a custom fee for the transaction(s
 
 ## Core/Node level configuration
 ### Delegate settings
-A delegate can define his formula parameters for `C-feeMultiplier` and limit incoming transactions with `minAcceptableFee` value. All settings are in ARKTOSHI per byte. Delegate settings can be found in [delegates.json](https://github.com/ArkEcosystem/core/blob/develop/packages/core/lib/config/testnet/delegates.json#L2-L4)
+A delegate can define his formula parameters for `C-feeMultiplier` and limit incoming transactions with `minAcceptableFee` value. All settings are in ARKTOSHI per byte. Delegate settings can be found in [delegates.json](https://github.com/ArkEcosystem/core/blob/develop/packages/core/lib/config/devnet/delegates.json#L2-L4)
 
 Example:
 ```json
@@ -89,7 +89,7 @@ Example:
 - `feeMultiplier` is C in the formula above. 
 - `minAcceptableFee` is the limit for the inclusion of transaction by the delegate. If the incomming transaction has lower fee than delegates `minAcceptableFee` then the transaction is not included in the delegates pool, but it is only broadcasted to other nodes, where other delegates can pick it up, according to the defined rules.
 
-`T - acts as offset` and is defined in the [network.json](https://github.com/ArkEcosystem/core/blob/c7a3bc75ffed5e5b9453d0de38937540fe48bce5/packages/crypto/lib/networks/ark/testnet.json#L39-L48) for each of the supported transaction types. Offsets are defined as following:
+`T - acts as offset` and is defined in the [network.json](https://github.com/ArkEcosystem/core/blob/c7a3bc75ffed5e5b9453d0de38937540fe48bce5/packages/crypto/lib/networks/ark/devnet.json#L39-L48) for each of the supported transaction types. Offsets are defined as following:
 
 ```json
    "dynamicOffsets": {
