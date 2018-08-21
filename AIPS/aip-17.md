@@ -11,7 +11,7 @@ updated: 2018-08-21
 
 History
 ========
-- 2018-05-01 inital content (@kristjank)
+- 2018-05-29 inital content (@fix)
 - 2018-08-21 added more detailed explanation and related information (@kristjank)
 
 Abstract
@@ -21,7 +21,7 @@ This is the description of transaction pool guarding mechanism, looking from the
 
 Motivation
 ==========
-In order to manage properly the transaction pool and prevent spam, the rules are described in this document and implemented in ark-core v2
+In order to manage properly the transaction pool and prevent spam, the rules are described in this document and implemented in ark-core v2.
 
 Specification
 =========
