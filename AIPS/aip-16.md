@@ -89,7 +89,7 @@ Example:
 - `feeMultiplier` is C in the formula above. 
 - `minAcceptableFee` is the limit for the inclusion of transaction by the delegate. If the incomming transaction has lower fee than delegates `minAcceptableFee` then the transaction is not included in the delegates pool, but it is only broadcasted to other nodes, where other delegates can pick it up, according to the defined rules.
 
-`T - acts as offset` and is defined by the [network.json](https://github.com/ArkEcosystem/core/blob/c7a3bc75ffed5e5b9453d0de38937540fe48bce5/packages/crypto/lib/networks/ark/testnet.json#L39-L48) for each of the supported transaction types. Offsets are defined as following:
+`T - acts as offset` and is defined in the [network.json](https://github.com/ArkEcosystem/core/blob/c7a3bc75ffed5e5b9453d0de38937540fe48bce5/packages/crypto/lib/networks/ark/testnet.json#L39-L48) for each of the supported transaction types. Offsets are defined as following:
 
 ```json
    "dynamicOffsets": {
