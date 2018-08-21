@@ -4,14 +4,14 @@ title: Transaction Pool Wallet Manager
 author: Kristjan KOSIC <chris@ark.io>, François-Xavier THOORENS <fx@ark.io>
 type: Standards Track
 category: Core/Protocol
-status: Active
+status: Implemented
 created: 2018-05-01
 updated: 2018-08-21
 ```
 
 History
 ========
-- 2018-05-01 inital content (@kristjank)
+- 2018-05-29 inital content (@fix)
 - 2018-08-21 added more detailed explanation and related information (@kristjank)
 
 Abstract
@@ -21,7 +21,7 @@ This is the description of transaction pool guarding mechanism, looking from the
 
 Motivation
 ==========
-In order to manage properly the transaction pool and prevent spam, the rules are described in this document and implemented in ark-core v2
+In order to manage properly the transaction pool and prevent spam, the rules are described in this document and implemented in ark-core v2.
 
 Specification
 =========
@@ -59,7 +59,9 @@ Transaction pool wallet acceptance rules:
 Specifications
 ==============
 ### Implementation
-Transaction pool exists of the core module in the ark-core, called `core-transaction-pool`. It is the only module designed to interact with the `core-blockchain` and it can have any storing implementation, that can be done in a very easy way, just by following the `TransactionPoolInterface` class. And example of this can be seen in `core-transaction-pool-redis` where Redis implementation is done. A new `sqllite`, `memory` or any other implementation, can be done just by following the specifications of the interface class, leaving room for modular approach and integration with different caching mechanisms and platform. 
+Transaction pool exists of the core module in the ark-core, called `core-transaction-pool`. It is the only module designed to interact with the `core-blockchain` and it can have any sub implementation for storage, that can be done in a very straighforward way, by following the `TransactionPoolInterface` class. 
+
+And example of this can be seen in `core-transaction-pool-redis` where Redis storage implementation is done. A new `sqllite`, `memory` or any other implementation, can be done just by following the specifications of the interface class, leaving room for modular approach and integration with different caching mechanisms and platforms. 
 
 ### Pool configuration module.
 ```json
