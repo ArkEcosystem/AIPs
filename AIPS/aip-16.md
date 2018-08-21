@@ -112,3 +112,11 @@ For example the settings below will enable dynamic fee acceptance from block hei
       "dynamic" : true
     }
 ```
+
+The example below will disable dynamic fee processing from block 20 onward. All fees will be calculated according to static fees defined in [network.json](https://github.com/ArkEcosystem/core/blob/c7a3bc75ffed5e5b9453d0de38937540fe48bce5/packages/crypto/lib/networks/ark/testnet.json#L27-L38)
+```
+    "height": 20,
+    "fees":{
+      "dynamic" : false
+    }
+```
