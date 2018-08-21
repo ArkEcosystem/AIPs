@@ -62,6 +62,7 @@ The calculation formula: `Fee = (T+S) * C`
 - T: offset value depending on transaction type, defined by the network. T is here to account for extra processing power to process special transaction whose transfer value is null, and thus reducing economic interest to spam the network.
 
 - S: size of the serialised transaction. For instance, for transfer we could have offset T = 0, C = 1000 Arktoshi/byte. For a classic transfer transaction with empty VendorField size is 153 bytes, the fee is:
+
 `Fee:= (0 + 153) * 1000 = 153000 ARKTOSHI === 0.00153000 ARK`.
 
 - C: fee multiplier constant (Arktoshi/byte) defined by the delegates for including the transaction in his forged block/transaction pool
