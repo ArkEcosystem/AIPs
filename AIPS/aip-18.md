@@ -4,7 +4,7 @@ title: Multisignature protocol
 author: François-Xavier THOORENS <fx@ark.io>, Alex Barnelsy <alex@ark.io>
 type: Standards Track
 category: Core/Protocol
-status: Implemented
+status: Active
 created: 2018-05-24
 updated: 2018-08-21
 ```
