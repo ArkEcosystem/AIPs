@@ -61,7 +61,7 @@ Dynamic fee calculation is related to the:
 The calculation formula: `Fee = (T+S) * C`
 - T: offset value depending on transaction type, defined by the network. T is here to account for extra processing power to process special transaction whose transfer value is null, and thus reducing economic interest to spam the network.
 
-- S: size of the serialised transaction. For instance, for transfer we could have T = 0 byte, C = 1000 Arktoshi/byte. For a classic transfer transaction with empty VendorField S = 253 bytes, hence the fee is 0.00253000 Ark.
+- S: size of the serialised transaction. For instance, for transfer we could have T = 0 byte, C = 1000 Arktoshi/byte. For a classic transfer transaction with empty VendorField S = 153 bytes, hence the fee is 0.00153000 Ark.
 
 - C: fee multiplier constant (Arktoshi/byte) defined by the delegates for including the transaction in his forged block/transaction pool
 
