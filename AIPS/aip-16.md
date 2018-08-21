@@ -1,11 +1,11 @@
 <pre>
-  AIP: *16*
-  Title: *Dynamic Fees*
-  Authors: *François-Xavier THOORENS <fx@ark.io>, Kristjan KOSIC <chris@ark.io>, Alex BARNSLEY <alex@ark.io>*
-  Status: *Active*
-  Type: *Standards Track*
-  Created: *2018-05-01*
-  Last Update: *2018-08-21*
+  AIP: 16
+  Title: Dynamic Fees
+  Authors: François-Xavier THOORENS <fx@ark.io>, Kristjan KOSIC <chris@ark.io>, Alex BARNSLEY <alex@ark.io>
+  Status: Active
+  Type: Standards Track
+  Created: 2018-05-01
+  Last Update: 2018-08-21
 </pre>
 
 Abstract
@@ -21,9 +21,7 @@ Dynamic Fee calculation (minimum and max transaction ) represents the rule for i
 Actors
 ===============
 ## Users/Customers:
-A user sets his exact fee he is willing to pay when sending a transaction (setting a custom fee in the transaction payload).
-
-An insanely low fee would result in transaction never being forged (fee will not make it into delegate pools).
+A user sets his exact fee he is willing to pay when sending a transaction (setting a custom fee in the transaction payload). An insanely low fee would result in transaction never being forged (fee will not make it into delegate pools).
 
 ## Delegates:
 Define their own C (constant) for fee calculation according to the formula on API11, that is related to:
@@ -31,7 +29,21 @@ Define their own C (constant) for fee calculation according to the formula on AP
 - Size of the serialised transaction
 
 ## Node:
-A client API can retrieve history values of fees, so market monitoring can be done based on the application endpoint and new services can be provided to users to see the market behaviour. By calling node configuration a `feeStatistics` parameter is returned, where minimum, maximum and average fee for the last 30 days is retured. Theese values will be used in wallets and other GUI client application to help users choose optmial fees, when sending transations. 
+A client API can retrieve history values of fees, so market monitoring can be done based on the node config endpoint and new services can be provided to users to monitor the market behaviour. By calling [node configuration endpoint](https://docs.ark.io/developers/api/public/v2/node/retrieve-the-configuration.html#endpoint) a `feeStatistics` parameter is returned, where minimum, maximum and average fee for the last 30 days is retured, calcualted by transaction type. 
+```
+    "feeStatistics": [
+      {
+        "type": 0,
+        "fees": {
+          "minFee": 268421,
+          "maxFee": 597781,
+          "avgFee": 404591
+        }
+      }
+    ],       
+```
+
+Returned values will be used in wallets and other GUI client application to help users choose optmial fees, when sending transations. 
 
 ## Formula calculation:
 Dynamic fee calculation is related to the:
