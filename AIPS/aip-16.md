@@ -38,7 +38,7 @@ Specifications
 ===============
 ## Node:
 A client API can retrieve history values of fees, so market monitoring can be done based on the node config endpoint and new services can be provided to users to monitor the market behaviour. By calling [node configuration endpoint](https://docs.ark.io/developers/api/public/v2/node/retrieve-the-configuration.html#endpoint) a `feeStatistics` parameter is returned, where minimum, maximum and average fee for the last 30 days is retured, calculated by transaction type. 
-```
+```json
     "feeStatistics": [
       {
         "type": 0,
@@ -78,7 +78,7 @@ All client libraries will enable users to set a custom fee for the transaction(s
 A delegate can define his formula parameters for `C-feeMultiplier` and limit incoming transactions with `minAcceptableFee` value. All settings are in ARKTOSHI per byte. Delegate settings can be found in [delegates.json](https://github.com/ArkEcosystem/core/blob/develop/packages/core/lib/config/testnet/delegates.json#L2-L4)
 
 Example:
-```
+```json
   "dynamicFees": {
     "feeMultiplier": 1000,
     "minAcceptableFee": 30000
@@ -91,7 +91,7 @@ Example:
 
 `T - acts as offset` and is defined by the [network.json](https://github.com/ArkEcosystem/core/blob/c7a3bc75ffed5e5b9453d0de38937540fe48bce5/packages/crypto/lib/networks/ark/testnet.json#L39-L48) for each of the supported transaction types. Offsets are defined as following:
 
-```
+```json
    "dynamicOffsets": {
       "transfer": 100,
       "secondSignature": 250,
@@ -108,7 +108,7 @@ Example:
 By setting the value `dynamic` to `true` and defining block height from which the settings should go into effect - we can enable or disable the dynamic fees on the node level. Settings are in [network.json](https://github.com/ArkEcosystem/core/blob/c7a3bc75ffed5e5b9453d0de38937540fe48bce5/packages/crypto/lib/networks/ark/testnet.json#L52-L55)
 
 For example the settings below will enable dynamic fee acceptance from block height 10 onward.
-```
+```json
     "height": 10,
     "fees":{
       "dynamic" : true
@@ -116,7 +116,7 @@ For example the settings below will enable dynamic fee acceptance from block hei
 ```
 
 The example below will disable dynamic fee processing from block 20 onward. All fees will be calculated according to static fees defined in [network.json](https://github.com/ArkEcosystem/core/blob/c7a3bc75ffed5e5b9453d0de38937540fe48bce5/packages/crypto/lib/networks/ark/testnet.json#L27-L38)
-```
+```json
     "height": 20,
     "fees":{
       "dynamic" : false
