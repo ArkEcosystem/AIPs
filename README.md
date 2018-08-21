@@ -9,19 +9,19 @@ First review *AIP-1 (TODO)*. Then clone the repository and add your AIP to it. T
 | Number        | Title        | Author | Type  | Layer        | Status / Discussion |
 | ------------- | ------------ | ------ | ----- | ------------ | ------------------- |
 | 1 | AIP Purpose and Guidelines | Guillaume Verbal | Meta | | Active |
-| [2](AIPS/aip-2.md) | Number of Votes per Account | Guillaume Verbal | Standard | Consensus (hard-fork) | [Closed](https://github.com/ArkEcosystem/AIPs/issues/1) |
-| 3 | Anonymous Vote | Guillaume Verbal | Standard | Consensus (hard-fork) | [Closed](https://github.com/ArkEcosystem/AIPs/issues/5) |
-| 4 | Number of Forging Delegates | Guillaume Verbal | Standard | Consensus (hard-fork) | [Closed](https://github.com/ArkEcosystem/AIPs/issues/3) |
-| 5 | Forging Secret | Guillaume Verbal | Standard | Consensus (hard-fork) | [Closed](https://github.com/ArkEcosystem/AIPs/issues/6) |
-| 6 | Lightning Networks | Guillaume Verbal | Standard | Consensus (hard-fork) | Closed |
-| 7 | Proxy Voting | Guillaume Verbal | Standard | Consensus (hard-fork) | [Closed](https://github.com/ArkEcosystem/AIPs/issues/2) |
-| 8 | An improvement of transaction protocol | Toons | Standard | Network | [Active](https://github.com/ArkEcosystem/AIPs/issues/7) |
-| 10 | Automatic Profit Sharing | Ryano | Standard | Consensus (hard-fork) | [Closed](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-10.md) |
-| 11 | Upgrade of Transaction Protocol | FX Thoorens, Dafty | Standard | Consensus (hard-fork) | [Active](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-11.md) |
+| [2](AIPS/aip-2.md) | Number of Votes per Account | Guillaume Verbal | Standard | Consensus (hard-fork) | [Canceled](https://github.com/ArkEcosystem/AIPs/issues/1) |
+| 3 | Anonymous Vote | Guillaume Verbal | Standard | Consensus (hard-fork) | [Canceled](https://github.com/ArkEcosystem/AIPs/issues/5) |
+| 4 | Number of Forging Delegates | Guillaume Verbal | Standard | Consensus (hard-fork) | [Canceled](https://github.com/ArkEcosystem/AIPs/issues/3) |
+| 5 | Forging Secret | Guillaume Verbal | Standard | Consensus (hard-fork) | [Canceled](https://github.com/ArkEcosystem/AIPs/issues/6) |
+| 6 | Lightning Networks | Guillaume Verbal | Standard | Consensus (hard-fork) | Canceled |
+| 7 | Proxy Voting | Guillaume Verbal | Standard | Consensus (hard-fork) | [Canceled](https://github.com/ArkEcosystem/AIPs/issues/2) |
+| 8 | An improvement of transaction protocol | Toons | Standard | Network | [Implemented](https://github.com/ArkEcosystem/AIPs/issues/7) |
+| 10 | Automatic Profit Sharing | Ryano | Standard | Consensus (hard-fork) | [Canceled](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-10.md) |
+| 11 | Upgrade of Transaction Protocol | FX Thoorens, Dafty | Standard | Consensus (hard-fork) | [Implemented](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-11.md) |
 | 12 | Smart Contract | FX Thoorens, Adrian Cearnau | Standard | Consensus (hard-fork) | [Draft](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-12.md) |
 | 13 | URI Scheme | William Dens | Standard  | Applications | [Draft](/AIPS/aip-13.md) |
-| 14 | RESTful API | Brian Faust | Standard  | Applications | [Active](/AIPS/aip-14.md) |
-| 15 | Event based subscriptions (WebHooks) | Kristjan Kosic | Standard  | Applications | [Active](/AIPS/aip-15.md) |
-| 16 | Dynamic fee calculations | Kristjan Kosic, FX Thoorens, Alex Barnsley | Standard  | Protocol | [Active](/AIPS/aip-16.md) |
-| 17 | Transaction pool wallet manager | Kristjan Kosic, FX Thoorens | Standard  | Protocol | [Active](/AIPS/aip-17.md) |
-| 18 | Multisignature protocol | FX Thoorens, Alex Barnsley | Standard  | Protocol | [Active](/AIPS/aip-18.md) |
+| 14 | RESTful API | Brian Faust | Standard  | Applications | [Implemented](/AIPS/aip-14.md) |
+| 15 | Event based subscriptions (WebHooks) | Kristjan Kosic | Standard  | Applications | [Implemented](/AIPS/aip-15.md) |
+| 16 | Dynamic fee calculations | Kristjan Kosic, FX Thoorens, Alex Barnsley | Standard  | Protocol | [Implemented](/AIPS/aip-16.md) |
+| 17 | Transaction pool wallet manager | Kristjan Kosic, FX Thoorens | Standard  | Protocol | [Implemented](/AIPS/aip-17.md) |
+| 18 | Multisignature protocol | FX Thoorens, Alex Barnsley | Standard  | Protocol | [Implemented](/AIPS/aip-18.md) |
