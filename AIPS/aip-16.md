@@ -9,7 +9,10 @@ created: 2018-05-01
 updated: 2018-08-21
 ```
 
-### Summary
+History
+========
+- 2018-05-01 inital content (Kristjan)
+- added more detailed explanation and related information to new settings available in node configuratio (Kristjan)
 
 Abstract
 ========
