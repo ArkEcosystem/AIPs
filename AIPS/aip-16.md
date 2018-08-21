@@ -11,28 +11,28 @@ updated: 2018-08-21
 
 History
 ========
-- 2018-05-01 inital content (Kristjan)
-- 2018-08-21 added more detailed explanation and related information to new settings available in node configuration (Kristjan)
+- 2018-05-01 inital content (@kristjank)
+- 2018-08-21 added more detailed explanation and related information to new settings available in node configuration (@kristjank)
 
 Abstract
 ========
-The purpose of dynamic fees is to enable a healthy market dynamics with options for delegates and users (transaction senders) to choose from. Acceptance fee threshold is decided by the delegate(s) - if fees are below threshold - they wont accept the payload into the transaction pool. The transaction fee is defined by the transaction sender.
+The purpose of dynamic fees is to enable a healthy market dynamics with options for delegates and users (transaction senders) to choose from. Acceptance fee threshold is decided by the delegate(s) - if fees are below threshold - they won't accept the payload into the transaction pool. The transaction fee is defined by the transaction sender.
 
 Motivation
 ==========
-The transaction size defines market dynamics - you pay more for (storage, computation, additional information). To optimize fees, a delegate puts minimum limits in the delegate config.  To reduce spamming forger rules need to be setup and implemented in the configs (starting with fixed ones).
+The transaction size defines market dynamics - you pay more for storage, computation, additional information. To optimize fees, a delegate puts minimum limits in the delegate config.  To reduce spamming forger rules need to be setup and implemented in the configs (starting with fixed ones).
 
-Dynamic Fee calculation (minimum and max transaction ) represents the rule for including the transactions in the delegate pool and eventually forging them.
+Dynamic Fee calculation represents the rule for including the transactions in the delegate pool and eventually forging them, or just broadcasting them if they don't fit to the peer conditions.
 
 Actors
 ===============
 ## Users/Customers:
-A user sets his exact fee he is willing to pay when sending a transaction (setting a custom fee in the transaction payload). An insanely low fee would result in transaction never being forged (fee will not make it into delegate pools).
+A user sets his exact fee he is willing to pay when sending a transaction (setting a custom fee in the transaction payload). An insanely low fee would result in transaction never being forged (fee will not make it into delegate pools). This opens new doors to fee processing in the future, for example processing of transaction with higher fees first.
 
 ## Delegates:
-Define their own C (constant) `feeMultiplier` for fee calculation according to the formula on API11, that is related to:
+Define their own C (constant) known as the `feeMultiplier`. See [Formula calculation](##formula-calculation) for fee calculation according to the formula on API11, that is related to:
 - Type of the transaction
-- Size of the serialised transaction
+- Size of the serialised transaction and
 
 ## Node:
 A client API can retrieve history values of fees, so market monitoring can be done based on the node config endpoint and new services can be provided to users to monitor the market behaviour. By calling [node configuration endpoint](https://docs.ark.io/developers/api/public/v2/node/retrieve-the-configuration.html#endpoint) a `feeStatistics` parameter is returned, where minimum, maximum and average fee for the last 30 days is retured, calcualted by transaction type. 
@@ -53,9 +53,8 @@ Returned values will be used in wallets and other GUI client application to help
 
 ## Formula calculation:
 Dynamic fee calculation is related to the:
-- Type of the transaction
+- Type of the transaction (offset value defined by network)
 - Size of the serialised transaction
-- Offset value defined by the network
 
 The calculation formula: `Fee = (T+S) * C`
 - T: offset value depending on transaction type, defined by the network. T is here to account for extra processing power to process special transaction whose transfer value is null, and thus reducing economic interest to spam the network.
@@ -64,15 +63,17 @@ The calculation formula: `Fee = (T+S) * C`
 
 - C: fee multiplier constant (Arktoshi/byte) defined by the delegates for including the transaction in his forged block/transaction pool
 
+For more information about fomula calculation paramatere see [here](###formula-calculation-network-parameters).
+
 
 Specifications
 ==============
-## Client SDK
-All client libraries will enable users to set a custom fee for the transaction, before the transaction is signed and sent. Some optional limits or security checks are recommended on client GUI level, to inform the users if the fee is above average or above current static fees defined in node configuration.
+## Client SDK(s)
+All client libraries will enable users to set a custom fee for the transaction(s), before the transaction is signed and sent. Some optional limits or security checks are recommended on client GUI level, to inform the users if the fee is above average or above current static fees defined in node configuration.
 
 ## Core/Node level configuration
 ### Delegate settings
-A delegate can define his formula parameters for C and limit incomming transactions with `minAcceptableFee` value. All settings are in ARKTOSHI. Delegate settings can be found in [delegates.json](https://github.com/ArkEcosystem/core/blob/develop/packages/core/lib/config/testnet/delegates.json#L2-L4)
+A delegate can define his formula parameters for `C-feeMultiplier` and limit incomming transactions with `minAcceptableFee` value. All settings are in ARKTOSHI per byte. Delegate settings can be found in [delegates.json](https://github.com/ArkEcosystem/core/blob/develop/packages/core/lib/config/testnet/delegates.json#L2-L4)
 
 Example:
 ```
@@ -101,7 +102,7 @@ Example:
       "delegateResignation": 500
    }
 ```
-
+### Enabling or disabling of dynamic fees
 By setting the value `dynamic` to `true` and defining block height from which the settings should go into effect - we can enable or disable the dynamic fees on the node level. Settings are in [network.json](https://github.com/ArkEcosystem/core/blob/c7a3bc75ffed5e5b9453d0de38937540fe48bce5/packages/crypto/lib/networks/ark/testnet.json#L52-L55)
 
 For example the settings below will enable dynamic fee acceptance from block height 10 onward.
