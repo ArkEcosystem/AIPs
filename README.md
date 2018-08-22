@@ -1,4 +1,4 @@
-![Ark Improvement Proposals](https://i.imgur.com/gqKcGt6.png)
+![Ark Improvement Proposals](assets/img/AIP_Header.png)
 
 Ark Improvement Proposals. AIPs propose and describe changes made to Ark Protocol.
 
