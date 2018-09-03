@@ -56,9 +56,9 @@ Transaction pool wallet acceptance rules:
   - apply some limit transactions per sender (configurable, around 100)
 
 
-Specifications
+
+Implementation
 ==============
-### Implementation
 Transaction pool exists of the core module in the ark-core, called `core-transaction-pool`. It is the only module designed to interact with the `core-blockchain` and it can have any sub implementation for storage, that can be done in a very straighforward way, by following the `TransactionPoolInterface` class. 
 
 And example of this can be seen in `core-transaction-pool-redis` where Redis storage implementation is done. A new `sqllite`, `memory` or any other implementation, can be done just by following the specifications of the interface class, leaving room for modular approach and integration with different caching mechanisms and platforms. 
