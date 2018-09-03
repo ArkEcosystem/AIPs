@@ -21,20 +21,20 @@ We want to provide the base tooling to make quick proof of blockhain without lau
 
 Motivation
 ==========
-To provide better ways of snapshotting and restoring the blockchain. Giving the node runners the tools, to be dependant on themselves and not on central point of failures.
+To provide better ways of snapshotting and restoring the blockchain. Giving the node runners the tools, to be dependant on themselves and not on central point of failures. 
+We want to:
+- Cross-distribute snaps for faster download
+- Cross database migration structure: migrating from sqlite to postgresql for instance without resyncing using
+  - snapshot db, read snapshot from another node using another db and syncing back
+- Small compact export (using aip11 serializeBlockFull)
 
 Requirements
 ==============
 ### Exporting of data
 - Regular export block and transactions table. Unfinished work is here: https://github.com/fix/ark-core/blob/master/packages/core/lib/snapshot.js
-- Cross-distribute snaps for faster download
-- Cross database migration structure: migrating from sqlite to postgresql for instance without resyncing using
-  - snapshot db, read snapshot from another node using another db and syncing back
-- Small compact export (using aip11 serializeBlockFull)
 - Each time a block is validated it is written on db AND on snapshot
 - Every 12 hours (or instance), the snapshot is duplicated. One duplication is archived, the other is used or incremental build.
 - Enable rollback of the blockchain easily via the snapshot (blocks: remove last heights, transactions: index based on height). 
-
 
 ### Importing of data
 - Verify blocks.id (previous.id)
