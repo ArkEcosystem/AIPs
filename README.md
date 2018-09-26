@@ -24,3 +24,4 @@ First review *AIP-1 (TODO)*. Then clone the repository and add your AIP to it. T
 | 17 | Transaction pool wallet manager | Kristjan Kosic, FX Thoorens | Standard  | Protocol | [Implemented](/AIPS/aip-17.md) |
 | 18 | Multisignature protocol | FX Thoorens, Alex Barnsley | Standard  | Protocol | [Implemented](/AIPS/aip-18.md) |
 | 19 | Incremental snapshot system | FX Thoorens, Kristjan Kosic | Standard  | Core | [Implemented](/AIPS/aip-19.md) |
+| 20 | Arkchain network registration for bip44 derivation path  | FX Thoorens | Standard  | Core | [Draft](https://github.com/ArkEcosystem/AIPs/issues/29) |
