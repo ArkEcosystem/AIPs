@@ -56,6 +56,7 @@ Specifications
 - The round will not be limited to x masternodes. It will vary depending on the amount of qualified/registered masternodes.
 - The round size will be determined by the # of masternodes where collateral in account >= requirement (2000ark)
 - Similar to forging, nodes will need to cycle through each round of masternodes concurrently with forgers. 
+- The same algorithm that decides if a forger can forge can be leveraged to determine if the masternode in the slot is eligable and can be awarded the masternode reward.
 
 ### 4. Masternode Performance / Rewards Distribution:
 - 10,800 blocks (assuming perfect 8 second blocks in 24 hours) are created each day
