@@ -40,9 +40,26 @@ Specifications
 - Similar to other masternodes there will be a collateral requirement to run a relay node
 - 1 masternode will be allowed per ark address
 - The initial collateral requirements is proposed to be 2000 ark (which can be staked)
-- A new option in core-commander to register a relay node will be required. This registration should do 2 things
+- A new option in core-commander to register a master node will be required. 
+- Registration of a masternode will check to see if the required collateral is in the account (entering in secret key to get ark address) and install arkstats
 
 ### 4. Masternode Performance Monitor:
+- Each masternode needs to meet specific performance requirements
+- Example performance requirements could be: Block height  (at or near current height), node version (current), uptime (99%)
+- Registered masternodes will be polled on a periodic basis (e.g., every 15 minutes) to determine node performance score
+- Node performance will be measured based on running average of past 24 hours of performance scores
+- Block height score as follows: At or within 1 round height = 3, between 1 and 5 rounds behind = 2, greather than 5 rounds behind = 1
+- Node score: current version = 2, previous version = 1
+- Uptime score (based on node being available for polling): available = 2, unavailable = 1 
+- Performance score will be generated every 24 hours
+- Performance score will be calculated as follows: (sum of height score * sum of node scores * sum of uptime score) / 96
+- Perfect performance score = 7, worst = 3
+- Payouts to masternodes will not trigger unless node performance >= 6 
 
 ### 5. Masternode rewards distribution:
+- 
 
+
+### 6. Future state:
+- ideally it would be great to make this completely trustless and not need the ark teams involvement to monitor performance and reward masternodes
+- leveraging of ArkVM and smart contracts to track registered masternodes for performance and distribution
