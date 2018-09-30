@@ -41,7 +41,7 @@ Specifications
 
 ### 2. Block Rewards Adjustment:
 - Block rewards need to be adjusted to provide funding to masternode owners
-- Two possible suggestions: Increase block rewards to 2.2 (an increase of 10%) or reduce delegate share of block rewards to 1.8 (to maintain 2 ARK blocks
+- Two possible suggestions: Increase block rewards to 2.2 (an increase of 10%) or reduce delegate share of block rewards to 1.8 (to maintain 2 ARK blocks)
 - Masternode rewards per block initialy set at 10& of current rewards (0.2) and a new database field (mn_reward) will be needed
 - Masternode rewards will be sent to the ARK masternode address after each block is created
 
@@ -61,7 +61,6 @@ Specifications
 ### 4. Masternode Performance / Rewards Distribution:
 - 10,800 blocks (assuming perfect 8 second blocks in 24 hours) are created each day
 - Maximum rewards for masternodes will be 0.2 X 10,800 = 2,160 ark per day
-- Rewards will be distributed evenly across all eligable masternodes
-- This distribution should help find a proper equilibrium of needed relay nodes
+- Rewards will be distributed each block to the eligable masternode
 - For example, if  there are 500 masternodes eligible for payment, they will get an equal share of 0.2 per round. At a constant round of 500 that would equal approximately 4.32 ARK a day
 - At current prices, this would reward each relay owner with approximately 130 ark per month (~90$ USD) which should be profitable to maintain a reliable relay node at most VPS providers
