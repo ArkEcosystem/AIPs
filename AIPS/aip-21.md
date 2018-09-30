@@ -1,6 +1,6 @@
 <pre>
   AIP: 21
-  Title: Incentivize Relays (aka. ARK relay-node)
+  Title: Incentivize Relays (aka. ARK Masternode)
   Authors: galperins4 <galperins4@gmail.com>
   Status: Draft
   Type: Standards Track
@@ -12,8 +12,11 @@
 Abstract
 ========
 
-Describe here shortly in a few sentences what this AIP want to achieve and how.
-
+With the current version of the ARK protocol the only nodes that are incentivized are Forging nodes. As such, there is no significant support outside of delegates to maintain a strong relay network to further decentralize and create and more resilient ARK network. This AIP proposes the following:
+- Establishment of a new incentivized relay type (e.g., Ark Masternode)
+- Change to block rewards to support ARK Masternodes
+- Mechanism to check ARK Masternodes for performance
+- Mechanism to reward ARK Masternodes
 
 Motivation
 ==========
