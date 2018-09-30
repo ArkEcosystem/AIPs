@@ -26,10 +26,7 @@ With the current version of the ARK protocol the only nodes that are incentivize
 
 Rationale
 =========
-Details of the proposed solution
+
 
 Specifications
 ==============
-
-Technical details or example of implementation
-
