@@ -26,9 +26,7 @@ With the current version of the ARK protocol the only nodes that are incentivize
 Specifications
 ==============
 
-### 1. Create Masternode Wallet:
-- Creation of a masternode rewards address - managed by the ARK team (multi-sig wallet)
-- This address will be utilized to accumulate masternode rewards and for daily distributions
+### 1. Create a new transaction type for masternodes:
 
 **Type 9 (masternode registration, 1-256 bytes)**
 
@@ -37,41 +35,32 @@ Specifications
 | length            | 1             | 0x80 (minimum 0x03)                                                  |
 | username (utf8)   | 3-255         | 0x6669786372797074   
 
+- Masternodes will have a similar registration process as a delete. The main difference is that there is a collateral reuquirement to run a masternode. To have a succesful registration it is required that the account registering maintain the minimum collateral requirement.
+- If the minimum collateral is not in the account at time of registration, the transaction will fail
+- The initial collateral requirements is proposed to be 2000 ark (which can be staked)
+
 ### 2. Block Rewards Adjustment:
 - Block rewards need to be adjusted to provide funding to masternode owners
 - Two possible suggestions: Increase block rewards to 2.2 (an increase of 10%) or reduce delegate share of block rewards to 1.8 (to maintain 2 ARK blocks
 - Masternode rewards per block initialy set at 10& of current rewards (0.2) and a new database field (mn_reward) will be needed
 - Masternode rewards will be sent to the ARK masternode address after each block is created
 
-### 3. Updated Core Commander:
-- Similar to other masternodes there will be a collateral requirement to run a relay node
-- 1 masternode will be allowed per ark address
-- The initial collateral requirements is proposed to be 2000 ark (which can be staked)
-- A new option in core-commander to register a master node will be required. 
-- Registration of a masternode will check to see if the required collateral is in the account (entering in secret key to get ark address), install arkstats, and register the node IP with the performance monitor 
+### 3. Updated Core Commander /  Ark Wallet:
+- New transaction type will need to be handled by the Ark Wallet
+- New "configure" relay option will need to be created to link the relay node to the masternode account
+- Same options used for configuring forger node and protection of passphrase would apply
+- Masternode setup would also automatically set up arkstats on relay node
 
-### 4. Masternode Performance Monitor:
-- Each masternode needs to meet specific performance requirements
-- Example performance requirements could be: Block height  (at or near current height), node version (current), uptime (99%)
-- Registered masternodes will be polled on a periodic basis (e.g., every 15 minutes) to determine node performance score
-- Node performance will be measured based on running average of past 24 hours of performance scores
-- Block height score as follows: At or within 1 round height = 3, between 1 and 5 rounds behind = 2, greather than 5 rounds behind = 1
-- Node score: current version = 2, previous version = 1
-- Uptime score: (based on node being available for polling): available = 2, unavailable = 1 
-- Collateral score: >= 2000 ark = 3, < 2000 ark = 1
-- Performance score will be generated every 24 hours
-- Performance score will be calculated as follows: (sum height score * sum node scores * sum uptime score * sum collateral score) / 96
-- Perfect performance score = 10, worst = 3
-- Payouts to masternodes will not trigger unless node performance >= 9 
+### 3. Updated Core / Protocol
+- Similar to forging rounds, a masternode round will need to be created to identify slots of randomized masternode accounts. 
+- The round will not be limited to x masternodes. It will vary depending on the amount of qualified/registered masternodes.
+- The round size will be determined by the # of masternodes where collateral in account >= requirement (2000ark)
+- Similar to forging, nodes will need to cycle through each round of masternodes concurrently with forgers. 
 
-### 5. Masternode rewards distribution:
+### 4. Masternode Performance / Rewards Distribution:
 - 10,800 blocks (assuming perfect 8 second blocks in 24 hours) are created each day
 - Maximum rewards for masternodes will be 0.2 X 10,800 = 2,160 ark per day
 - Rewards will be distributed evenly across all eligable masternodes
 - This distribution should help find a proper equilibrium of needed relay nodes
-- For example, if  there are 500 masternodes eligable for payment, they will get an equal share of 2,160 or 4.32 ARK a day
+- For example, if  there are 500 masternodes eligible for payment, they will get an equal share of 0.2 per round. At a constant round of 500 that would equal approximately 4.32 ARK a day
 - At current prices, this would reward each relay owner with approximately 130 ark per month (~90$ USD) which should be profitable to maintain a reliable relay node at most VPS providers
-
-### 6. Future state:
-- ideally it would be great to make this completely trustless and not need the ark teams involvement to monitor performance and reward masternodes
-- leveraging of ArkVM and smart contracts to track registered masternodes for performance and distribution
