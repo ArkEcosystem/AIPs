@@ -4,6 +4,7 @@
   Authors: galperins4 <galperins4@gmail.com>
   Status: Draft
   Type: Standards Track
+  Category: Core/Protocol
   Created: *2018-09-29*
   Last Update: *2018-09-29*
 </pre>
