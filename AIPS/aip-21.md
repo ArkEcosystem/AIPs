@@ -66,5 +66,11 @@ Specifications
 - For example, if  there are 500 masternodes eligible for payment, they will get an equal share of 0.2 per round. At a constant round of 500 that would equal approximately 4.32 ARK a day.
 - At current prices, this would reward each relay owner with approximately 130 ark per month (~90$ USD) which should be profitable to maintain a reliable relay node at most VPS providers.
 - Masternode distribution would need to be on a n+1 block basis. This is to avoid awarding a masternode award to a relay in the same round that a forger fails to forge (e.g., reward never exists). Mechanically it would look like this:
-  - 
+
+### 5. Reward mechanics example:
+- 2 rounds are in progress. Forging round is 51 delegates and Masternode round is 500 delegates.
+- slot 1 of forging is at the same time as slot 50 of masternodes. Delegate successfully forges. Block reward with first masternode reward is forged.
+- slot 2 of forging is at the same time as slot 51 of masternodes. Delegate successfully forges, and masternode 51 passes checks and is awarded reward from slot 1. 
+- slot 3 of forging is at the same time as slot 52 of masternodes. Delegate misses block, and masternode 52 passes checks as is awared reward from slot 2.
+- slot 4 of forging is at the same time as slot 53 of masternodes. Delegate successfully forges, and masternode 53 passes check, but not reward available due to prior block not being forged by delegate in slot 3.
 
