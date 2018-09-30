@@ -1,9 +1,9 @@
 <pre>
   AIP: 21
   Title: Incentivize Relays (aka. ARK relay-node)
-  Authors: galperins4 <galperins4@gmail.com>*
-  Status: *Draft*
-  Type: *Standards Track*
+  Authors: galperins4 <galperins4@gmail.com>
+  Status: Draft
+  Type: Standards Track
   Created: *2018-09-29*
   Last Update: *2018-09-29*
 </pre>
