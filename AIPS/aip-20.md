@@ -1,12 +1,12 @@
 <pre>
-  AIP: 21
+  AIP: 20
   Title: Incentivize Relays (aka. ARK Masternode)
   Authors: galperins4 <galperins4@gmail.com>
   Status: Draft
   Type: Standards Track
   Category: Core/Protocol
   Created: *2018-09-29*
-  Last Update: *2018-09-29*
+  Last Update: *2018-09-30*
 </pre>
 
 Abstract
