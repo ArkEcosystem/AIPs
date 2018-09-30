@@ -41,7 +41,7 @@ Specifications
 - 1 masternode will be allowed per ark address
 - The initial collateral requirements is proposed to be 2000 ark (which can be staked)
 - A new option in core-commander to register a master node will be required. 
-- Registration of a masternode will check to see if the required collateral is in the account (entering in secret key to get ark address) and install arkstats
+- Registration of a masternode will check to see if the required collateral is in the account (entering in secret key to get ark address), install arkstats, and register the node IP with the performance monitor 
 
 ### 4. Masternode Performance Monitor:
 - Each masternode needs to meet specific performance requirements
