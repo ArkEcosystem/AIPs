@@ -38,6 +38,7 @@ Specifications
 - Masternodes will have a similar registration process as a delegate. The main difference is that there is a collateral requirement to run a masternode. To have a successful registration it is required that the account registering maintain the minimum collateral requirement.
 - If the minimum collateral is not in the account at time of registration, the transaction will fail.
 - The initial collateral requirements is proposed to be 2000 ark (which can be staked).
+- A Type 9 transaction will cost 1 ARK.
 
 ### 2. Block Rewards Adjustment:
 - Block rewards need to be adjusted to provide funding to masternode owners.
