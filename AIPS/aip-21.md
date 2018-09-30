@@ -26,7 +26,7 @@ With the current version of the ARK protocol the only nodes that are incentivize
 Specifications
 ==============
 
-### 1. Create masternode wallet:
+### 1. Create Masternode Wallet:
 - Creation of a masternode rewards address - managed by the ARK team (multi-sig wallet)
 - This address will be utilized to accumulate masternode rewards and for daily distributions
 
