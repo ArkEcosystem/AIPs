@@ -26,5 +26,11 @@ With the current version of the ARK protocol the only nodes that are incentivize
 Specifications
 ==============
 
+### 1. Block Rewards Adjustment:
 
+### 2. Updated Core Commander:
+
+### 3. Masternode Performance Monitor:
+
+### 1. Masternode rewards distribution:
 
