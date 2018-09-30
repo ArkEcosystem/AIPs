@@ -26,8 +26,8 @@ With the current version of the ARK protocol the only nodes that are incentivize
 Specifications
 ==============
 
-### 1. Block Rewards Adjustment:
-- Creation of a masternode rewards address - managed by the ARK team
+### 1. Create masternode wallet:
+- Creation of a masternode rewards address - managed by the ARK team (multi-sig wallet)
 - This address will be utilized to accumulate masternode rewards and for daily distributions
 
 ### 2. Block Rewards Adjustment:
