@@ -1,11 +1,11 @@
 <pre>
-  AIP: *number*
-  Title: *title of the AIP*
-  Authors: *Firstname LastName <email@domain.com>*
-  Status: *Draft, Rejected or Active*
+  AIP: 21
+  Title: Incentivize Relays (aka. ARK relay-node)
+  Authors: galperins4 <galperins4@gmail.com>*
+  Status: *Draft*
   Type: *Standards Track*
-  Created: *YYYY-MM-DD*
-  Last Update: *YYYY-MM-DD*
+  Created: *2018-09-29*
+  Last Update: *2018-09-29*
 </pre>
 
 Abstract
