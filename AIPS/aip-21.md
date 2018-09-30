@@ -23,10 +23,8 @@ With the current version of the ARK protocol the only nodes that are incentivize
 - Mechanism to check ARK Masternodes for performance
 - Mechanism to reward ARK Masternodes
 
-
-Rationale
-=========
-
-
 Specifications
 ==============
+
+
+
