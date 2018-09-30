@@ -50,15 +50,20 @@ Specifications
 - Node performance will be measured based on running average of past 24 hours of performance scores
 - Block height score as follows: At or within 1 round height = 3, between 1 and 5 rounds behind = 2, greather than 5 rounds behind = 1
 - Node score: current version = 2, previous version = 1
-- Uptime score (based on node being available for polling): available = 2, unavailable = 1 
+- Uptime score: (based on node being available for polling): available = 2, unavailable = 1 
+- Collateral score: >= 2000 ark = 3, < 2000 ark = 1
 - Performance score will be generated every 24 hours
-- Performance score will be calculated as follows: (sum of height score * sum of node scores * sum of uptime score) / 96
-- Perfect performance score = 7, worst = 3
-- Payouts to masternodes will not trigger unless node performance >= 6 
+- Performance score will be calculated as follows: (sum height score * sum node scores * sum uptime score * sum collateral score) / 96
+- Perfect performance score = 10, worst = 3
+- Payouts to masternodes will not trigger unless node performance >= 9 
 
 ### 5. Masternode rewards distribution:
-- 
-
+- 10,800 blocks (assuming perfect 8 second blocks in 24 hours) are created each day
+- Maximum rewards for masternodes will be 0.2 X 10,800 = 2,160 ark per day
+- Rewards will be distributed evenly across all eligable masternodes
+- This distribution should help find a proper equilibrium of needed relay nodes
+- For example, if  there are 500 masternodes eligable for payment, they will get an equal share of 2,160 or 4.32 ARK a day
+- At current prices, this would reward each relay owner with approximately 130 ark per month (~90$ USD) which should be profitable to maintain a reliable relay node at most VPS providers
 
 ### 6. Future state:
 - ideally it would be great to make this completely trustless and not need the ark teams involvement to monitor performance and reward masternodes
