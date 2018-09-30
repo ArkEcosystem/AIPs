@@ -30,6 +30,13 @@ Specifications
 - Creation of a masternode rewards address - managed by the ARK team (multi-sig wallet)
 - This address will be utilized to accumulate masternode rewards and for daily distributions
 
+**Type 9 (masternode registration, 1-256 bytes)**
+
+| Description       | Size (bytes)  | Example                                                              |
+| -------------     | ------------- | :-------                                                             |
+| length            | 1             | 0x80 (minimum 0x03)                                                  |
+| username (utf8)   | 3-255         | 0x6669786372797074   
+
 ### 2. Block Rewards Adjustment:
 - Block rewards need to be adjusted to provide funding to masternode owners
 - Two possible suggestions: Increase block rewards to 2.2 (an increase of 10%) or reduce delegate share of block rewards to 1.8 (to maintain 2 ARK blocks
