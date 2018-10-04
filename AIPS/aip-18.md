@@ -1,7 +1,7 @@
 ```
 AIP: 18
 title: Multisignature protocol
-author: François-Xavier THOORENS <fx@ark.io>, Alex Barnelsy <alex@ark.io>
+author: François-Xavier THOORENS <fx.thoorens@ark.io>, Alex Barnelsy <alex@ark.io>
 type: Standards Track
 category: Core/Protocol
 status: Active
