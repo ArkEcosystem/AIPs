@@ -1,7 +1,7 @@
 ```
 AIP: 16
 title: Dynamic Fees
-author: Kristjan KOSIC <chris@ark.io>, François-Xavier THOORENS <fx@ark.io>, Alex BARNSLEY <alex@ark.io>
+author: Kristjan KOSIC <chris@ark.io>, François-Xavier THOORENS <fx.thoorens@ark.io>, Alex BARNSLEY <alex@ark.io>
 type: Standards Track
 category: Core
 status: Active
