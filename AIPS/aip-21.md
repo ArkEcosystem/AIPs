@@ -2,7 +2,7 @@
   AIP: 21
   Title: Incentivize Relays (aka. ARK Masternode)
   Authors: galperins4 <galperins4@gmail.com>
-  Status: Draft / Open Discussion
+  Status: [Draft / Open Discussion](https://github.com/ArkEcosystem/AIPs/issues/31)
   Type: Standards Track
   Category: Core/Protocol
   Created: *2018-09-29*
