@@ -2,7 +2,7 @@
 <pre>
   AIP: 12
   Title: Smart Contract
-  Authors: Adrian Cearnau, François-Xavier THOORENS <fx@ark.io>
+  Authors: Adrian Cearnau, François-Xavier THOORENS <fx.thoorens@ark.io>
   Status: Draft
   Type: Standards Track
   Created: 2017-10-23

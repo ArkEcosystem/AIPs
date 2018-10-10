@@ -1,7 +1,7 @@
 <pre>
   AIP: 11
   Title: Upgrade of Transaction Protocol
-  Authors: François-Xavier Thoorens <fx@ark.io>, dafty
+  Authors: François-Xavier Thoorens fx.thoorens@ark.io, dafty
   Status: Draft
   Type: Standards Track
   Created: 2017-09-25
@@ -161,8 +161,9 @@ basically this will make:
 - impossible to vote for this delegate anymore
 - impossible to be selected as active delegate
 
-Fees calculation
+Dynamic Fees calculation
 ----------------
+> see [AIP-16](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-16.md) for more detailed information.
 
 A new process will be used where the fee is related to:
 - Type of the transaction
