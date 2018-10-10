@@ -1,5 +1,5 @@
 <pre>
-  AIP: 18
+  AIP: 22
   Title: Token price discovery and creating high liquidity decentralized exchange in the Ark ecosystem using instant crosschain atomic swaps 
   Authors: Moazzam Abdullah Khan
   Status: Draft
@@ -26,7 +26,7 @@ Rationale
 * Liquidity gate registered on the bridgechain is called a local liquidity gate
 * Liquidity gate registered on the Ark main chain is called a remote liquidity gate
 * Once registered as a liquidity gate, an address can only be controlled by multiparty concensus via a distributed key generation mechanism (e.g Secure Distributed Key Generation for Discrete-Log Based Cryptosystems by Gennaro et al.). We specify that the delegates on a bridgechain create an 80% threshold DKG group public key in order to manage the liquidity gates connecting Ark to the bridge chain.
-* Generated group public key is transmitted to the remote liquidity gate (discussed in more detail in upcoming AIP19)
+* Generated group public key is transmitted to the remote liquidity gate (discussed in more detail in upcoming AIP23)
 * A pair of remote and local liquidity gates is used to perform cross chain atomic swaps between the two chains
 * Liquidity gates use the vendorfield to track and update exchange price between the local and remote chain tokens
 * A local liquidity gate only connects to a single remote liquidity gate due to how price is calculated(might change in the future)

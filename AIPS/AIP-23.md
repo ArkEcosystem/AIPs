@@ -1,5 +1,5 @@
 <pre>
-  AIP: 19
+  AIP: 23
   Title: Creating a delegate market for bridgechains by restructuring Ark main chain's voting mechanism
   Authors: Moazzam Abdullah Khan
   Status: Draft
@@ -27,7 +27,7 @@ Rationale
 =========
 
 * Businesses and 3rd parties launching a bridgechain are able to get the service of delegates in a simple and fast manner.
-* Delegates are ranked by the vote-weigth they have received.
+* Delegates are ranked by the vote-weight they have received.
 * Bridgecoins are ranked by the Ark-value of their block rewards.
 * Top ranked bridgecoins are assigned top voted delegates.
 * One address one vote principle still holds so the top 51 delegates would forge on Ark while the delegates ranked 52 and onwards might forge on a bridgechain due to ranking based on ark-value of blockrewards.
@@ -37,9 +37,9 @@ Specifications
 ==============
 
 * Prerequisites
-	* On chain price discovery mechanism as suggested in AIP18
+	* On chain price discovery mechanism as suggested in AIP22
 
-- New bridgechains have an Ark address registered as a liquidity gate as per AIP18. This address is tracked and is used to establish the exchange price between ark and the bridgecoin. Additionally the forging rewards and block time are announced in a special transaction which is used to register the address as a bridgechain's liquidity gate.
+- New bridgechains have an Ark address registered as a liquidity gate as per AIP22. This address is tracked and is used to establish the exchange price between ark and the bridgecoin. Additionally the forging rewards and block time are announced in a special transaction which is used to register the address as a bridgechain's liquidity gate.
 
 - Block rewards per unit time at the current exchange rate are used to create a ranked list of all bridgechains going from highest reward to lowest reward.
 
@@ -47,7 +47,7 @@ Specifications
 
 - Delegates selected for each bridgechain come up with a 90%-threshold cryptographic group public key (DKG) which is broadcasted to the Ark main chain and signed by each relevant delegate. Delegates forging on the main chain will consider a transaction originating from the liquidity gate as valid if at least 90% of the delegates authorized to forge on the bridgechain have signed it however once a group key is registered for the new delegates only transactions signed using the group public key will be considered as valid (this is done in order to reduce the number of transactions on the Ark main chain).
 
-- All forged blockrewards on the bridgechains are sent in a cross chain transaction (as defined in AIP18) to the delegate address on the main chain through the liquidity gate.
+- All forged blockrewards on the bridgechains are sent in a cross chain transaction (as defined in AIP22) to the delegate address on the main chain through the liquidity gate.
 
 - Delegates forging on bridgechain detect outgoing cross chain transactions on liquidity gates. They then create and sign an appropriate transaction originating from the liquidity gate.
 
