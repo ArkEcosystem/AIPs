@@ -17,7 +17,7 @@ First review *AIP-1 (TODO)*. Then clone the repository and add your AIP to it. T
 | 10 | Automatic Profit Sharing | Ryano | Standard | Consensus (hard-fork) | [Canceled](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-10.md) |
 | 11 | Upgrade of Transaction Protocol | FX Thoorens, Dafty | Standard | Consensus (hard-fork) | [In progress](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-11.md) |
 | 12 | Smart Contract | FX Thoorens, Adrian Cearnau | Standard | Consensus (hard-fork) | [Draft](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-12.md) |
-| 13 | URI Scheme | William Dens | Standard  | Applications | [Draft](/AIPS/aip-13.md) |
+| 13 | URI Scheme | William Dens | Standard  | Applications | [In progress](/AIPS/aip-13.md) |
 | 14 | RESTful API | Brian Faust | Standard  | Applications | [Implemented](/AIPS/aip-14.md) |
 | 15 | Event based subscriptions (WebHooks) | Kristjan Kosic | Standard  | Applications | [Implemented](/AIPS/aip-15.md) |
 | 16 | Dynamic fee calculations | Kristjan Kosic, FX Thoorens, Alex Barnsley | Standard  | Protocol | [Implemented](/AIPS/aip-16.md) |
