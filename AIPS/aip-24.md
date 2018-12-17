@@ -23,11 +23,10 @@ A new public API endpoint will be introduced - `POST /blocks/doubleforgery`. Thi
 1. Detect and validate double forged block
 2. Confirm or Deny double forgery
 3. Ban block generator for next 1500 blocks from the height detected by double forging (if confirmed doubleforgery)
-4. Handle revert block logic accordingly - remove double forged block
+4. Handle revert block logic accordingly
 
 // TODO 
 - throttle? 
-- do we remove double forged blocks
 
 ### CHORE: Block validation
 1. We detect the double forged block
@@ -37,3 +36,4 @@ A new public API endpoint will be introduced - `POST /blocks/doubleforgery`. Thi
 ### CHORE: Revert logic of double forged blocks
 1. Double forgery is confirmed
 2. We select the double forged block with the lowest id (need to replace if block with higher id is onchain already)
+3. Possible lost transactions are to be added back to the pool (if accepted by the transaction guard)
