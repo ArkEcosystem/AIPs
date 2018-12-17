@@ -36,6 +36,4 @@ A new public API endpoint will be introduced - `POST /blocks/doubleforgery`. Thi
 
 ### CHORE: Revert logic of double forged blocks
 1. Double forgery is confirmed
-2. We remove the double forged block from the chains
-3. We update delegate rewards accordingly (reduce/depends on the rebuild logic)
-4. Transaction is the double forged block are to be added back to the transaction pool-if they pass the guard process
+2. We select the double forged block with the lowest id (need to replace if block with higher id is onchain already)
