@@ -1,12 +1,12 @@
-<pre>
-AIP: *24*
-Title: *Double Forging improvements*
-Authors: *Kristjan Kosic <kristjan@ark.io>, Joshua Noack <joshua@ark.io>, François-Xavier Thoorens <fx.thoorens@ark.io>*
-Status: *Draft*
-Type: *Standards Track*
-Created: *2018-12-17*
-Last Update: *2018-12-17*
-</pre>
+```
+AIP: 24
+Title: Double Forging improvements
+Authors: Kristjan Kosic <kristjan@ark.io>, Joshua Noack <joshua@ark.io>, François-Xavier Thoorens <fx.thoorens@ark.io>
+Status: Draft
+Type: Protocol Track
+Created: 2018-12-17
+Last Update: 2018-12-17
+```
 
 ## Abstract
 The purpose of this AIP is to include rules and apply penalty for delegates that performed double forging. A protocol change is proposed to notify all nodes when double forged blocks are detected, thus reaching consensus on bad forger.
