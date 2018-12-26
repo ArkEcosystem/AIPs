@@ -56,19 +56,22 @@ Specifications
 ```
 inputs:
 N = number of delegates (or minimum number of PoS miners);
-integer C less than N;
+C = integer less than N;
+D = dictionary to store hash and pledge secret locally
 
 algorithm:
 function create_pledge()
 {
 	rand = random.next()
 	salt = unix_time_epoch
-	public_rand = sha256(rand+salt)
-	return public_rand
+	public_rand = sha256(string(rand)+string(salt))
+	return public_rand, rand, salt
 }
 
 if no_active_pledge:
-	publish_pledge_tx(create_pledge())
+	public_rand, rand, salt = create_pledge()
+	D.add_item(public_rand, {rand, salt})
+	publish_pledge_tx(public_rand)
 
 if H > 2*N:
 {
@@ -77,7 +80,9 @@ if H > 2*N:
 		j = sha256( concatenate_hashes_from_height(H-N, H-2*N) ) % C
 		if rand%C == j:
 		{
-			publish_pledge_tx(create_pledge())
+			public_rand, rand, salt = create_pledge()
+			D.add_item(public_rand, {rand, salt})
+			publish_pledge_tx(public_rand)
 			create_next_block()
 		}
 		
