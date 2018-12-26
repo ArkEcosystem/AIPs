@@ -83,6 +83,7 @@ if H > 2*N:
 			D.add_item(public_rand, {rand, salt})
 			publish_pledge_tx(public_rand)
 			create_next_block()
+			break;
 		}
 		
 	}
