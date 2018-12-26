@@ -41,7 +41,8 @@ One issue that must be pointed out while working with VRF implementations is the
 	* Each delegate mods their secret number by C as well
 	* If both of these resulting numbers match for a delegate then that delegate has the right to forge next block
 	* Other nodes will only accept block produced for which the claim correlates to the earliest unused pledge and will reject claim with a later pledge committed in a later block
-
+	* The block produced by the chosen delegate will contain the claim which will reveal the secret random number and the salt used before hashing it. The salt in this case is the unix time epoch and it must be close to the transaction creation time for the claim to be considered valid.
+		
 Using this approach it is possible that multiple delegates have submitted numbers that produce the same remainder when modded with C or that no  delegates have submitted a number that corresponds with the current VRF output. These cases must be handled specifically in the protocol.
 
 1. If more than one delegate have submitted pledges that result in the same remainder then the unused pledge that was submitted in the earliest block will be used. Delegates can estimate a risk factor for producing a block that will be orphaned based on the depth of their pledge being used as claim. Using this calculation a delegate can decide to immediately publish a block or wait roughly 2 seconds so it can check if someone else has already published a block, if not it can publish it.
@@ -61,7 +62,8 @@ algorithm:
 function create_pledge()
 {
 	rand = random.next()
-	public_rand = f_privateKey(rand) = (rand)^privateKey
+	salt = unix_time_epoch
+	public_rand = sha256(rand+salt)
 	return public_rand
 }
 
