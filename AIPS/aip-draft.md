@@ -45,10 +45,11 @@ One issue that must be pointed out while working with VRF implementations is the
 
 Specifications
 ==============
-	
+
 pseudocode here:
-delegates contributes a random public_rand =f_privateKey(rand) = (rand mod N)^privateKey
-After k=n*3/2 blocks, calc j = sha(block.public_rand || n/2 ^ n*3/2-1) mod N
-Commits private key in same block and new public_rand
-Use j as a collision target of j = (f^(-1)_privateKey(Public_rand) , colliding miner_id= f(=j+ rand mod N) = minder’ is new block leader.
+
+- delegates contributes a random public_rand =f_privateKey(rand) = (rand mod N)^privateKey
+- After k=n*3/2 blocks, calc j = sha(block.public_rand || n/2 ^ n*3/2-1) mod N
+- Commits private key in same block and new public_rand
+- Use j as a collision target of j = (f^(-1)_privateKey(Public_rand) , colliding miner_id= f(=j+ rand mod N) = minder’ is new block leader.
 
