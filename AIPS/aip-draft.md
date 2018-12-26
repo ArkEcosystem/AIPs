@@ -81,4 +81,4 @@ for all unused pledges by delegate below height H-N:
 }
 ```
 
-The transaction fee would be selected based on 
+The pledge transaction is a new transaction type with a dynamic fee. If a delegate produces a block that is uncled then all relays extract the pledge transaction specified within it and add it to the mempool to be forged by the next block producer. The transaction fee would be selected based on a tradeoff between uncle rate and block time delay. If there are too many uncle blocks being produced then the transaction fee should be increased to penalize the delegates producing uncled blocks and change their risk/reward compromize. However if this fee is too high then delegates might be reluctant to produce blocks even if they have a valid claim simply because they fear that someone else might have an earlier claim and therefore delay the production of next block unnecessarily.
