@@ -58,26 +58,32 @@ N = number of delegates (or minimum number of PoS miners);
 integer C less than N;
 
 algorithm:
-rand = random.next()
-public_rand = f_privateKey(rand) = (rand)^privateKey
-if no_active_pledge:
-publish_pledge_tx(public_rand)
-
-for all unused pledges by delegate below height H-N:
+function create_pledge()
 {
-	if H > 2*N:
+	rand = random.next()
+	public_rand = f_privateKey(rand) = (rand)^privateKey
+	return public_rand
+}
+
+if no_active_pledge:
+	publish_pledge_tx(create_pledge())
+
+if H > 2*N:
+{
+	for all unused pledges by delegate below height H-N:
 	{
 		j = sha256( concatenate_hashes_from_height(H-N, H-2*N) ) % C
 		if rand%C == j:
 		{
+			publish_pledge_tx(create_pledge())
 			create_next_block()
 		}
 		
 	}
-	else
-	{
-		follow_old_algorithm()
-	}
+}
+else
+{
+	follow_old_algorithm()
 }
 ```
 
