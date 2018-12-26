@@ -40,16 +40,38 @@ One issue that must be pointed out while working with VRF implementations is the
 	* The new random number generated is modded by a number C smaller than N
 	* Each delegate mods their secret number by C as well
 	* If both of these resulting numbers match for a delegate then that delegate has the right to forge next block
-	* Other nodes will only accept block produced for which the claim correlates to the earliest unused pledge and will reject claim with a later pledge
+	* Other nodes will only accept block produced for which the claim correlates to the earliest unused pledge and will reject claim with a later pledge committed in a later block
 
 
 Specifications
 ==============
 
-pseudocode here:
 
-- delegates contributes a random public_rand =f_privateKey(rand) = (rand mod N)^privateKey
-- After k=n*3/2 blocks, calc j = sha(block.public_rand || n/2 ^ n*3/2-1) mod N
-- Commits private key in same block and new public_rand
-- Use j as a collision target of j = (f^(-1)_privateKey(Public_rand) , colliding miner_id= f(=j+ rand mod N) = minder’ is new block leader.
+```
+inputs:
+N = number of delegates (or minimum number of PoS miners);
+integer C less than N;
 
+algorithm:
+rand = random.next()
+public_rand = f_privateKey(rand) = (rand)^privateKey
+if no_active_pledge:
+publish_pledge_tx(public_rand)
+
+for all unused pledges by delegate:
+{
+	if H > 2*N:
+	{
+		j = sha256( concatenate_hashes_from_height(H-N, H-2*N) ) % C
+		if rand%C == j:
+		{
+			create_next_block()
+		}
+		
+	}
+	else
+	{
+		follow_old_algorithm()
+	}
+}
+```
