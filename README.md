@@ -26,5 +26,5 @@ First review *AIP-1 (TODO)*. Then clone the repository and add your AIP to it. T
 | 19 | Incremental snapshot system | FX Thoorens, Kristjan Kosic | Standard  | Core | [Implemented](/AIPS/aip-19.md) |
 | 20 | Arkchain network registration for bip44 derivation path  | FX Thoorens | Standard  | Core | [Draft](https://github.com/ArkEcosystem/AIPs/issues/29) |
 | 21 | Ark Masternodes | galperins4 | Standard  | Core / Protocol | [Open Discussion](/AIPS/aip-21.md) |
-| 22 | On chain price discovery using liquidity gates | mak | Standard  | Core / Protocol | [Open Discussion](/AIPS/AIP-22.md) |
-| 23 | Delegate markets and Ark token economic rework | mak | Standard  | Core / Protocol | [Open Discussion](/AIPS/AIP-23.md) |
+| 22 | On chain price discovery using liquidity gates | mak | Standard  | Core / Protocol | [Open Discussion](/AIPS/aip-22.md) |
+| 23 | Delegate markets and Ark token economic rework | mak | Standard  | Core / Protocol | [Open Discussion](/AIPS/aip-23.md) |
