@@ -76,11 +76,12 @@ if no_active_pledge:
 
 if H > 2*N:
 {
-	for all unused pledges by delegate below height H-N:
+	for each pledge_i in D below height H-N:
 	{
 		j = sha256( concatenate_hashes_from_height(H-N, H-2*N) ) % C
-		if rand%C == j:
+		if D.at(pledge_i).rand%C == j:
 		{
+			D.remove(pledge_i)
 			public_rand, rand, salt = create_pledge()
 			D.add_item(public_rand, {rand, salt})
 			publish_pledge_tx(public_rand)
