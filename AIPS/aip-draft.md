@@ -41,9 +41,11 @@ One issue that must be pointed out while working with VRF implementations is the
 	* If both of these resulting numbers match for a delegate then that delegate has the right to forge next block
 	* Other nodes will only accept block produced for which the claim correlates to the earliest unused pledge and will reject claim with a later pledge committed in a later block
 	* The block produced by the chosen delegate will contain the claim which will reveal the secret random number and the salt used before hashing it. The salt in this case is the unix time epoch and it must be close to the transaction creation time for the claim to be considered valid.
-		
+
 Using this approach it is possible that multiple delegates have submitted numbers that produce the same remainder when modded with C or that no  delegates have submitted a number that corresponds with the current VRF output. These cases must be handled specifically in the protocol.
 
+An additional constraint we add is that each delegate can only have up to 3 pledges active at a time. If more than 3 are submitted then only the latest 3 will be considered valid.
+ 
 1. If more than one delegate have submitted pledges that result in the same remainder then the unused pledge that was submitted in the earliest block will be used. Delegates can estimate a risk factor for producing a block that will be orphaned based on the depth of their pledge being used as claim. Using this calculation a delegate can decide to immediately publish a block or wait roughly 2 seconds so it can check if someone else has already published a block, if not it can publish it.
 
 2. In case no blocks are heard after a reasonable amount of time (let's say ~4 seconds) it can be assumed that no one has submitted the pledge corresponding to the current VRF output. In order to make sure the chain doesn't stall a sha256 of the VRF output is calculated and is used as collision target for next block producer. This process is repeated until a block is produced and the normal mechanism for VRF calculation is resumed afterwards. The block will only be accepted by peers in the corresponding time window (~4 seconds as described above), once the time window is expired it will not be accepted. The time span for each window must be defined keeping in mind the number of delegates and should be roughly longer than the time it takes for 51% of the nodes in the network to receive a new block.
