@@ -99,5 +99,3 @@ else
 ```
 
 The pledge and claim transactions are a new transaction type with a dynamic fee defined to avoid a nothing at stake condition for bidding on competing forks of the same chain. If a delegate produces a block that is uncled then all relays extract the pledge and claim transactions specified within it and add it to the mempool to be forged by the next block producer. The transaction fee would be selected based on a tradeoff between uncle rate and block time delay. If there are too many uncle blocks being produced then the transaction fee should be increased to penalize the delegates producing uncled blocks and change their risk/reward compromize. However if this fee is too high then delegates might be reluctant to produce blocks even if they have a valid claim simply because they fear that someone else might have an earlier claim and therefore delay the production of next block unnecessarily.
-
-The pledge transaction
