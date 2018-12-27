@@ -85,6 +85,7 @@ if H > 2*N:
 			public_rand, rand, salt = create_pledge()
 			D.add_item(public_rand, {rand, salt})
 			publish_pledge_tx(public_rand)
+			publish_claim_tx(pledge_i, prev_block_hash)
 			create_next_block()
 			break;
 		}
@@ -97,4 +98,6 @@ else
 }
 ```
 
-The pledge transaction is a new transaction type with a dynamic fee. If a delegate produces a block that is uncled then all relays extract the pledge transaction specified within it and add it to the mempool to be forged by the next block producer. The transaction fee would be selected based on a tradeoff between uncle rate and block time delay. If there are too many uncle blocks being produced then the transaction fee should be increased to penalize the delegates producing uncled blocks and change their risk/reward compromize. However if this fee is too high then delegates might be reluctant to produce blocks even if they have a valid claim simply because they fear that someone else might have an earlier claim and therefore delay the production of next block unnecessarily.
+The pledge and claim transactions are a new transaction type with a dynamic fee defined to avoid a nothing at stake condition for bidding on competing forks of the same chain. If a delegate produces a block that is uncled then all relays extract the pledge and claim transactions specified within it and add it to the mempool to be forged by the next block producer. The transaction fee would be selected based on a tradeoff between uncle rate and block time delay. If there are too many uncle blocks being produced then the transaction fee should be increased to penalize the delegates producing uncled blocks and change their risk/reward compromize. However if this fee is too high then delegates might be reluctant to produce blocks even if they have a valid claim simply because they fear that someone else might have an earlier claim and therefore delay the production of next block unnecessarily.
+
+The pledge transaction
