@@ -71,7 +71,8 @@ function create_pledge()
 	return public_rand, rand, salt
 }
 
-function forge(){
+function forge()
+{
 	if no_active_pledge:
 		public_rand, rand, salt = create_pledge()
 		D.add_item(public_rand, {rand, salt})
