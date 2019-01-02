@@ -28,4 +28,6 @@ First review *AIP-1 (TODO)*. Then clone the repository and add your AIP to it. T
 | 21 | Ark Masternodes | galperins4 | Standard  | Core / Protocol | [Open Discussion](/AIPS/aip-21.md) |
 | 22 | On chain price discovery using liquidity gates | mak | Standard  | Core / Protocol | [Open Discussion](/AIPS/aip-22.md) |
 | 23 | Delegate markets and Ark token economic rework | mak | Standard  | Core / Protocol | [Open Discussion](/AIPS/aip-23.md) |
-| N/A | Providing PoW like guarantees on (D)PoS networks | mak | Standard  | Core / Protocol | [Open Discussion](/AIPS/aip-draft.md) |
+| 24 | Double forging protocol improvements | Kristjan Kosic | Standard  | Core / Protocol | [Open Discussion](/AIPS/AIP-24.md) |
+| 25 | Providing PoW like guarantees on (D)PoS networks | mak | Standard  | Core / Protocol | [Open Discussion](/AIPS/AIP-25.md) |
+| 26 | QR Improvements |  | Standard  | Core / Protocol | [Open Discussion](/AIPS/AIP-26.md) |
