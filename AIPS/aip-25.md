@@ -5,7 +5,7 @@
   Status: Draft
   Type: Standards Track
   Created: 2018-12-08
-  Last Update: 2018-12-26
+  Last Update: 2019-1-2
 </pre>
 
 
@@ -53,12 +53,14 @@ An additional constraint we add is that each delegate can only have up to 3 pled
 Specifications
 ==============
 
+The pseudocode for a forging node is presented below with the forge() function being entrypoint:
 
 ```
 inputs:
 N = number of delegates (or minimum number of PoS miners);
 C = integer less than N;
 D = dictionary to store hash and pledge secret locally
+unclaimed_block_hash = hash corresponding to block if the claim transaction is ignored
 
 algorithm:
 function create_pledge()
@@ -69,33 +71,51 @@ function create_pledge()
 	return public_rand, rand, salt
 }
 
-if no_active_pledge:
-	public_rand, rand, salt = create_pledge()
-	D.add_item(public_rand, {rand, salt})
-	publish_pledge_tx(public_rand)
+function forge(){
+	if no_active_pledge:
+		public_rand, rand, salt = create_pledge()
+		D.add_item(public_rand, {rand, salt})
+		publish_pledge_tx(public_rand)
 
-if H > 2*N:
-{
-	for each pledge_i in D below height H-N:
+	if H > 2*N:
 	{
-		j = sha256( concatenate_hashes_from_height(H-N, H-2*N) ) % C
-		if D.at(pledge_i).rand%C == j:
+		for each pledge_i in D below height H-N:
 		{
-			D.remove(pledge_i)
-			public_rand, rand, salt = create_pledge()
-			D.add_item(public_rand, {rand, salt})
-			publish_pledge_tx(public_rand)
-			publish_claim_tx(pledge_i, prev_block_hash)
-			create_next_block()
-			break;
-		}
+			j = sha256( concatenate_hashes_from_height(H-N, H-2*N) ) % C
+			if D.at(pledge_i).rand%C == j:
+			{
+				D.remove(pledge_i)
+				public_rand, rand, salt = create_pledge()
+				D.add_item(public_rand, {rand, salt})
+				publish_pledge_tx(public_rand)
+				publish_claim_tx(pledge_i, unclaimed_block_hash)
+				create_next_block()
+				break;
+			}
 		
+		}
 	}
-}
-else
-{
-	follow_old_algorithm()
+	else
+	{
+		follow_old_algorithm()
+	}
 }
 ```
 
 The pledge and claim transactions are a new transaction type with a dynamic fee defined to avoid a nothing at stake condition for bidding on competing forks of the same chain. If a delegate produces a block that is uncled then all relays extract the pledge and claim transactions specified within it and add it to the mempool to be forged by the next block producer. The transaction fee would be selected based on a tradeoff between uncle rate and block time delay. If there are too many uncle blocks being produced then the transaction fee should be increased to penalize the delegates producing uncled blocks and change their risk/reward compromize. However if this fee is too high then delegates might be reluctant to produce blocks even if they have a valid claim simply because they fear that someone else might have an earlier claim and therefore delay the production of next block unnecessarily.
+
+Pledge transaction example
+
+| type | data |
+|-|-|
+| 0xfe | (public_rand) |
+
+Claim transaction example
+
+| type | data |
+|-|-|
+| 0xff | (rand):(salt):(unclaimed_block_hash) |
+
+Unclaimed_block_hash is what the hash of the block would have been if the claim transaction wasn't included in the block data (excluding signature). This is meant to differentiate between competing blocks produced by the delegate at the same height using the same claim that lead to a fork (similar to double forging).
+
+In this algorithm the delegates can tweak the fees for the two new transaction types as well as the variable C to get the best network performance versus uncle rate balance. For this to happen we propose that the block also specify a suggested value for C and the median value from the last N blocks is used to calculate next block.
