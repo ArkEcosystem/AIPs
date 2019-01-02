@@ -1,5 +1,5 @@
 <pre>
-  AIP: unassigned
+  AIP: 25
   Title: Providing PoW like guarantees on (D)PoS networks
   Authors: Moazzam Abdullah Khan, Asif Mehmood
   Status: Draft
@@ -34,7 +34,7 @@ One issue that must be pointed out while working with VRF implementations is the
 	
 2. Creating the VRF
 	* The hashes pledged by the delegates in the blocks from depth N to 2*N from current block height H are collected and concatenated into a string. This string is then hashed using sha256 to create the new random number.  Using this approach all N delegates get an equal chance to contribute to the VRF's next output and there is no chance for hijacking the random number generator by a minority of colluding parties.
-	
+
 3. Selecting Next Blockproducer
 	* The new random number generated is modded by a number C smaller than N
 	* Each delegate mods their secret number by C as well
