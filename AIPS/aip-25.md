@@ -119,6 +119,6 @@ Claim transaction example
 
 `unclaimed_block_hash` is what the hash of the block would have been if the claim transaction wasn't included in the block data (excluding signature). This is meant to discourage double forging by producing competing blocks using the same claim that lead to a fork.
 
-Finally the delegate can assess their risk of getting the block rejected based on revealed claims and calculating probability using the [birthday problem formula](https://en.wikipedia.org/wiki/Birthday_problem) and estimate their profitability using [kelly criterion](https://en.wikipedia.org/wiki/Kelly_criterion).
+Finally the delegate can assess their risk of having the block rejected due to earlier claim based on revealed claims and calculating probability using the [birthday problem formula](https://en.wikipedia.org/wiki/Birthday_problem) and estimate their profitability using [kelly criterion](https://en.wikipedia.org/wiki/Kelly_criterion).
 
 In this algorithm the delegates can tweak the fees for the two new transaction types as well as the variable C to get the best network performance versus uncle rate balance. For this to happen we propose that the block also specify a suggested value for C and the median value from the last N blocks is used to calculate next block.
