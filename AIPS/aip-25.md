@@ -117,6 +117,6 @@ Claim transaction example
 |-|-|
 | 0xff | (rand):(salt):(unclaimed_block_hash) |
 
-Unclaimed_block_hash is what the hash of the block would have been if the claim transaction wasn't included in the block data (excluding signature). This is meant to differentiate between competing blocks produced by the delegate at the same height using the same claim that lead to a fork (similar to double forging).
+`unclaimed_block_hash` is what the hash of the block would have been if the claim transaction wasn't included in the block data (excluding signature). This is meant to differentiate between competing blocks produced by the delegate at the same height using the same claim that lead to a fork (similar to double forging).
 
 In this algorithm the delegates can tweak the fees for the two new transaction types as well as the variable C to get the best network performance versus uncle rate balance. For this to happen we propose that the block also specify a suggested value for C and the median value from the last N blocks is used to calculate next block.
