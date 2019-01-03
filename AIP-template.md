@@ -3,7 +3,8 @@
   Title: *title of the AIP*
   Authors: *Firstname LastName <email@domain.com>*
   Status: *Draft, Rejected or Active*
-  Type: *Standards Track*
+  Discussion: http uri
+  Type: *Standards Track/Protocol track/Other*
   Created: *YYYY-MM-DD*
   Last Update: *YYYY-MM-DD*
 </pre>
