@@ -3,7 +3,6 @@
   Title: Providing PoW like guarantees on (D)PoS networks
   Authors: Moazzam Abdullah Khan, Asif Mehmood
   Status: Draft
-  Discussion: https://github.com/arkecosystem/aips/wiki/Comments:AIP-0025
   Type: Standards Track
   Created: 2018-12-08
   Last Update: 2019-1-2
