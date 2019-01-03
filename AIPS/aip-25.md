@@ -1,9 +1,9 @@
 <pre>
-  AIP: 25
+  AIP: 0025
   Title: Providing PoW like guarantees on (D)PoS networks
   Authors: Moazzam Abdullah Khan, Asif Mehmood
   Status: Draft
-  Discussion: https://github.com/ArkEcosystem/AIPs/issues/39
+  Discussion: https://github.com/bitcoin/bips/wiki/Comments:AIP-0025
   Type: Standards Track
   Created: 2018-12-08
   Last Update: 2019-1-2
