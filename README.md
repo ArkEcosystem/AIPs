@@ -30,4 +30,4 @@ First review *AIP-1 (TODO)*. Then clone the repository and add your AIP to it. T
 | 23 | Delegate markets and Ark token economic rework | mak | Standard  | Core / Protocol | [Open Discussion](/AIPS/aip-23.md) |
 | 24 | Double forging protocol improvements | Kristjan Kosic | Standard  | Core / Protocol | [Open Discussion](/AIPS/aip-24.md) |
 | 25 | Providing PoW like guarantees on (D)PoS networks | mak | Standard  | Core / Protocol | [Open Discussion](/AIPS/aip-25.md) |
-| 26 | QR Improvements |  | Standard  | Core / Protocol | [Open Discussion](/AIPS/AIP-26.md) |
+| 26 | URI Scheme Improvements |  | Standard  | Core / Protocol | [Open Discussion](/AIPS/AIP-26.md) |
