@@ -4,6 +4,7 @@
   Authors: Moazzam Abdullah Khan, Asif Mehmood
   Status: Draft
   Type: Standards Track
+  Discussion: https://github.com/ArkEcosystem/AIPs/issues/39
   Created: 2018-12-08
   Last Update: 2019-1-10
 </pre>
