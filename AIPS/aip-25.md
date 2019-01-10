@@ -1,11 +1,11 @@
 <pre>
-  AIP: 25
+  AIP: 0025
   Title: Providing PoW like guarantees on (D)PoS networks
   Authors: Moazzam Abdullah Khan, Asif Mehmood
   Status: Draft
   Type: Standards Track
   Created: 2018-12-08
-  Last Update: 2019-1-2
+  Last Update: 2019-1-10
 </pre>
 
 
