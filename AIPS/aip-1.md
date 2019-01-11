@@ -8,7 +8,7 @@
   Created: 2019-01-10
 </pre>
 
-==What is a AIP?==
+# What is a AIP?
 
 AIP stands for Ark Improvement Proposal. A AIP is a design document providing information to the Ark community, or describing a new feature for Ark or its processes or environment. The AIP should provide a concise technical specification of the feature and a rationale for the feature.
 
@@ -16,7 +16,7 @@ We intend AIPs to be the primary mechanisms for proposing new features, for coll
 
 Because the AIPs are maintained as text files in a versioned repository, their revision history is the historical record of the feature proposal.
 
-==AIP Types==
+# AIP Types
 
 There are three kinds of AIP:
 
@@ -24,7 +24,7 @@ There are three kinds of AIP:
 * An Informational AIP describes a Ark's design issue, or provides general guidelines or information to the community, but does not propose a new feature. Informational AIPs do not necessarily represent a community consensus or recommendation, so users and implementors are free to ignore Informational AIPs or follow their advice.
 * A Process AIP describes a process surrounding Ark, or proposes a change to (or an event in) a process. Process AIPs are like Standards Track AIPs but apply to areas other than the Ark protocol itself. They may propose an implementation, but not to Ark's codebase; they often require community consensus; unlike Informational AIPs, they are more than recommendations, and users are typically not free to ignore them. Examples include procedures, guidelines, changes to the decision-making process, and changes to the tools or environment used in Ark development. Any meta-AIP is also considered a Process AIP.
 
-==AIP Work Flow==
+# AIP Work Flow
 
 The AIP process begins with a new idea for Ark. Each potential Ark must have a champion -- someone who writes the AIP using the style and format described below, shepherds the discussions in the appropriate forums, and attempts to build community consensus around the idea. The AIP champion (a.k.a. Author) should first attempt to ascertain whether the idea is AIP-able. Sharing the idea or discussion on our slack channell is the best way to go about this.
 
@@ -58,7 +58,7 @@ The possible paths of the status of AIPs are as follows:
 
 Some Informational and Process AIPs may also have a status of "Active" if they are never meant to be completed. E.g. AIP 1 (this AIP).
 
-==What belongs in a successful AIP?==
+# What belongs in a successful AIP?
 
 Each AIP should have the following parts:
 
@@ -82,11 +82,11 @@ Each AIP should have the following parts:
 
 * The final implementation must include test code and documentation appropriate for the Ark protocol.
 
-==AIP Formats and Templates==
+# AIP Formats and Templates
 
 AIPs should be written in markdown format.
 
-===AIP Header Preamble===
+## AIP Header Preamble
 
 Each AIP must begin with an RFC 822 style header preamble. The headers must appear in the following order. Headers marked with "*" are optional and are described below. All other headers are required.
 
@@ -128,17 +128,17 @@ AIPs may have a Requires header, indicating the AIP numbers that this AIP depend
 
 AIPs may also have a Superseded-By header indicating that a AIP has been rendered obsolete by a later document; the value is the number of the AIP that replaces the current document. The newer AIP must have a Replaces header containing the number of the AIP that it rendered obsolete.
 
-===Auxiliary Files===
+## Auxiliary Files
 
 AIPs may include auxiliary files such as diagrams. Image files should be included in a subdirectory for that AIP in the assets folder. Auxiliary files must be named aip-XXXX-Y.ext, where "XXXX" is the AIP number, "Y" is a serial number (starting at 1), and "ext" is replaced by the actual file extension (e.g. "png").
 
-==Transferring AIP Ownership==
+## Transferring AIP Ownership
 
 It occasionally becomes necessary to transfer ownership of AIPs to a new champion. In general, we'd like to retain the original author as a co-author of the transferred AIP, but that's really up to the original author. A good reason to transfer ownership is because the original author no longer has the time or interest in updating it or following through with the AIP process, or has fallen off the face of the 'net (i.e. is unreachable or not responding to email). A bad reason to transfer ownership is because you don't agree with the direction of the AIP. We try to build consensus around a AIP, but if that's not possible, you can always submit a competing AIP.
 
 If you are interested in assuming ownership of a AIP, send a message asking to take over, addressed to both the original author and the AIP editor. If the original author doesn't respond to email in a timely manner, the AIP editor will make a unilateral decision (it's not like such decisions can't be reversed :).
 
-==AIP Editor Responsibilities & Workflow==
+## AIP Editor Responsibilities & Workflow
 
 For each new AIP that comes in an editor does the following:
 
@@ -160,11 +160,11 @@ The AIP editor will:
 
 The AIP editors are intended to fulfill administrative and editorial responsibilities. The AIP editors monitor AIP changes, and correct any structure, grammar, spelling, or markup mistakes we see.
 
-==History==
+# History
 
 This document was derived heavily from Bitcoin's BIP-0001 and BIP-0002. In many places text was simply copied and modified. Previous authors are not responsible for its use in the Ark Improvement Process, and should not be bothered with technical questions specific to Ark or the AIP process. Please direct all comments to the AIP editors or the Ark official slack.
 
-==Changelog==
+# Changelog
 
 11 Jan 2019 - Added initial version, forked from BIP-0001 BIPS proposals.
 
