@@ -31,3 +31,4 @@ First review *AIP-1 (TODO)*. Then clone the repository and add your AIP to it. T
 | 24 | Double forging protocol improvements | Kristjan Kosic | Standard  | Core / Protocol | [Open Discussion](/AIPS/aip-24.md) |
 | 25 | Providing PoW like guarantees on (D)PoS networks | mak | Standard  | Core / Protocol | [Open Discussion](/AIPS/aip-25.md) |
 | 26 | URI Scheme Improvements | vmunich | Standard  | Core / Protocol | [Open Discussion](/AIPS/aip-26.md) |
+| 27 | Addressing Long Range Attacks | mak | Standard  | Core / Protocol | [Open Discussion](/AIPS/aip-27.md) |
