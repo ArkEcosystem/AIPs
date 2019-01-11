@@ -140,25 +140,26 @@ If you are interested in assuming ownership of a AIP, send a message asking to t
 
 ## AIP Editor Responsibilities & Workflow
 
-For each new AIP that comes in an editor does the following:
+The AIP editor subscribes to the Ark's AIPs github notifications. For each new AIP that comes in an editor does the following:
 
 * Read the AIP to check if it is ready: sound and complete. The ideas must make technical sense, even if they don't seem likely to be accepted.
 * The title should accurately describe the content.
-* Edit the AIP for language (spelling, grammar, sentence structure, etc.), markup (for reST AIPs), code style.
+* The AIP draft must have open discussion to the AIPs github as an open issue with correct naming.
+* Motivation and backward compatibility (when applicable) must be addressed.
+* The defined Layer header must be correctly assigned for the given specification.
+* Licensing terms must be acceptable for AIPs.
 
 If the AIP isn't ready, the editor will send it back to the author for revision, with specific instructions.
 
-Once the AIP is ready for the repository it should be submitted as a "pull request" to the [https://github.com/ArkEcosystem/AIPs] repository on GitHub where it may get further feedback.
+Once the AIP is ready for the repository it should be submitted as a "pull request" to the AIPs git repository where it may get further feedback.
 
 The AIP editor will:
 
-* Assign a AIP number
+* Assign a AIP number in the pull request.
+* Merge the pull request when it is ready.
+* List the AIP in AIP list.
 
-* Merge the pull request when the author is ready (allowing some time for further peer review).
-
-* List the AIP in the main AIP list.
-
-The AIP editors are intended to fulfill administrative and editorial responsibilities. The AIP editors monitor AIP changes, and correct any structure, grammar, spelling, or markup mistakes we see.
+The AIP editors are intended to fulfill administrative and editorial responsibilities. The AIP editors monitor AIP changes, and update AIP headers as appropriate.
 
 # History
 
