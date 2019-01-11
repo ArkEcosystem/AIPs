@@ -26,7 +26,7 @@ There are three kinds of AIP:
 
 # AIP Work Flow
 
-The AIP process begins with a new idea for Ark. Each potential Ark must have a champion -- someone who writes the AIP using the style and format described below, shepherds the discussions in the appropriate forums, and attempts to build community consensus around the idea. The AIP champion (a.k.a. Author) should first attempt to ascertain whether the idea is AIP-able. Sharing the idea or discussion on our slack channell is the best way to go about this.
+The AIP process begins with a new idea for Ark. Each potential Ark must have a champion - someone who writes the AIP using the style and format described below, shepherds the discussions in the appropriate forums, and attempts to build community consensus around the idea. The AIP champion (a.k.a. Author) should first attempt to ascertain whether the idea is AIP-able. Sharing the idea or discussion on our slack channell is the best way to go about this.
 
 Vetting an idea publicly before going as far as writing a AIP is meant to save both the potential author and the wider community time. Many ideas have been brought forward for changing Ark that have been rejected for various reasons. Asking the community first if an idea is original helps prevent too much time being spent on something that is guaranteed to be rejected based on prior discussions (searching the internet does not always do the trick). It also helps to make sure the idea is applicable to the entire community and not just the author. Just because an idea sounds good to the author does not mean it will work for most people in most areas where Ark is used. Small enhancements or patches often don't need standardisation between multiple projects; these don't need a AIP and should be injected into the relevant development work flow with a patch submission to the our github page in the form of a Pull Request. 
 
@@ -42,7 +42,7 @@ If the AIP editor approves, he will assign the AIP a number, label it as Standar
 
 The AIP author may update the Draft as necessary in the git repository. Updates should be submitted by the author as pull requests.
 
-Standards Track AIPs consist of two parts, a design document and a reference implementation. The AIP should be reviewed and accepted before a reference implementation is begun, unless a reference implementation will aid people in studying the AIP. Standards Track AIPs must include an implementation -- in the form of code, a patch, or a URL to same -- before it can be considered Final.
+Standards Track AIPs consist of two parts, a design document and a reference implementation. The AIP should be reviewed and accepted before a reference implementation is begun, unless a reference implementation will aid people in studying the AIP. Standards Track AIPs must include an implementation - in the form of code, a patch, or a URL to same - before it can be considered Final.
 
 Once a AIP has been accepted, the reference implementation must be completed. When the reference implementation is complete and accepted the status will be changed to "Final".
 
@@ -54,7 +54,7 @@ AIPs can also be superseded by a different AIP, rendering the original obsolete.
 
 The possible paths of the status of AIPs are as follows:
 
-<img src=assets/aip-1-process.png></img>
+<img src=assets/aip-1/process-01.png></img>
 
 Some Informational and Process AIPs may also have a status of "Active" if they are never meant to be completed. E.g. AIP 1 (this AIP).
 
@@ -62,23 +62,23 @@ Some Informational and Process AIPs may also have a status of "Active" if they a
 
 Each AIP should have the following parts:
 
-* Preamble -- RFC 822 style headers containing meta-data about the AIP, including the AIP number, a short descriptive title (limited to a maximum of 44 characters), the names, and optionally the contact info for each author, etc.
+* Preamble - RFC 822 style headers containing meta-data about the AIP, including the AIP number, a short descriptive title (limited to a maximum of 44 characters), the names, and optionally the contact info for each author, etc.
 
-* Abstract -- a short (~200 word) description of the technical issue being addressed.
+* Abstract - a short (~200 word) description of the technical issue being addressed.
 
-* Copyright/public domain -- Each AIP must either be explicitly labelled as placed in the public domain (see this AIP as an example) or licensed under the MIT License.
+* Copyright/public domain - Each AIP must be licensed under the MIT License.
 
-* Specification -- The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations.
+* Specification - The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations.
 
-* Motivation -- The motivation is critical for AIPs that want to change the Ark protocol. It should clearly explain why the existing protocol specification is inadequate to address the problem that the AIP solves. AIP submissions without sufficient motivation may be rejected outright.
+* Motivation - The motivation is critical for AIPs that want to change the Ark protocol. It should clearly explain why the existing protocol specification is inadequate to address the problem that the AIP solves. AIP submissions without sufficient motivation may be rejected outright.
 
-* Rationale -- The rationale fleshes out the specification by describing what motivated the design and why particular design decisions were made. It should describe alternate designs that were considered and related work, e.g. how the feature is supported in other languages.
+* Rationale - The rationale fleshes out the specification by describing what motivated the design and why particular design decisions were made. It should describe alternate designs that were considered and related work, e.g. how the feature is supported in other languages.
 
 * The rationale should provide evidence of consensus within the community and discuss important objections or concerns raised during discussion.
 
-* Backwards Compatibility -- All AIPs that introduce backwards incompatibilities must include a section describing these incompatibilities and their severity. The AIP must explain how the author proposes to deal with these incompatibilities. AIP submissions without a sufficient backwards compatibility treatise may be rejected outright.
+* Backwards Compatibility - All AIPs that introduce backwards incompatibilities must include a section describing these incompatibilities and their severity. The AIP must explain how the author proposes to deal with these incompatibilities. AIP submissions without a sufficient backwards compatibility treatise may be rejected outright.
 
-* Reference Implementation -- The reference implementation must be completed before any AIP is given status "Final", but it need not be completed before the AIP is accepted. It is better to finish the specification and rationale first and reach consensus on it before writing code.
+* Reference Implementation - The reference implementation must be completed before any AIP is given status "Final", but it need not be completed before the AIP is accepted. It is better to finish the specification and rationale first and reach consensus on it before writing code.
 
 * The final implementation must include test code and documentation appropriate for the Ark protocol.
 
@@ -106,11 +106,11 @@ Each AIP must begin with an RFC 822 style header preamble. The headers must appe
 
 The Author header lists the names, and optionally the email addresses of all the authors/owners of the AIP. The format of the Author header value must be
 
-  Random J. User <address@dom.ain>
+`Random J. User <address@dom.ain>`
 
 if the email address is included, and just
 
-  Random J. User
+`Random J. User`
 
 if the address is not given.
 
