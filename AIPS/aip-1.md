@@ -54,7 +54,7 @@ AIPs can also be superseded by a different AIP, rendering the original obsolete.
 
 The possible paths of the status of AIPs are as follows:
 
-<img src=assets/aip-1/process-01.png></img>
+<img src=../assets/aip-1/process-01.png></img>
 
 Some Informational and Process AIPs may also have a status of "Active" if they are never meant to be completed. E.g. AIP 1 (this AIP).
 
