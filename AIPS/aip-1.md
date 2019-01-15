@@ -52,6 +52,7 @@ A AIP can also be "Rejected". Perhaps after all is said and done it was not a go
 
 AIPs can also be superseded by a different AIP, rendering the original obsolete. This is intended for Informational AIPs, where version 2 of an API can replace version 1.
 
+## Possible AIP Statuses
 The possible paths of the status of AIPs are as follows:
 
 <img src=../assets/aip-1/process-01.png></img>
@@ -68,9 +69,9 @@ Each AIP should have the following parts:
 
 * Copyright/public domain - Each AIP must be licensed under the MIT License.
 
-* Specification - The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations.
-
 * Motivation - The motivation is critical for AIPs that want to change the Ark protocol. It should clearly explain why the existing protocol specification is inadequate to address the problem that the AIP solves. AIP submissions without sufficient motivation may be rejected outright.
+
+* Specification - The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations.
 
 * Rationale - The rationale fleshes out the specification by describing what motivated the design and why particular design decisions were made. It should describe alternate designs that were considered and related work, e.g. how the feature is supported in other languages.
 
