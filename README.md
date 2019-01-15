@@ -6,7 +6,7 @@ First review the [AIP-1-Process Guidelines for submitting an AIP](AIPS/aip-1.md)
 # Current AIPs
 | Number        | Title        | Author | Type  | Layer        | Status / Discussion |
 | ------------- | ------------ | ------ | ----- | ------------ | ------------------- |
-| [1](AIPS/aip-1.md) | AIP Purpose and Guidelines | Guillaume Verbal | Meta | | Active |
+| [1](AIPS/aip-1.md) | AIP Purpose and Guidelines | Kristjan Kosic | Informational | | Active |
 | [2](AIPS/aip-2.md) | Number of Votes per Account | Guillaume Verbal | Standard | Consensus (hard-fork) | [Canceled](https://github.com/ArkEcosystem/AIPs/issues/1) |
 | [3](AIPS/aip-3.md) | Anonymous Vote | Guillaume Verbal | Standard | Consensus (hard-fork) | [Canceled](https://github.com/ArkEcosystem/AIPs/issues/5) |
 | [4](AIPS/aip-4.md) | Number of Forging Delegates | Guillaume Verbal | Standard | Consensus (hard-fork) | [Canceled](https://github.com/ArkEcosystem/AIPs/issues/3) |
