@@ -6,28 +6,28 @@ First review the [AIP-1-Process Guidelines for submitting an AIP](AIPS/aip-1.md)
 # Current AIPs
 | Number        | Title        | Author | Type  | Layer        | Status / Discussion |
 | ------------- | ------------ | ------ | ----- | ------------ | ------------------- |
-| 1 | AIP Purpose and Guidelines | Guillaume Verbal | Meta | | Active |
+| [1](AIPS/aip-1.md) | AIP Purpose and Guidelines | Guillaume Verbal | Meta | | Active |
 | [2](AIPS/aip-2.md) | Number of Votes per Account | Guillaume Verbal | Standard | Consensus (hard-fork) | [Canceled](https://github.com/ArkEcosystem/AIPs/issues/1) |
-| 3 | Anonymous Vote | Guillaume Verbal | Standard | Consensus (hard-fork) | [Canceled](https://github.com/ArkEcosystem/AIPs/issues/5) |
-| 4 | Number of Forging Delegates | Guillaume Verbal | Standard | Consensus (hard-fork) | [Canceled](https://github.com/ArkEcosystem/AIPs/issues/3) |
-| 5 | Forging Secret | Guillaume Verbal | Standard | Consensus (hard-fork) | [Canceled](https://github.com/ArkEcosystem/AIPs/issues/6) |
-| 6 | Lightning Networks | Guillaume Verbal | Standard | Consensus (hard-fork) | Canceled |
-| 7 | Proxy Voting | Guillaume Verbal | Standard | Consensus (hard-fork) | [Canceled](https://github.com/ArkEcosystem/AIPs/issues/2) |
-| 8 | An improvement of transaction protocol | Toons | Standard | Network | [Implemented](https://github.com/ArkEcosystem/AIPs/issues/7) |
-| 10 | Automatic Profit Sharing | Ryano | Standard | Consensus (hard-fork) | [Canceled](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-10.md) |
-| 11 | Upgrade of Transaction Protocol | FX Thoorens, Dafty | Standard | Consensus (hard-fork) | [Implemented](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-11.md) |
-| 12 | Smart Contract | FX Thoorens, Adrian Cearnau | Standard | Consensus (hard-fork) | [Draft](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-12.md) |
-| 13 | URI Scheme | William Dens | Standard  | Applications | [Draft](/AIPS/aip-13.md) |
-| 14 | RESTful API | Brian Faust | Standard  | Applications | [Implemented](/AIPS/aip-14.md) |
-| 15 | Event based subscriptions (WebHooks) | Kristjan Kosic | Standard  | Applications | [Implemented](/AIPS/aip-15.md) |
-| 16 | Dynamic fee calculations | Kristjan Kosic, FX Thoorens, Alex Barnsley | Standard  | Protocol | [Implemented](/AIPS/aip-16.md) |
-| 17 | Transaction pool wallet manager | Kristjan Kosic, FX Thoorens | Standard  | Protocol | [Implemented](/AIPS/aip-17.md) |
-| 18 | Multisignature protocol | FX Thoorens, Alex Barnsley | Standard  | Protocol | [In progress](/AIPS/aip-18.md) |
-| 19 | Incremental snapshot system | FX Thoorens, Kristjan Kosic | Standard  | Core | [Implemented](/AIPS/aip-19.md) |
-| 20 | Arkchain network registration for bip44 derivation path  | FX Thoorens | Standard  | Core | [Draft](https://github.com/ArkEcosystem/AIPs/issues/29) |
-| 21 | Ark Masternodes | galperins4 | Standard  | Core / Protocol | [Open Discussion](/AIPS/aip-21.md) |
-| 22 | On chain price discovery using liquidity gates | mak | Standard  | Core / Protocol | [Open Discussion](/AIPS/aip-22.md) |
-| 23 | Delegate markets and Ark token economic rework | mak | Standard  | Core / Protocol | [Open Discussion](/AIPS/aip-23.md) |
-| 24 | Double forging protocol improvements | Kristjan Kosic | Standard  | Core / Protocol | [Open Discussion](/AIPS/aip-24.md) |
-| 25 | Providing PoW like guarantees on (D)PoS networks | mak | Standard  | Core / Protocol | [Open Discussion](/AIPS/aip-25.md) |
-| 26 | URI Scheme Improvements | vmunich | Standard  | Core / Protocol | [Open Discussion](/AIPS/aip-26.md) |
+| [3](AIPS/aip-3.md) | Anonymous Vote | Guillaume Verbal | Standard | Consensus (hard-fork) | [Canceled](https://github.com/ArkEcosystem/AIPs/issues/5) |
+| [4](AIPS/aip-4.md) | Number of Forging Delegates | Guillaume Verbal | Standard | Consensus (hard-fork) | [Canceled](https://github.com/ArkEcosystem/AIPs/issues/3) |
+| [5](AIPS/aip-5.md) | Forging Secret | Guillaume Verbal | Standard | Consensus (hard-fork) | [Canceled](https://github.com/ArkEcosystem/AIPs/issues/6) |
+| [6](AIPS/aip-6.md) | Lightning Networks | Guillaume Verbal | Standard | Consensus (hard-fork) | Canceled |
+| [7](AIPS/aip-7.md) | Proxy Voting | Guillaume Verbal | Standard | Consensus (hard-fork) | [Canceled](https://github.com/ArkEcosystem/AIPs/issues/2) |
+| [8](AIPS/aip-8.md) | An improvement of transaction protocol | Toons | Standard | Network | [Implemented](https://github.com/ArkEcosystem/AIPs/issues/7) |
+| [10](AIPS/aip-10.md) | Automatic Profit Sharing | Ryano | Standard | Consensus (hard-fork) | [Canceled](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-10.md) |
+| [11](AIPS/aip-11.md) | Upgrade of Transaction Protocol | FX Thoorens, Dafty | Standard | Consensus (hard-fork) | [Implemented](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-11.md) |
+| [12](AIPS/aip-12.md) | Smart Contract | FX Thoorens, Adrian Cearnau | Standard | Consensus (hard-fork) | [Draft](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-12.md) |
+| [13](AIPS/aip-13.md) | URI Scheme | William Dens | Standard  | Applications | [Draft](/AIPS/aip-13.md) |
+| [14](AIPS/aip-14.md) | RESTful API | Brian Faust | Standard  | Applications | [Implemented](/AIPS/aip-14.md) |
+| [15](AIPS/aip-15.md) | Event based subscriptions (WebHooks) | Kristjan Kosic | Standard  | Applications | [Implemented](/AIPS/aip-15.md) |
+| [16](AIPS/aip-16.md) | Dynamic fee calculations | Kristjan Kosic, FX Thoorens, Alex Barnsley | Standard  | Protocol | [Implemented](/AIPS/aip-16.md) |
+| [17](AIPS/aip-17.md) | Transaction pool wallet manager | Kristjan Kosic, FX Thoorens | Standard  | Protocol | [Implemented](/AIPS/aip-17.md) |
+| [18](AIPS/aip-18.md) | Multisignature protocol | FX Thoorens, Alex Barnsley | Standard  | Protocol | [In progress](/AIPS/aip-18.md) |
+| [19](AIPS/aip-19.md) | Incremental snapshot system | FX Thoorens, Kristjan Kosic | Standard  | Core | [Implemented](/AIPS/aip-19.md) |
+| [20](AIPS/aip-20.md) | Arkchain network registration for bip44 derivation path  | FX Thoorens | Standard  | Core | [Draft](https://github.com/ArkEcosystem/AIPs/issues/29) |
+| [21](AIPS/aip-21.md) | Ark Masternodes | galperins4 | Standard  | Core / Protocol | [Open Discussion](/AIPS/aip-21.md) |
+| [22](AIPS/aip-22.md) | On chain price discovery using liquidity gates | mak | Standard  | Core / Protocol | [Open Discussion](https://github.com/ArkEcosystem/AIPs/issues/25) |
+| [23](AIPS/aip-23.md) | Delegate markets and Ark token economic rework | mak | Standard  | Core / Protocol | [Open Discussion](https://github.com/ArkEcosystem/AIPs/issues/26) |
+| [24](AIPS/aip-24.md) | Double forging protocol improvements | Kristjan Kosic | Standard  | Core / Protocol | [Open Discussion](https://github.com/ArkEcosystem/AIPs/issues/40) |
+| [25](AIPS/aip-25.md) | Providing PoW like guarantees on (D)PoS networks | mak | Standard  | Core / Protocol | [Open Discussion](https://github.com/ArkEcosystem/AIPs/issues/39) |
+| [26](AIPS/aip-26.md) | URI Scheme Improvements | vmunich | Standard  | Core / Protocol | [Open Discussion](https://github.com/ArkEcosystem/AIPs/issues/42) |
