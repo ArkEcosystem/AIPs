@@ -1,7 +1,7 @@
 ![Ark Improvement Proposals](assets/img/AIP_Header.png)
 
 # Contributing
-First review *AIP-1 (TODO)*. Then clone the repository and add your AIP to it. There is a *template AIP here (TODO)*. Then submit a Pull Request to Ark's [AIPs repository](https://github.com/ArkEcosystem/AIPs).
+First review the [AIP-1-Process Guidelines for submitting an AIP](AIPS/aip-1.md). Then clone the repository and add your AIP to it, by following the *[AIP-Template](AIP-template.md)* structue. Before submiting a pull request to the official repository try to obtain consensus from the communty and the team (best place in official slack). Next step would be to submit a Pull Request to Ark's [AIPs repository](https://github.com/ArkEcosystem/AIPs). When Pull Request is merged you will continue to work on the AIP together with the AIP editor. 
 
 # Current AIPs
 | Number        | Title        | Author | Type  | Layer        | Status / Discussion |
