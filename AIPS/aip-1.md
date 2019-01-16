@@ -10,7 +10,7 @@
 
 # What is a AIP?
 
-AIP stands for Ark Improvement Proposal. A AIP is a design document providing information to the Ark community, or describing a new feature for Ark or its processes or environment. The AIP should provide a concise technical specification of the feature and a rationale for the feature.
+AIP stands for Ark Improvement Proposal. A AIP is a design document providing information to the Ark community, or describing a new feature for Ark or its processes or environment. The AIP should provide a concise technical specification of the feature and a rationale for it.
 
 We intend AIPs to be the primary mechanisms for proposing new features, for collecting community input on an issue, and for documenting the design decisions that have gone into Ark. The AIP author is responsible for building consensus within the community and documenting dissenting opinions.
 
@@ -20,17 +20,17 @@ Because the AIPs are maintained as text files in a versioned repository, their r
 
 There are three kinds of AIP:
 
-* A Standards Track AIP describes any change that affects mostly Ark core implementations, such as a change to the network protocol, a change in block or transaction validity rules, or any change or addition that affects the interoperability of applications.
-* An Informational AIP describes a Ark's design issue, or provides general guidelines or information to the community, but does not propose a new feature. Informational AIPs do not necessarily represent a community consensus or recommendation, so users and implementors are free to ignore Informational AIPs or follow their advice.
-* A Process AIP describes a process surrounding Ark, or proposes a change to (or an event in) a process. Process AIPs are like Standards Track AIPs but apply to areas other than the Ark protocol itself. They may propose an implementation, but not to Ark's codebase; they often require community consensus; unlike Informational AIPs, they are more than recommendations, and users are typically not free to ignore them. Examples include procedures, guidelines, changes to the decision-making process, and changes to the tools or environment used in Ark development. Any meta-AIP is also considered a Process AIP.
+* Standards Track AIP describes any change that affects mostly Ark core implementations, such as a change to the network protocol, a change in block or transaction validity rules, or any change or addition that affects the interoperability of applications. Standard track also defines category (Core, Networking, Interface, Consensus).
+* Informational AIP describes Ark's design issue, or provides general guidelines or information to the community, but does not propose a new feature. Informational AIPs do not necessarily represent a community consensus or recommendation, so users and implementors are free to ignore Informational AIPs or follow their advice.
+* Process AIP describes a process surrounding Ark, or proposes a change to (or an event in) a process. Process AIPs are like Standards Track AIPs but apply to areas other than the Ark protocol itself. They may propose an implementation, but not to Ark's code-base; they often require community consensus; unlike Informational AIPs, they are more than recommendations, and users are typically not free to ignore them. Examples include procedures, guidelines, changes to the decision-making process, and changes to the tools or environment used in Ark development. Any meta-AIP is also considered a Process AIP.
 
 # AIP Work Flow
 
-The AIP process begins with a new idea for Ark. Each potential Ark must have a champion - someone who writes the AIP using the style and format described below, shepherds the discussions in the appropriate forums, and attempts to build community consensus around the idea. The AIP champion (a.k.a. Author) should first attempt to ascertain whether the idea is AIP-able. Sharing the idea or discussion on our slack channell is the best way to go about this.
+The AIP process begins with a new idea for Ark. Each potential Ark must have a champion - someone who writes the AIP using the style and format described below, shepherds the discussions in the appropriate forums, and attempts to build community consensus around the idea. The AIP champion (a.k.a. Author) should first attempt to ascertain whether the idea is AIP-able. Sharing the idea or discussion on our slack channel is the best way to go about this.
 
-Vetting an idea publicly before going as far as writing a AIP is meant to save both the potential author and the wider community time. Many ideas have been brought forward for changing Ark that have been rejected for various reasons. Asking the community first if an idea is original helps prevent too much time being spent on something that is guaranteed to be rejected based on prior discussions (searching the internet does not always do the trick). It also helps to make sure the idea is applicable to the entire community and not just the author. Just because an idea sounds good to the author does not mean it will work for most people in most areas where Ark is used. Small enhancements or patches often don't need standardisation between multiple projects; these don't need a AIP and should be injected into the relevant development work flow with a patch submission to the our github page in the form of a Pull Request. 
+Vetting an idea publicly before going as far as writing a AIP is meant to save both the potential author and the wider community time. Many ideas have been brought forward for changing Ark that have been rejected for various reasons. Asking the community first if an idea is original helps prevent too much time being spent on something that is guaranteed to be rejected based on prior discussions (searching the Internet does not always do the trick). It also helps to make sure the idea is applicable to the entire community and not just the author. Just because an idea sounds good to the author does not mean it will work for most people in most areas where Ark is used. Small enhancements or patches often don't need standardization between multiple projects; these don't need a AIP and should be injected into the relevant development work flow with a patch submission to the our git-hub page in the form of a Pull Request. 
 
-AIP authors are responsible for collecting community feedback on both the initial idea and the AIP before submitting it for review. However, wherever possible, long open-ended discussions on public mailing lists should be avoided. Strategies to keep the discussions efficient include: openning up a separate AIP discussion issue for the topic. 
+AIP authors are responsible for collecting community feedback on both the initial idea and the AIP before submitting it for review. However, wherever possible, long open-ended discussions on public mailing lists should be avoided. Strategies to keep the discussions efficient include: opening up a separate AIP discussion issue for the topic. 
 
 It is highly recommended that a single AIP contain a single key proposal or new idea. The more focused the AIP, the more successful it tends to be. If in doubt, split your AIP into several well-focused ones.
 
@@ -71,7 +71,7 @@ Each AIP should have the following parts:
 
 * Motivation - The motivation is critical for AIPs that want to change the Ark protocol. It should clearly explain why the existing protocol specification is inadequate to address the problem that the AIP solves. AIP submissions without sufficient motivation may be rejected outright.
 
-* Specification - The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations.
+* Specification - The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperability implementations.
 
 * Rationale - The rationale fleshes out the specification by describing what motivated the design and why particular design decisions were made. It should describe alternate designs that were considered and related work, e.g. how the feature is supported in other languages.
 
