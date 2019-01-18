@@ -3,7 +3,7 @@
   Title: AIP Purpose and Guidelines
   Author: Kristjan Kosic <kristjan@ark.io> - based on BIPS/BIP-0001
   Discussions-To: https://github.com/arkecosystem/AIPS/issues
-  Status: Active
+  Status: Draft/WIP
   Type: Process
   Created: 2019-01-10
 </pre>
@@ -14,7 +14,7 @@ AIP stands for Ark Improvement Proposal. A AIP is a design document providing in
 
 We intend AIPs to be the primary mechanisms for proposing new features, for collecting community input on an issue, and for documenting the design decisions that have gone into Ark. The AIP author is responsible for building consensus within the community and documenting dissenting opinions.
 
-Because the AIPs are maintained as text files in a versioned repository, their revision history is the historical record of the feature proposal.
+Because the AIPs are maintained as text files in a GitHub repository, their revision history is the historical record of the feature proposal.
 
 # AIP Types
 
