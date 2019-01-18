@@ -31,3 +31,4 @@ First review the [AIP-1-Process Guidelines for submitting an AIP](AIPS/aip-1.md)
 | [24](AIPS/aip-24.md) | Double forging protocol improvements | Kristjan Kosic | Standard  | Core / Protocol | [Open Discussion](https://github.com/ArkEcosystem/AIPs/issues/40) |
 | [25](AIPS/aip-25.md) | Providing PoW like guarantees on (D)PoS networks | mak | Standard  | Core / Protocol | [Open Discussion](https://github.com/ArkEcosystem/AIPs/issues/39) |
 | [26](AIPS/aip-26.md) | URI Scheme Improvements | vmunich | Standard  | Core / Protocol | [Open Discussion](https://github.com/ArkEcosystem/AIPs/issues/42) |
+| [27](AIPS/aip-27.md) | Addressing Long Range Attacks | mak | Standard  | Core / Protocol | [Open Discussion](https://github.com/ArkEcosystem/AIPs/issues/45) |
