@@ -114,6 +114,18 @@ class Transfer extends AbstractTransaction {
 }
 ```
 
+### Database
+
+In order to support new transaction types without having to do major changes to the database migrations a new `meta` column will be introduced, the name is subject to change.
+
+This column will be used to store the type specific information of a transaction as a JSON blob to allow easy use of it in SQL queries.
+
+```sql
+SELECT * FROM transactions WHERE type = 5 AND meta @> '{"ipfs_id":1}';
+```
+
+Queries like this will allow us to do searches on the `meta` information of a transaction without having to add real columns through migrations.
+
 ### Event Hooks
 
 In order to allow even more control over what happens before and after doing certain things we could implement event hooks for transactions like `beforeSerialise/afterSerialise` or  `beforeApply/afterApply` which will offer more fine grained control over what happens at certain points of the processing.
