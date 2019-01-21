@@ -1,42 +1,125 @@
 ---
-  AIP: *number*
-  Title: *title of the AIP*
-  Authors: *Firstname LastName <email@domain.com>*
-  Status: *Draft, Rejected or Active*
+  AIP: 29
+  Title: Generic Transaction Interface
+  Authors: *Brian Faust*
+  Status: *Draft*
   Discussions-To: https://github.com/arkecosystem/AIPS/issues
-  Type: *Standards (Core, Networking, Interface, Consensus)/Process/Informational*
-  Category *only required for Standards Track: <Core | Networking | Interface | Consensus>
-  Created: *YYYY-MM-DD*
-  Last Update: *YYYY-MM-DD*
-  Requires (*optional): <AIP number(s)>
-  Replaces (*optional): <AIP number(s)>
---- 
-
-## Preamble
-RFC 822 style headers containing meta-data about the AIP, including the AIP number, a short descriptive title (limited to a maximum of 44 characters), the names, and optionally the contact info for each author, etc.
+  Type: *Standards Track*
+  Category: Core
+  Created: *2019-01-21*
+  Last Update: *2019-01-21*
+---
 
 ## Abstract
-Short (~200 word) description of the technical issue being addressed.
 
-## Copyright
-Each AIP must be licensed under the MIT License.
+This AIP proposes improvements to the structure and expandability of transaction types within Core to solve issues that are present because the initial implementation of the system that make it tedious to implement new transaction types.
 
 ## Motivation
-The motivation is critical for AIPs that want to change the Ark protocol. It should clearly explain why the existing protocol specification is inadequate to address the problem that the AIP solves. AIP submissions without sufficient motivation may be rejected outright.
+
+At the moment all logic that relates to how transactions are applied, serialised and deserialised is scattered all over the place.
+
+The problem with that is that it makes it more tedious to implement new transaction types and leaves a lot of room for mistakes as logic is not shared and more has to be known about implementation specifics.
 
 ## Specification
-The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations.
 
-## Rationale
-The rationale fleshes out the specification by describing what motivated the design and why particular design decisions were made. It should describe alternate designs that were considered and related work, e.g. how the feature is supported in other languages.
+In order to reduce the amount of duplication and complexity that currently plagues anything transaction related we will implement an `AbstractTransaction` that will make it possible to implement a handler or entity for each transaction type and have all logic in a single place.
 
-The rationale should provide evidence of consensus within the community and discuss important objections or concerns raised during discussion.
+### AbstractTransaction
 
-## Backwards Compatibility
-All AIPs that introduce backwards incompatibilities must include a section describing these incompatibilities and their severity. The AIP must explain how the author proposes to deal with these incompatibilities. AIP submissions without a sufficient backwards compatibility treatise may be rejected outright.
+The `AbstractTransaction` on a very basic level would look like the following.
 
-## Refer ?
-ence Implementation
-The reference implementation must be completed before any AIP is given status "Final", but it need not be completed before the AIP is accepted. It is better to finish the specification and rationale first and reach consensus on it before writing code.
+```ts
+abstract class AbstractTransaction {
+    public canApply(wallet): boolean {
+      // perform multi signature checks
+      // perform seconds signature checks
+      // perform ... checks
 
-The final implementation must include test code and documentation appropriate for the Ark protocol.
+      return this.canBeApplied(wallet);
+    }
+
+    // The numerical representation of the transaction type
+    public abstract getType(): number;
+
+    // The Joi schema to validate the data of the transaction type
+    public abstract getSchema(): Joi.object;
+
+    // This determines if the wallet satisifies all requirements for the transaction to be processed.
+    protected abstract canBeApplied(wallet): boolean;
+
+    // The AIP11 serialisation chunk of the transaction type specific data
+    protected abstract serialise(): void;
+
+    // The AIP11 deserialisation chunk of the transaction type specific data
+    protected abstract deserialise(): void;
+}
+```
+
+The `serialise` and `deserialise` methods would be called by another entity or service that calls it when needed like the other Crypto SDKs do where we have handlers for specific transaction types. The Crypto SDK way of doing it doesn't fit into the JS SDK as it is tightly coupled to core and not designed purely for end-users users.
+
+The `canBeApplied` method would be called as `transaction.canApply(wallet)` from anywhere without needing access to a service as the transaction itself will be able to decide if the wallet meets the requirements. The `canApply` method would be a method in the `AbstractTransaction` that takes care of more generic applying logic before calling `canBeApplied`.
+
+### Implementing Transaction Types
+
+Implementing transaction types will be easier as their logic is isolated and boilerplate will be greatly reduced. A simple Transfer of type 0 could look like the following.
+
+```ts
+import Joi from 'joi';
+
+class Transfer extends AbstractTransaction {
+    public getType(): number {
+        return 0;
+    }
+
+    public getSchema(): Joi.object {
+        return Joi.object({
+            type: joi
+                .number()
+                .only(TransactionTypes.Transfer)
+                .required(),
+            expiration: joi
+                .number()
+                .integer()
+                .min(0),
+            vendorField: joi
+                .string()
+                .max(64, "utf8")
+                .allow("", null)
+                .optional(), // TODO: remove in 2.1
+            vendorFieldHex: joi
+                .string()
+                .max(64, "hex")
+                .optional(),
+            asset: joi.object().empty(),
+        });
+    }
+
+    protected canBeApplied(wallet) {
+        return wallet.balance >= this.totalCost;
+    }
+
+    protected serialise(): void {
+        bb.writeUint64(+new Bignum(this.amount).toFixed());
+        bb.writeUint32(this.expiration || 0);
+        bb.append(bs58check.decode(this.recipientId));
+    }
+
+    protected deserialise(): void {
+        this.amount = new Bignum(buf.readUint64(assetOffset / 2) as any);
+        this.expiration = buf.readUint32(assetOffset / 2 + 8);
+        this.recipientId = bs58check.encode(buf.buffer.slice(assetOffset / 2 + 12, assetOffset / 2 + 12 + 21));
+
+        this.parseSignatures(hexString, assetOffset + (21 + 12) * 2);
+    }
+}
+```
+
+### Event Hooks
+
+In order to allow even more control over what happens before and after doing certain things we could implement event hooks for transactions like `beforeSerialise/afterSerialise` or  `beforeApply/afterApply` which will offer more fine grained control over what happens at certain points of the processing.
+
+## Note
+
+All of this is just pseudo-code to illustrate the idea of how we could implement a more generic way of handling transactions and their own logic.
+
+The real implementation would look slightly different and handle more scenarios and actions that are commonly required to be handled when working with transactions.
