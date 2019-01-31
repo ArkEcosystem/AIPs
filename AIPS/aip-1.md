@@ -11,7 +11,7 @@
 
 # What is a AIP?
 
-AIP stands for Ark Improvement Proposal. A AIP is a design document providing information to the Ark community, or describing a new feature for Ark or its processes or environment. The AIP should provide a concise technical specification of the feature and a rationale for it.
+AIP stands for Ark Improvement Proposal. AIP is a design document providing information to the Ark community, or describing a new feature for Ark or its processes or environment. The AIP should provide a concise technical specification of the feature and a rationale for it.
 
 We intend AIPs to be the primary mechanisms for proposing new features, for collecting community input on an issue, and for documenting the design decisions that have gone into Ark. The AIP author is responsible for building consensus within the community and documenting dissenting opinions.
 
