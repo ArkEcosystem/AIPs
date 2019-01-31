@@ -4,6 +4,7 @@
   Authors: *Firstname LastName <email@domain.com>*
   Status: *Draft, Rejected or Active*
   Discussions-To: https://github.com/arkecosystem/AIPS/issues
+  Address: *Ark address used to collect votes for the specific AIP*
   Type: *Standards (Core, Networking, Interface, Consensus)/Process/Informational*
   Category *only required for Standards Track: <Core | Networking | Interface | Consensus>
   Created: *YYYY-MM-DD*
@@ -35,8 +36,7 @@ The rationale should provide evidence of consensus within the community and disc
 ## Backwards Compatibility
 All AIPs that introduce backwards incompatibilities must include a section describing these incompatibilities and their severity. The AIP must explain how the author proposes to deal with these incompatibilities. AIP submissions without a sufficient backwards compatibility treatise may be rejected outright.
 
-## Refer ?
-ence Implementation
+## Reference Implementation
 The reference implementation must be completed before any AIP is given status "Final", but it need not be completed before the AIP is accepted. It is better to finish the specification and rationale first and reach consensus on it before writing code.
 
 The final implementation must include test code and documentation appropriate for the Ark protocol.

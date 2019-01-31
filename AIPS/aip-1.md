@@ -2,7 +2,8 @@
   AIP: 1
   Title: AIP Purpose and Guidelines
   Author: Kristjan Kosic <kristjan@ark.io> - based on BIPS/BIP-0001
-  Discussions-To: https://github.com/arkecosystem/AIPS/issues
+  Discussions-To: https://github.com/arkecosystem/AIPS/issues/1
+  Address: ATLjjUopfBChLq3ujiFxBxUKYfJiWfu4MN
   Status: Draft/WIP
   Type: Process
   Created: 2019-01-10
@@ -21,12 +22,14 @@ Because the AIPs are maintained as text files in a GitHub repository, their revi
 There are three kinds of AIP:
 
 * Standards Track AIP describes any change that affects mostly Ark core implementations, such as a change to the network protocol, a change in block or transaction validity rules, or any change or addition that affects the interoperability of applications. Standard track also defines category (Core, Networking, Interface, Consensus).
+
 * Informational AIP describes Ark's design issue, or provides general guidelines or information to the community, but does not propose a new feature. Informational AIPs do not necessarily represent a community consensus or recommendation, so users and implementors are free to ignore Informational AIPs or follow their advice.
+
 * Process AIP describes a process surrounding Ark, or proposes a change to (or an event in) a process. Process AIPs are like Standards Track AIPs but apply to areas other than the Ark protocol itself. They may propose an implementation, but not to Ark's code-base; they often require community consensus; unlike Informational AIPs, they are more than recommendations, and users are typically not free to ignore them. Examples include procedures, guidelines, changes to the decision-making process, and changes to the tools or environment used in Ark development. Any meta-AIP is also considered a Process AIP.
 
 # AIP Work Flow
 
-The AIP process begins with a new idea for Ark. Each potential Ark must have a champion - someone who writes the AIP using the style and format described below, shepherds the discussions in the appropriate forums, and attempts to build community consensus around the idea. The AIP champion (a.k.a. Author) should first attempt to ascertain whether the idea is AIP-able. Sharing the idea or discussion on our slack channel is the best way to go about this.
+The AIP process begins with a new idea for Ark. Each potential Ark must have a champion - someone who writes the AIP using the style and format described below, shepherds the discussions in the appropriate forums, and attempts to build community consensus around the idea. The AIP champion (a.k.a. Author) should first attempt to ascertain whether the idea is AIP-able. Sharing the idea or discussion on our slack channel is the best way to go about this. Best way to share and idea and also receive an AIP number is to open a new issue on this repository. Issue number correlates directly to your new AIP number (if it comes to it's realization).
 
 Vetting an idea publicly before going as far as writing a AIP is meant to save both the potential author and the wider community time. Many ideas have been brought forward for changing Ark that have been rejected for various reasons. Asking the community first if an idea is original helps prevent too much time being spent on something that is guaranteed to be rejected based on prior discussions (searching the Internet does not always do the trick). It also helps to make sure the idea is applicable to the entire community and not just the author. Just because an idea sounds good to the author does not mean it will work for most people in most areas where Ark is used. Small enhancements or patches often don't need standardization between multiple projects; these don't need a AIP and should be injected into the relevant development work flow with a patch submission to the our git-hub page in the form of a Pull Request. 
 
@@ -34,17 +37,17 @@ AIP authors are responsible for collecting community feedback on both the initia
 
 It is highly recommended that a single AIP contain a single key proposal or new idea. The more focused the AIP, the more successful it tends to be. If in doubt, split your AIP into several well-focused ones.
 
-The Ark Team editors assign AIP numbers and change their status. The AIP editor reserves the right to reject AIP proposals if they appear too unfocused or too broad.
+The AIP editor reserves the right to reject AIP proposals if they appear too unfocused or too broad.
 
-Authors MUST NOT self assign AIP numbers, but should use an alias such as "AIP-champion-consensus-improvements" which includes the author's name/nick and the AIP subject.
+Authors MUST NOT self assign AIP numbers, but should use the number of the new opened issues, serving as a AIP discussion link, as a number of the new AIP.
 
-If the AIP editor approves, he will assign the AIP a number, label it as Standards Track, Informational, or Process, give it status "Draft". The AIP editor will not unreasonably deny a AIP. Reasons for denying AIP status include duplication of effort, disregard for formatting rules, being too unfocused  or too broad, being technically unsound, not providing proper motivation or addressing backwards compatibility. For a AIP to be accepted it must meet certain minimum criteria. It must be a clear and complete description of the proposed enhancement. The enhancement must represent a net improvement. The proposed implementation, if applicable, must be solid and must not complicate the protocol unduly.
+The AIP editor will not unreasonably deny a AIP. Reasons for denying AIP status include duplication of effort, disregard for formatting rules, being too unfocused  or too broad, being technically unsound, not providing proper motivation or addressing backwards compatibility. For a AIP to be accepted it must meet certain minimum criteria. It must be a clear and complete description of the proposed enhancement. The enhancement must represent a net improvement. The proposed implementation, if applicable, must be solid and must not complicate the protocol unduly.
 
 The AIP author may update the Draft as necessary in the git repository. Updates should be submitted by the author as pull requests.
 
 Standards Track AIPs consist of two parts, a design document and a reference implementation. The AIP should be reviewed and accepted before a reference implementation is begun, unless a reference implementation will aid people in studying the AIP. Standards Track AIPs must include an implementation - in the form of code, a patch, or a URL to same - before it can be considered Final.
 
-Once a AIP has been accepted, the reference implementation must be completed. When the reference implementation is complete and accepted the status will be changed to "Final".
+Once a AIP has been accepted, the reference implementation must be completed. When the reference implementation is complete and accepted the status will be changed to "Final". 
 
 An AIP can also be assigned status "Deferred". The AIP author or editor can assign the AIP this status when no progress is being made on the AIP. Once a AIP is deferred, the AIP editor can re-assign it to draft status.
 
@@ -95,7 +98,8 @@ Each AIP must begin with an RFC 822 style header preamble. The headers must appe
   AIP: <AIP number>
   Title: <AIP title>
   Author: <list of authors' real names and optionally, email addrs>
-* Discussions-To: <AIP issue link>
+* Discussions-To: <AIP issue link to the open issue related to the AIP>
+* Address: <ATLjjUopfBChLq3ujiFxBxUKYfJiWfu4MN - Ark Mainnet address, used for voting and showing support>
   Status: <Draft | Active | Accepted | Deferred | Rejected |
            Withdrawn | Final | Superseded>
   Type: <Standards Track | Informational | Process>
@@ -127,6 +131,9 @@ The Created header records the date that the AIP was assigned a number.
 
 AIPs may have a Requires header, indicating the AIP numbers that this AIP depends on.
 
+Address field is used to collect votes by the community, showing their support and wishes on what should be build first. 
+>Votes are a sign of priority, but the Ark team decides on the priority and technical specification of implementation.
+
 AIPs may also have a Superseded-By header indicating that a AIP has been rendered obsolete by a later document; the value is the number of the AIP that replaces the current document. The newer AIP must have a Replaces header containing the number of the AIP that it rendered obsolete.
 
 ## Auxiliary Files
@@ -145,7 +152,7 @@ The AIP editor subscribes to the Ark's AIPs github notifications. For each new A
 
 * Read the AIP to check if it is ready: sound and complete. The ideas must make technical sense, even if they don't seem likely to be accepted.
 * The title should accurately describe the content.
-* The AIP draft must have open discussion to the AIPs github as an open issue with correct naming.
+* The AIP  must have open discussion to the AIPs github as an open issue with correct naming.
 * Motivation and backward compatibility (when applicable) must be addressed.
 * The defined Layer header must be correctly assigned for the given specification.
 * Licensing terms must be acceptable for AIPs.
@@ -156,7 +163,6 @@ Once the AIP is ready for the repository it should be submitted as a "pull reque
 
 The AIP editor will:
 
-* Assign a AIP number in the pull request.
 * Merge the pull request when it is ready.
 * List the AIP in AIP list.
 
@@ -167,6 +173,6 @@ The AIP editors are intended to fulfill administrative and editorial responsibil
 This document was derived heavily from Bitcoin's BIP-0001 and BIP-0002. In many places text was simply copied and modified. Previous authors are not responsible for its use in the Ark Improvement Process, and should not be bothered with technical questions specific to Ark or the AIP process. Please direct all comments to the AIP editors or the Ark official slack.
 
 # Changelog
-
+31 Jan 2019 - Adding new numbering rules and Address Header to AIP proposals. 
 11 Jan 2019 - Added initial version, forked from BIP-0001 BIPS proposals.
 
