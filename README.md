@@ -2,8 +2,8 @@
 
 # Contributing
 - First review the [AIP-1-Process Guidelines for submitting an AIP](AIPS/aip-1.md). 
-- Open a new issue. The number assigned to the issue will be also your AIP number.
-- Clone the repository and add your AIP to it. Follow the [AIP-Template](AIP-template.md) structure and guidelines. 
+- Open a new issue and start a discussion related to your AIP. The number assigned to the issue will be also your AIP number.
+- Clone the repository and write your AIP. Follow the [AIP-Template](AIP-template.md) structure and guidelines. 
 - Submit a Pull Request to Ark's [AIPs repository](https://github.com/ArkEcosystem/AIPs). Before submitting a pull request to the official repository try to obtain consensus from the community and the team (discussion log under opened issue).
 
 When your Pull Request is merged you will continue to work on the AIP together with the AIP editor. 
