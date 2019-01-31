@@ -1,7 +1,7 @@
 ---
   AIP: 29
   Title: Generic Transaction Interface
-  Authors: *Brian Faust*
+  Authors: *Brian Faust, Kristjan Kosic, Joshua Noack*
   Status: *Draft*
   Discussions-To: https://github.com/arkecosystem/AIPS/issues
   Type: *Standards Track*
