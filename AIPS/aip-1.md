@@ -132,7 +132,12 @@ The Created header records the date that the AIP was assigned a number.
 AIPs may have a Requires header, indicating the AIP numbers that this AIP depends on.
 
 Address field is used to collect votes by the community, showing their support and wishes on what should be build first. 
->Votes are a sign of priority, but the Ark team decides on the priority and technical specification of implementation.
+>Votes are a sign of priority, but the Ark team decides on the priority and technical specification of implementation. 
+>The Ark Team (ie under the umbrella of SCIC Ark Ecosystem that has received the ICO funds) will unilaterally decide and publish
+>the list of AIPs that it will implement/maintain following two main criteria: 
+> - Alignement with whitepaper scope and objectives
+> - Optimisation of allocated ICO funds
+>We encourage other developers to publish the list of AIPs they are working on in order to coordinate efforts.
 
 AIPs may also have a Superseded-By header indicating that a AIP has been rendered obsolete by a later document; the value is the number of the AIP that replaces the current document. The newer AIP must have a Replaces header containing the number of the AIP that it rendered obsolete.
 
@@ -173,6 +178,7 @@ The AIP editors are intended to fulfill administrative and editorial responsibil
 This document was derived heavily from Bitcoin's BIP-0001 and BIP-0002. In many places text was simply copied and modified. Previous authors are not responsible for its use in the Ark Improvement Process, and should not be bothered with technical questions specific to Ark or the AIP process. Please direct all comments to the AIP editors or the Ark official slack.
 
 # Changelog
-31 Jan 2019 - Adding new numbering rules and Address Header to AIP proposals. 
-11 Jan 2019 - Added initial version, forked from BIP-0001 BIPS proposals.
+- 01 Feb 2019 - Clarifying role of SCIC Ark Ecosystem
+- 31 Jan 2019 - Adding new numbering rules and Address Header to AIP proposals. 
+- 11 Jan 2019 - Added initial version, forked from BIP-0001 BIPS proposals.
 
