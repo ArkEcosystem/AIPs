@@ -67,7 +67,7 @@ Implementing transaction types will be easier as their logic is isolated and boi
 import Joi from 'joi';
 
 class Transfer extends AbstractTransaction {
-    public getType(): number {
+    public static getType(): number {
         return 0;
     }
 
@@ -114,6 +114,62 @@ class Transfer extends AbstractTransaction {
 }
 ```
 
+### Registering Transaction Types
+
+After we have created our custom transaction type we need a way of exposing it to the crypto package and core. To do this we will add a `TransactionRepository` class which will hold a few methods to guard against overwrites of core transaction types or already registered custom types.
+
+```ts
+class TransactionRepository {
+    // This will be prefilled on core boot and hold all non-overwriteable transaction types
+    private readonly core: Map<number, AbstractTransaction> = new Map<number, AbstractTransaction>();
+    
+    // This will hold all transaction types a developer adds at runtime which are not part of what core ships with out of the box
+    private readonly custom: Map<number, AbstractTransaction> = new Map<number, AbstractTransaction>();
+    
+    public add(transaction: AbstractTransaction) {
+        const type = transaction.getType();
+        
+        if(this.core.has(type)) {
+            throw new CoreTypeError();
+        }
+
+        if(this.custom.has(type)) {
+            throw new TypeDuplicationError();
+        }
+
+        this.registrations.add(type, transaction);
+    }
+
+    public get(type: number) {
+        if(!this.core.has(type) && !this.custom.has(type)) {
+            throw new TypeDuplicationError();
+        }
+
+        this.registrations.get(type);
+    }
+}
+```
+
+As you can see we are only able to add and get transaction types, this is to prevent that transaction types accidentally disappear at runtime which core needs to handle.
+
+The usage is fairly simple and the custom types would be easiest bootstrapped during the start up of the node.
+
+```ts
+import { TransactionsRepository } from "@arkecosystem/crypto";
+
+// This is a core transaction and cannot be modified
+class Transfer extends AbstractTransaction {}
+
+// This is our custom transaction that we want to register for core
+class CustomTransaction extends AbstractTransaction {}
+
+// This will throw an exception as core types cannot be overwritten
+TransactionsRepository.add(Transfer);
+
+// This will register a new transaction type with the crypto package which core will be able to pick up
+TransactionsRepository.add(CustomTransaction);
+```
+
 ### Database
 
 In order to support new transaction types without having to do major changes to the database migrations a new `meta` column will be introduced, the name is subject to change.
@@ -125,10 +181,6 @@ SELECT * FROM transactions WHERE type = 5 AND meta @> '{"ipfs_id":1}';
 ```
 
 Queries like this will allow us to do searches on the `meta` information of a transaction without having to add real columns through migrations.
-
-### Event Hooks
-
-In order to allow even more control over what happens before and after doing certain things we could implement event hooks for transactions like `beforeSerialise/afterSerialise` or  `beforeApply/afterApply` which will offer more fine grained control over what happens at certain points of the processing.
 
 ## Note
 
