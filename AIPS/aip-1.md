@@ -131,12 +131,12 @@ The Created header records the date that the AIP was assigned a number.
 
 AIPs may have a Requires header, indicating the AIP numbers that this AIP depends on.
 
-Address field is used to collect votes by the community, showing their support and wishes on what should be build first. 
->Votes are a sign of priority, but the Ark team decides on the priority and technical specification of implementation. 
->The Ark Team (ie under the umbrella of SCIC Ark Ecosystem that has received the ICO funds) will unilaterally decide and publish
->the list of AIPs that it will implement/maintain following two main criteria: 
-> - Alignement with whitepaper scope and objectives
-> - Optimisation of allocated ICO funds
+The address field is used to collect votes by the community, showing their support and wishes on what should be built first.
+Votes are a sign of priority, but the Ark Team decides on the order of priority and technical specification of the actual implementation. The Ark Team (under the umbrella of SCIC Ark Ecosystem that has received the ICO funding) will unilaterally decide and publish the list of AIPs that it will implement and maintain by following two main criteria:
+
+- Alignment with whitepaper scope and objectives.
+- Optimization of allocated ICO funds We encourage other developers to publish the list of AIPs they are working on in order to coordinate efforts.
+
 >We encourage other developers to publish the list of AIPs they are working on in order to coordinate efforts.
 
 AIPs may also have a Superseded-By header indicating that a AIP has been rendered obsolete by a later document; the value is the number of the AIP that replaces the current document. The newer AIP must have a Replaces header containing the number of the AIP that it rendered obsolete.
