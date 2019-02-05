@@ -13,6 +13,7 @@ History
 ========
 - 2018-05-01 inital content (@fix)
 - 2018-08-21 moving to AIP folder from issues (@kristjank)
+- 2019-02-05 clarified technical aspects and processes (@fix)
 
 Abstract
 ========
@@ -47,6 +48,9 @@ Legacy protocol:
 - Rule 3 - if not enough signatures are present, the transaction is stocked into the transaction pool for `lifetime` hours until enough signatures are sent via the API - this rule is Lisk legacy ans has been removed from the beginning.
 
 New protocol:
-- Lifetime is removed from protocol together with above rule 3.
-- Address is derived from a combination of committing public keys, removing the need of the owner's public key `base58_check(version + ripemd160(sha256(concat(pk1, ..., pkn))))`.
-- Proposed `version` is `0x05` to match P2SH version on Bitcoin (address starting with 3).
+- `lifetime` is removed from protocol together with above rule 3.
+- Address is derived from a combination of committing public keys, removing the need of the owner's public key `base58_check(version + ripemd160(sha256(concat(min, pk1, ..., pkn))))`.
+- when creating a multisign address, there is no need to publish publickeys, the wallet can start to receive funds on the created address
+- in order to remove funds, the first transaction should contain: `min` and (`pk1`, ..., `pkn`) as an asset. Part of the validating process is to be able to match the address with this provided asset. Ordering of pk is important.
+- the signatures scheme is the combo (i, Si) (i being the index of the pki in the multisign), so it is fast to verify against the right Pk
+- technically the multisign asset is needed only once, so no need to send for subsequent transactions.
