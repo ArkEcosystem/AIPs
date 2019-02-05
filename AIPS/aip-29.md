@@ -52,6 +52,12 @@ abstract class AbstractTransaction {
 
     // The AIP11 deserialisation chunk of the transaction type specific data
     protected abstract deserialise(): void;
+    
+    // This runs the processing of applying a transaction to the given wallet
+    protected abstract apply(wallet): boolean;
+
+    // This runs the processing of reverting a transaction to the given wallet
+    protected abstract revert(wallet): boolean;
 }
 ```
 
@@ -110,6 +116,18 @@ class Transfer extends AbstractTransaction {
         this.recipientId = bs58check.encode(buf.buffer.slice(assetOffset / 2 + 12, assetOffset / 2 + 12 + 21));
 
         this.parseSignatures(hexString, assetOffset + (21 + 12) * 2);
+    }
+    
+    protected apply(wallet): boolean {
+        wallet.balance += this.totalAmount;
+        
+        return true;
+    }
+    
+    protected revert(wallet): boolean {
+        wallet.balance -= this.totalAmount;
+        
+        return true;
     }
 }
 ```
