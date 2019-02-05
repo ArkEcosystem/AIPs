@@ -3,7 +3,7 @@
   Title: Generic Transaction Interface
   Authors: *Brian Faust, Kristjan Kosic, Joshua Noack*
   Status: *Draft*
-  Discussions-To: https://github.com/arkecosystem/AIPS/issues
+  Discussions-To: https://github.com/ArkEcosystem/AIPs/issues/64
   Type: *Standards Track*
   Category: Core
   Created: *2019-01-21*
