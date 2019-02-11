@@ -30,10 +30,14 @@ When your Pull Request is merged you will continue to work on the AIP together w
 | [18](AIPS/aip-18.md) | Multisignature protocol | FX Thoorens, Alex Barnsley | Standard  | Protocol | [In progress](/AIPS/aip-18.md) |
 | [19](AIPS/aip-19.md) | Incremental snapshot system | FX Thoorens, Kristjan Kosic | Standard  | Core | [Implemented](/AIPS/aip-19.md) |
 | [20](AIPS/aip-20.md) | Arkchain network registration for bip44 derivation path  | FX Thoorens | Standard  | Core | [Draft](https://github.com/ArkEcosystem/AIPs/issues/29) |
-| [21](AIPS/aip-21.md) | Ark Masternodes | galperins4 | Standard  | Core / Protocol | [Open Discussion](/AIPS/aip-21.md) |
-| [22](AIPS/aip-22.md) | On chain price discovery using liquidity gates | mak | Standard  | Core / Protocol | [Open Discussion](https://github.com/ArkEcosystem/AIPs/issues/25) |
-| [23](AIPS/aip-23.md) | Delegate markets and Ark token economic rework | mak | Standard  | Core / Protocol | [Open Discussion](https://github.com/ArkEcosystem/AIPs/issues/26) |
-| [24](AIPS/aip-24.md) | Double forging protocol improvements | Kristjan Kosic | Standard  | Core / Protocol | [Open Discussion](https://github.com/ArkEcosystem/AIPs/issues/40) |
-| [25](AIPS/aip-25.md) | Providing PoW like guarantees on (D)PoS networks | mak | Standard  | Core / Protocol | [Open Discussion](https://github.com/ArkEcosystem/AIPs/issues/39) |
-| [26](AIPS/aip-26.md) | URI Scheme Improvements | vmunich | Standard  | Core / Protocol | [Open Discussion](https://github.com/ArkEcosystem/AIPs/issues/42) |
-| [27](AIPS/aip-27.md) | Addressing Long Range Attacks | mak | Standard  | Core / Protocol | [Open Discussion](https://github.com/ArkEcosystem/AIPs/issues/45) |
+| [21](AIPS/aip-21.md) | Ark Masternodes | galperins4 | Standard  | Core / Protocol | [Draft](/AIPS/aip-21.md) |
+| [22](AIPS/aip-22.md) | On chain price discovery using liquidity gates | mak | Standard  | Core / Protocol | [Draft](/AIPS/aip-22.md) |
+| [23](AIPS/aip-23.md) | Delegate markets and Ark token economic rework | mak | Standard  | Core / Protocol | [Draft](/AIPS/aip-23.md) |
+| [24](AIPS/aip-24.md) | Double forging protocol improvements | Kristjan Kosic | Standard  | Core / Protocol | [Draft](/AIPS/aip-24.md) |
+| [25](AIPS/aip-25.md) | Providing PoW like guarantees on (D)PoS networks | mak | Standard  | Core / Protocol | [Draft](/AIPS/aip-25.md) |
+| [26](AIPS/aip-26.md) | URI Scheme Improvements | vmunich | Standard  | Core / Protocol | [Draft](/AIPS/aip-26.md) |
+| [27](AIPS/aip-27.md) | Addressing Long Range Attacks | mak | Standard  | Core / Protocol | [Draft](/AIPS/aip-27.md) |
+| [27](AIPS/aip-28.md) | JSON-API specification compliant API, Modules & Dated Versioning | Brian Faust | Standard  | Core / Protocol | [Draft](/AIPS/aip-28.md) |
+| [27](AIPS/aip-29.md) | Generic Transaction Interface | Brian Faust, Kristjan Kosic, Joshua Noack | Standard  | Core / Protocol | [Draft](/AIPs/aip-29.md) |
+| [27](AIPS/aip-31.md) | Command Line Interface | Brian Faust | Standard  | Core / Protocol | [Draft](/AIPS/aip-31.md) |
+| [27](AIPS/aip-32.md) | Plugin System Improvements | Brian Faust | Standard  | Core / Protocol | [Draft](/AIPS/aip-32.md) |
