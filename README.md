@@ -37,7 +37,7 @@ When your Pull Request is merged you will continue to work on the AIP together w
 | [25](AIPS/aip-25.md) | Providing PoW like guarantees on (D)PoS networks | mak | Standard  | Core / Protocol | [Draft](/AIPS/aip-25.md) |
 | [26](AIPS/aip-26.md) | URI Scheme Improvements | vmunich | Standard  | Core / Protocol | [Draft](/AIPS/aip-26.md) |
 | [27](AIPS/aip-27.md) | Addressing Long Range Attacks | mak | Standard  | Core / Protocol | [Draft](/AIPS/aip-27.md) |
-| [27](AIPS/aip-28.md) | JSON-API specification compliant API, Modules & Dated Versioning | Brian Faust | Standard  | Core / Protocol | [Draft](/AIPS/aip-28.md) |
-| [27](AIPS/aip-29.md) | Generic Transaction Interface | Brian Faust, Kristjan Kosic, Joshua Noack | Standard  | Core / Protocol | [Draft](/AIPs/aip-29.md) |
-| [27](AIPS/aip-31.md) | Command Line Interface | Brian Faust | Standard  | Core / Protocol | [Draft](/AIPS/aip-31.md) |
-| [27](AIPS/aip-32.md) | Plugin System Improvements | Brian Faust | Standard  | Core / Protocol | [Draft](/AIPS/aip-32.md) |
+| [28](AIPS/aip-28.md) | JSON-API specification compliant API, Modules & Dated Versioning | Brian Faust | Standard  | Core / Protocol | [Draft](/AIPS/aip-28.md) |
+| [29](AIPS/aip-29.md) | Generic Transaction Interface | Brian Faust, Kristjan Kosic, Joshua Noack | Standard  | Core / Protocol | [Draft](/AIPs/aip-29.md) |
+| [31](AIPS/aip-31.md) | Command Line Interface | Brian Faust | Standard  | Core / Protocol | [Draft](/AIPS/aip-31.md) |
+| [32](AIPS/aip-32.md) | Plugin System Improvements | Brian Faust | Standard  | Core / Protocol | [Draft](/AIPS/aip-32.md) |
