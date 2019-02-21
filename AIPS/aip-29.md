@@ -22,111 +22,82 @@ The problem with that is that it makes it more tedious to implement new transact
 
 ## Specification
 
-In order to reduce the amount of duplication and complexity that currently plagues anything transaction related we will implement an `AbstractTransaction` that will make it possible to implement a handler or entity for each transaction type and have all logic in a single place.
+In order to reduce the amount of duplication and complexity that currently plagues anything transaction related we will implement a `Transaction` that will make it possible to implement a handler or entity for each transaction type and have all logic in a single place.
 
-### AbstractTransaction
+### Transaction
 
-The `AbstractTransaction` on a very basic level would look like the following.
+The `Transaction` abstract on a very basic level would look like the following.
 
 ```ts
-abstract class AbstractTransaction {
-    public canApply(wallet): boolean {
-      // perform multi signature checks
-      // perform seconds signature checks
-      // perform ... checks
+export abstract class Transaction {
+    public static type: TransactionTypes = null;
 
-      return this.canBeApplied(wallet);
+    public abstract serialize(): ByteBuffer;
+    public abstract deserialize(buf: ByteBuffer): void;
+
+    protected abstract apply(wallet: Wallet): void;
+    protected abstract revert(wallet: Wallet): void;
+
+    public hasVendorField(): boolean {
+        return false;
     }
 
-    // The numerical representation of the transaction type
-    public abstract getType(): number;
-
-    // The Joi schema to validate the data of the transaction type
-    public abstract getSchema(): Joi.object;
-
-    // This determines if the wallet satisifies all requirements for the transaction to be processed.
-    protected abstract canBeApplied(wallet): boolean;
-
-    // The AIP11 serialisation chunk of the transaction type specific data
-    protected abstract serialise(): void;
-
-    // The AIP11 deserialisation chunk of the transaction type specific data
-    protected abstract deserialise(): void;
-    
-    // This runs the processing of applying a transaction to the given wallet
-    protected abstract apply(wallet): boolean;
-
-    // This runs the processing of reverting a transaction to the given wallet
-    protected abstract revert(wallet): boolean;
+    // This has to return an AJV schema to validate the transaction format
+    public static getSchema(): TransactionSchema {
+        throw new NotImplementedError();
+    }
 }
 ```
 
-The `serialise` and `deserialise` methods would be called by another entity or service that calls it when needed like the other Crypto SDKs do where we have handlers for specific transaction types. The Crypto SDK way of doing it doesn't fit into the JS SDK as it is tightly coupled to core and not designed purely for end-users users.
-
-The `canBeApplied` method would be called as `transaction.canApply(wallet)` from anywhere without needing access to a service as the transaction itself will be able to decide if the wallet meets the requirements. The `canApply` method would be a method in the `AbstractTransaction` that takes care of more generic applying logic before calling `canBeApplied`.
+The `serialize` and `deserialize` methods would be called by another entity or service that calls it when needed like the other Crypto SDKs do where we have handlers for specific transaction types. The Crypto SDK way of doing it doesn't fit into the JS SDK as it is tightly coupled to core and not designed purely for end-users users.
 
 ### Implementing Transaction Types
 
 Implementing transaction types will be easier as their logic is isolated and boilerplate will be greatly reduced. A simple Transfer of type 0 could look like the following.
 
 ```ts
-import Joi from 'joi';
+export class TransferTransaction extends Transaction {
+    public static type: TransactionTypes = TransactionTypes.Transfer;
 
-class Transfer extends AbstractTransaction {
-    public static getType(): number {
-        return 0;
+    public static getSchema(): schemas.TransactionSchema {
+        // This represents an AJV schema (https://github.com/epoberezkin/ajv)
+        return schemas.transfer;
     }
 
-    public getSchema(): Joi.object {
-        return Joi.object({
-            type: joi
-                .number()
-                .only(TransactionTypes.Transfer)
-                .required(),
-            expiration: joi
-                .number()
-                .integer()
-                .min(0),
-            vendorField: joi
-                .string()
-                .max(64, "utf8")
-                .allow("", null)
-                .optional(), // TODO: remove in 2.1
-            vendorFieldHex: joi
-                .string()
-                .max(64, "hex")
-                .optional(),
-            asset: joi.object().empty(),
-        });
+    public serialize(): ByteBuffer {
+        const { data } = this;
+        const buffer = new ByteBuffer(24, true);
+        buffer.writeUint64(+new Bignum(data.amount).toFixed());
+        buffer.writeUint32(data.expiration || 0);
+        buffer.append(bs58check.decode(data.recipientId));
+
+        return buffer;
     }
 
-    protected canBeApplied(wallet) {
-        return wallet.balance >= this.totalCost;
+    public deserialize(buf: ByteBuffer): void {
+        const { data } = this;
+        data.amount = new Bignum(buf.readUint64().toString());
+        data.expiration = buf.readUint32();
+        data.recipientId = bs58check.encode(buf.readBytes(21).toBuffer());
     }
 
-    protected serialise(): void {
-        bb.writeUint64(+new Bignum(this.amount).toFixed());
-        bb.writeUint32(this.expiration || 0);
-        bb.append(bs58check.decode(this.recipientId));
+    public canBeApplied(wallet: Wallet): boolean {
+        return super.canBeApplied(wallet);
     }
 
-    protected deserialise(): void {
-        this.amount = new Bignum(buf.readUint64(assetOffset / 2) as any);
-        this.expiration = buf.readUint32(assetOffset / 2 + 8);
-        this.recipientId = bs58check.encode(buf.buffer.slice(assetOffset / 2 + 12, assetOffset / 2 + 12 + 21));
-
-        this.parseSignatures(hexString, assetOffset + (21 + 12) * 2);
-    }
-    
-    protected apply(wallet): boolean {
-        wallet.balance += this.totalAmount;
-        
+    public hasVendorField(): boolean {
         return true;
     }
-    
-    protected revert(wallet): boolean {
-        wallet.balance -= this.totalAmount;
-        
+
+    protected apply(wallet: Wallet): boolean {
+        wallet.balance.plus(this.data.totalAmount);
+
+        return true;
+    }
+
+    protected revert(wallet: Wallet): boolean {
+        wallet.balance.minus(this.data.totalAmount);
+
         return true;
     }
 }
@@ -137,33 +108,51 @@ class Transfer extends AbstractTransaction {
 After we have created our custom transaction type we need a way of exposing it to the crypto package and core. To do this we will add a `TransactionRepository` class which will hold a few methods to guard against overwrites of core transaction types or already registered custom types.
 
 ```ts
-class TransactionRepository {
-    // This will be prefilled on core boot and hold all non-overwriteable transaction types
-    private readonly core: Map<number, AbstractTransaction> = new Map<number, AbstractTransaction>();
-    
-    // This will hold all transaction types a developer adds at runtime which are not part of what core ships with out of the box
-    private readonly custom: Map<number, AbstractTransaction> = new Map<number, AbstractTransaction>();
-    
-    public add(transaction: AbstractTransaction) {
-        const type = transaction.getType();
-        
-        if(this.core.has(type)) {
-            throw new CoreTypeError();
-        }
+type TransactionConstructor = typeof Transaction;
 
-        if(this.custom.has(type)) {
-            throw new TypeDuplicationError();
-        }
+class TransactionRegistry {
+    private readonly coreTypes = new Map<TransactionTypes, TransactionConstructor>();
+    private readonly customTypes = new Map<number, TransactionConstructor>();
 
-        this.registrations.add(type, transaction);
+    constructor() {
+        Object.values(coreTypes).forEach(coreType => this.registerCoreType(coreType));
     }
 
-    public get(type: number) {
-        if(!this.core.has(type) && !this.custom.has(type)) {
-            throw new TypeDuplicationError();
+    public create(data: ITransactionData): Transaction {
+        const instance = new (this.get(data.type) as any)() as Transaction;
+        instance.data = data;
+
+        return instance;
+    }
+
+    public get(type: TransactionTypes): TransactionConstructor {
+        if (this.coreTypes.has(type)) {
+            return this.coreTypes.get(type);
         }
 
-        this.registrations.get(type);
+        throw new UnkownTransactionError(type);
+    }
+
+    public registerCustomType(constructor: TransactionConstructor): void {
+        throw new NotImplementedError();
+    }
+
+    public deregisterCustomType(constructor: TransactionConstructor): void {
+        throw new NotImplementedError();
+    }
+
+    private registerCoreType(constructor: TransactionConstructor) {
+        const { type } = constructor;
+        if (this.coreTypes.has(type)) {
+            throw new TransactionAlreadyRegisteredError(constructor.name);
+        }
+
+        this.coreTypes.set(type, constructor);
+        this.updateSchemas(constructor);
+    }
+
+    private updateSchemas(transaction: TransactionConstructor) {
+        AjvWrapper.extendTransaction(transaction.getSchema());
     }
 }
 ```
@@ -173,19 +162,13 @@ As you can see we are only able to add and get transaction types, this is to pre
 The usage is fairly simple and the custom types would be easiest bootstrapped during the start up of the node.
 
 ```ts
-import { TransactionsRepository } from "@arkecosystem/crypto";
-
-// This is a core transaction and cannot be modified
-class Transfer extends AbstractTransaction {}
+import { TransactionRegistry } from "@arkecosystem/crypto";
 
 // This is our custom transaction that we want to register for core
-class CustomTransaction extends AbstractTransaction {}
-
-// This will throw an exception as core types cannot be overwritten
-TransactionsRepository.add(Transfer);
+class CustomTransaction extends Transaction {}
 
 // This will register a new transaction type with the crypto package which core will be able to pick up
-TransactionsRepository.add(CustomTransaction);
+TransactionRegistry.registerCustomType(CustomTransaction);
 ```
 
 ### Database
@@ -199,9 +182,3 @@ SELECT * FROM transactions WHERE type = 5 AND meta @> '{"ipfs_id":1}';
 ```
 
 Queries like this will allow us to do searches on the `meta` information of a transaction without having to add real columns through migrations.
-
-## Note
-
-All of this is just pseudo-code to illustrate the idea of how we could implement a more generic way of handling transactions and their own logic.
-
-The real implementation would look slightly different and handle more scenarios and actions that are commonly required to be handled when working with transactions.
