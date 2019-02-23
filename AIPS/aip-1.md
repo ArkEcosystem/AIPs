@@ -21,7 +21,7 @@ Because the AIPs are maintained as text files in a GitHub repository, their revi
 
 There are three kinds of AIP:
 
-* Standards Track AIP describes any change that affects mostly Ark core implementations, such as a change to the network protocol, a change in block or transaction validity rules, or any change or addition that affects the interoperability of applications. Standard track also defines category (Core, Networking, Interface, Consensus).
+* Standards Track AIP describes any change that affects mostly Ark core implementations, such as a change to the network protocol, a change in block or transaction validity rules, or any change or addition that affects the interoperability of applications. Standard track also defines category (Applications, Consensus, Core, Network, Protocol).
 
 * Informational AIP describes Ark's design issue, or provides general guidelines or information to the community, but does not propose a new feature. Informational AIPs do not necessarily represent a community consensus or recommendation, so users and implementors are free to ignore Informational AIPs or follow their advice.
 
