@@ -5,8 +5,8 @@
   Status: *Draft, Rejected or Active*
   Discussions-To: https://github.com/arkecosystem/AIPS/issues
   Address: *Ark address used to collect votes for the specific AIP*
-  Type: *Standards (Core, Networking, Interface, Consensus)/Process/Informational*
-  Category *only required for Standards Track: <Core | Networking | Interface | Consensus>
+  Type: *Standards (Applications, Consensus, Core, Network, Protocol)/Process/Informational*
+  Category *only required for Standards Track: <Applications | Consensus | Core | Network | Protocol>
   Created: *YYYY-MM-DD*
   Last Update: *YYYY-MM-DD*
   Requires (*optional): <AIP number(s)>
