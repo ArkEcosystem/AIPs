@@ -22,7 +22,7 @@ The problem with that is that it makes it more tedious to implement new transact
 
 ## Specification
 
-In order to reduce the amount of duplication and complexity that currently plagues anything transaction related we will implement a `Transaction` that will make it possible to implement a handler or entity for each transaction type and have all logic in a single place.
+In order to reduce the amount of duplication and complexity that currently plagues anything transaction related we will implement a `Transaction` class that will make it possible to implement de/serialization logic in a single place while the actual transaction logic for modifying wallets, etc. will be provided by `TransactionServices`.
 
 ### Transaction
 
@@ -32,11 +32,12 @@ The `Transaction` abstract on a very basic level would look like the following.
 export abstract class Transaction {
     public static type: TransactionTypes = null;
 
+    public static fromHex(hex: string): Transactions;
+    public static fromData(data: ITransactionData): Transactions;
+    public static toBytes(data: ITransactionData): Buffer;
+
     public abstract serialize(): ByteBuffer;
     public abstract deserialize(buf: ByteBuffer): void;
-
-    protected abstract apply(wallet: Wallet): void;
-    protected abstract revert(wallet: Wallet): void;
 
     public hasVendorField(): boolean {
         return false;
@@ -51,8 +52,30 @@ export abstract class Transaction {
 
 The `serialize` and `deserialize` methods would be called by another entity or service that calls it when needed like the other Crypto SDKs do where we have handlers for specific transaction types. The Crypto SDK way of doing it doesn't fit into the JS SDK as it is tightly coupled to core and not designed purely for end-users users.
 
-### Implementing Transaction Types
+### TransactionService
+The actual transaction logic is not defined in the `Transaction` class. Instead we are going to introduce `TransactionServices` in order to separate the `crypto` part from transaction logic.
 
+A very basic `TransactionService` could look like the following:
+
+```ts
+export interface ITransactionService {
+    getType(): constants.TransactionTypes | number;
+
+    canBeApplied(transaction: Transaction, wallet: Wallet, walletManager?: IWalletManager): boolean;
+    applyToSender(transaction: Transaction, wallet: Wallet): void;
+    applyToRecipient(transaction: Transaction, wallet: Wallet): void;
+    revertForSender(transaction: Transaction, wallet: Wallet): void;
+    revertForRecipient(transaction: Transaction, wallet: Wallet): void;
+    apply(transaction: Transaction, wallet: Wallet): void;
+    revert(transaction: Transaction, wallet: Wallet): void;
+
+    canEnterTransactionPool(data: ITransactionData, guard: ITransactionGuard): boolean;
+    emitEvents(transaction: Transaction, emitter: EventEmitter): void;
+}
+```
+A `TransactionService` will tell Core for example how a transaction type operates on wallets and what requirements must be met in order to enter the `TransactionPool`.
+
+### Implementing Transaction Types
 Implementing transaction types will be easier as their logic is isolated and boilerplate will be greatly reduced. A simple Transfer of type 0 could look like the following.
 
 ```ts
@@ -64,6 +87,7 @@ export class TransferTransaction extends Transaction {
         return schemas.transfer;
     }
 
+    // Serializing only the type 0 specific parts
     public serialize(): ByteBuffer {
         const { data } = this;
         const buffer = new ByteBuffer(24, true);
@@ -74,38 +98,176 @@ export class TransferTransaction extends Transaction {
         return buffer;
     }
 
+    // Deserializing only the type 0 specific parts
     public deserialize(buf: ByteBuffer): void {
         const { data } = this;
         data.amount = new Bignum(buf.readUint64().toString());
         data.expiration = buf.readUint32();
         data.recipientId = bs58check.encode(buf.readBytes(21).toBuffer());
     }
-
-    public canBeApplied(wallet: Wallet): boolean {
-        return super.canBeApplied(wallet);
-    }
-
     public hasVendorField(): boolean {
-        return true;
-    }
-
-    protected apply(wallet: Wallet): boolean {
-        wallet.balance.plus(this.data.totalAmount);
-
-        return true;
-    }
-
-    protected revert(wallet: Wallet): boolean {
-        wallet.balance.minus(this.data.totalAmount);
-
         return true;
     }
 }
 ```
 
+To reduce boilerplate and ease the implementation of custom transaction services, a base `TransactionService` implementing the aforementioned interface will be provided. In it's most basic form an abstract `TransactionService` could look like the following:
+
+```ts
+export abstract class TransactionService implements ITransactionService {
+    public abstract getType(): number;
+
+    // Common wallet logic for all transaction types
+    public canBeApplied(transaction: Transaction, wallet: Wallet, walletManager?: IWalletManager): boolean {
+        const { data } = transaction;
+        if (wallet.multisignature) {
+            throw new UnexpectedMultiSignatureError();
+        }
+
+        if (
+            wallet.balance
+                .minus(data.amount)
+                .minus(data.fee)
+                .isLessThan(0)
+        ) {
+            throw new InsufficientBalanceError();
+        }
+
+        if (data.senderPublicKey !== wallet.publicKey) {
+            throw new SenderWalletMismatchError();
+        }
+
+        if (wallet.secondPublicKey) {
+            if (!crypto.verifySecondSignature(data, wallet.secondPublicKey)) {
+                throw new InvalidSecondSignatureError();
+            }
+        } else {
+            if (data.secondSignature || data.signSignature) {
+                if (!configManager.getMilestone().ignoreInvalidSecondSignatureField) {
+                    throw new UnexpectedSecondSignatureError();
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public applyToSender(transaction: Transaction, wallet: models.Wallet): void {
+        const { data } = transaction;
+        if (data.senderPublicKey === wallet.publicKey || crypto.getAddress(data.senderPublicKey) === wallet.address) {
+            wallet.balance = wallet.balance.minus(data.amount).minus(data.fee);
+
+            this.apply(transaction, wallet);
+
+            wallet.dirty = true;
+        }
+    }
+
+    public applyToRecipient(transaction: Transaction, wallet: models.Wallet): void {
+        const { data } = transaction;
+        if (data.recipientId === wallet.address) {
+            wallet.balance = wallet.balance.plus(data.amount);
+            wallet.dirty = true;
+        }
+    }
+
+    public revertForSender(transaction: Transaction, wallet: models.Wallet): void {
+        const { data } = transaction;
+        if (data.senderPublicKey === wallet.publicKey || crypto.getAddress(data.senderPublicKey) === wallet.address) {
+            wallet.balance = wallet.balance.plus(data.amount).plus(data.fee);
+
+            this.revert(transaction, wallet);
+
+            wallet.dirty = true;
+        }
+    }
+
+    public revertForRecipient(transaction: Transaction, wallet: models.Wallet): void {
+        const { data } = transaction;
+        if (data.recipientId === wallet.address) {
+            wallet.balance = wallet.balance.minus(data.amount);
+            wallet.dirty = true;
+        }
+    }
+
+    // Transaction type specific wallet logic is implemented in subclasses
+    public abstract apply(transaction: Transaction, wallet: models.Wallet): void;
+    public abstract revert(transaction: Transaction, wallet: models.Wallet): void;
+
+    /**
+     * Transaction Pool logic
+     */
+    public canEnterTransactionPool(data: ITransactionData, guard: TransactionPool.ITransactionGuard): boolean {
+        guard.pushError(
+            data,
+            "ERR_UNSUPPORTED",
+            `Invalidating transaction of unsupported type '${TransactionTypes[data.type]}'`,
+        );
+        return false;
+    }
+
+    protected typeFromSenderAlreadyInPool(data: ITransactionData, guard: TransactionPool.ITransactionGuard): boolean {
+        const { senderPublicKey, type } = data;
+        if (guard.pool.senderHasTransactionsOfType(senderPublicKey, type)) {
+            guard.pushError(
+                data,
+                "ERR_PENDING",
+                `Sender ${senderPublicKey} already has a transaction of type '${TransactionTypes[type]}' in the pool`,
+            );
+
+            return true;
+        }
+
+        return false;
+    }
+}
+
+```
+
+Now, the implementation for a simple TransferService of type 0 based on the abstract `TransactionService` class could look like the following:
+
+```ts
+export class TransferTransactionService extends TransactionService {
+    public getType(): number {
+        return constants.TransactionTypes.Transfer;
+    }
+
+    // Type 0 specific wallet logic
+    public canBeApplied(transaction: Transaction, wallet: models.Wallet, walletManager?: Database.IWalletManager): boolean {
+        return super.canBeApplied(transaction, wallet, walletManager);
+    }
+
+    public apply(transaction: Transaction, wallet: models.Wallet): void {
+        return;
+    }
+
+    public revert(transaction: Transaction, wallet: models.Wallet): void {
+        return;
+    }
+
+    // Type 0 specific transaction pool logic
+    public canEnterTransactionPool(data: ITransactionData, guard: TransactionPool.ITransactionGuard): boolean {
+        if (!isRecipientOnActiveNetwork(data)) {
+            guard.pushError(
+                data,
+                "ERR_INVALID_RECIPIENT",
+                `Recipient ${data.recipientId} is not on the same network: ${configManager.get("pubKeyHash")}`,
+            );
+            return false;
+        }
+
+        return true;
+    }
+}
+
+```
+
+If a custom type requires more flexibility it can implement the `ITransactionService` interface directly at the cost of more overhead.
+
+
 ### Registering Transaction Types
 
-After we have created our custom transaction type we need a way of exposing it to the crypto package and core. To do this we will add a `TransactionRepository` class which will hold a few methods to guard against overwrites of core transaction types or already registered custom types.
+After we have created our custom transaction type and the accompaying transaction service we need a way of exposing it to the crypto package and core. To do this we will introduce a `TransactionRegistry` class inside the `crypto` package and a similar class for transaction services called `TransactionServiceRegistry` which both hold a few methods to guard against overwrites of core transaction types or already registered custom types.
 
 ```ts
 type TransactionConstructor = typeof Transaction;
@@ -137,10 +299,6 @@ class TransactionRegistry {
         throw new NotImplementedError();
     }
 
-    public deregisterCustomType(constructor: TransactionConstructor): void {
-        throw new NotImplementedError();
-    }
-
     private registerCoreType(constructor: TransactionConstructor) {
         const { type } = constructor;
         if (this.coreTypes.has(type)) {
@@ -157,28 +315,71 @@ class TransactionRegistry {
 }
 ```
 
+The accompanying registry for transaction services:
+```ts
+import { transactionServices } from "./services";
+export type TransactionServiceConstructor = new () => TransactionService;
+
+class TransactionServiceRegistry {
+    private readonly coreTransactionServices = new Map<constants.TransactionTypes, TransactionService>();
+    private readonly customTransactionServices = new Map<number, TransactionService>();
+
+    constructor() {
+        transactionServices.forEach((service: TransactionServiceConstructor) => {
+            this.registerCoreTransactionService(service);
+        });
+    }
+
+    public get(type: constants.TransactionTypes): TransactionService {
+        if (!this.coreTransactionServices.has(type)) {
+            throw new InvalidTransactionTypeError(type);
+        }
+
+        return this.coreTransactionServices.get(type);
+    }
+
+    public registerCustomTransactionService(service: TransactionServiceConstructor): void {
+        throw new NotImplementedError();
+    }
+
+    private registerCoreTransactionService(constructor: TransactionServiceConstructor) {
+        const service = new constructor();
+        const type = service.getType();
+
+        if (this.coreTransactionServices.has(type)) {
+            throw new TransactionServiceAlreadyRegisteredError(type);
+        }
+
+        this.coreTransactionServices.set(type, service);
+    }
+}
+```
+
 As you can see we are only able to add and get transaction types, this is to prevent that transaction types accidentally disappear at runtime which core needs to handle.
 
 The usage is fairly simple and the custom types would be easiest bootstrapped during the start up of the node.
 
 ```ts
-import { TransactionRegistry } from "@arkecosystem/crypto";
+import { Transaction } from "@arkecosystem/crypto";
+import { TransactionService, TransactionServiceRegistry } from "@arkecosystem/core-transactions";
 
 // This is our custom transaction that we want to register for core
 class CustomTransaction extends Transaction {}
+class CustomTransactionService extends TransactionService {}
 
-// This will register a new transaction type with the crypto package which core will be able to pick up
-TransactionRegistry.registerCustomType(CustomTransaction);
+// This will register a new transaction service with the core-transactions package which core will be able to pick up
+// NOTE: The `TransactionServiceRegistry` will call `registerType` on the `TransactionRegistry` for us
+TransactionServiceRegistry.registerCustomService(CustomTransactionService);
 ```
 
 ### Database
 
-In order to support new transaction types without having to do major changes to the database migrations a new `meta` column will be introduced, the name is subject to change.
+In order to support new transaction types without having to do major changes to the database migrations a new `asset` column will be introduced.
 
 This column will be used to store the type specific information of a transaction as a JSON blob to allow easy use of it in SQL queries.
 
 ```sql
-SELECT * FROM transactions WHERE type = 5 AND meta @> '{"ipfs_id":1}';
+SELECT * FROM transactions WHERE type = 5 AND asset @> '{"ipfs_id":1}';
 ```
 
-Queries like this will allow us to do searches on the `meta` information of a transaction without having to add real columns through migrations.
+Queries like this will allow us to do searches on the `asset` information of a transaction without having to add real columns through migrations.
