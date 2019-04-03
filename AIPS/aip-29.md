@@ -22,7 +22,7 @@ The problem with that is that it makes it more tedious to implement new transact
 
 ## Specification
 
-In order to reduce the amount of duplication and complexity that currently plagues anything transaction related we will implement a `Transaction` class that will make it possible to implement de/serialization logic in a single place while the actual transaction logic for modifying wallets, etc. will be provided by `TransactionServices`.
+In order to reduce the amount of duplication and complexity that currently plagues anything transaction related we will implement a `Transaction` class that will make it possible to implement de/serialization logic in a single place while the actual transaction logic for modifying wallets, etc. will be provided by `TransactionHandlers`.
 
 ### Transaction
 
@@ -50,16 +50,16 @@ export abstract class Transaction {
 }
 ```
 
-The `serialize` and `deserialize` methods would be called by another entity or service that calls it when needed like the other Crypto SDKs do where we have handlers for specific transaction types. The Crypto SDK way of doing it doesn't fit into the JS SDK as it is tightly coupled to core and not designed purely for end-users users.
+The `serialize` and `deserialize` methods would be called by another entity or handler that calls it when needed like the other Crypto SDKs do where we have handlers for specific transaction types. The Crypto SDK way of doing it doesn't fit into the JS SDK as it is tightly coupled to core and not designed purely for end-users users.
 
-### TransactionService
-The actual transaction logic is not defined in the `Transaction` class. Instead we are going to introduce `TransactionServices` in order to separate the `crypto` part from transaction logic.
+### TransactionHandler
+The actual transaction logic is not defined in the `Transaction` class. Instead we are going to introduce `TransactionHandlers` in order to separate the `crypto` part from transaction logic.
 
-A very basic `TransactionService` could look like the following:
+A very basic `TransactionHandler` could look like the following:
 
 ```ts
-export interface ITransactionService {
-    getType(): constants.TransactionTypes | number;
+export interface ITransactionHandler {
+    getConstructor(): TransactionConstructor;
 
     canBeApplied(transaction: Transaction, wallet: Wallet, walletManager?: IWalletManager): boolean;
     applyToSender(transaction: Transaction, wallet: Wallet): void;
@@ -73,7 +73,7 @@ export interface ITransactionService {
     emitEvents(transaction: Transaction, emitter: EventEmitter): void;
 }
 ```
-A `TransactionService` will tell Core for example how a transaction type operates on wallets and what requirements must be met in order to enter the `TransactionPool`.
+A `TransactionHandler` will tell Core for example how a transaction type operates on wallets and what requirements must be met in order to enter the `TransactionPool`.
 
 ### Implementing Transaction Types
 Implementing transaction types will be easier as their logic is isolated and boilerplate will be greatly reduced. A simple Transfer of type 0 could look like the following.
@@ -111,11 +111,11 @@ export class TransferTransaction extends Transaction {
 }
 ```
 
-To reduce boilerplate and ease the implementation of custom transaction services, a base `TransactionService` implementing the aforementioned interface will be provided. In it's most basic form an abstract `TransactionService` could look like the following:
+To reduce boilerplate and ease the implementation of custom transaction handlers, a base `TransactionHandler` implementing the aforementioned interface will be provided. In it's most basic form an abstract `TransactionHandler` could look like the following:
 
 ```ts
-export abstract class TransactionService implements ITransactionService {
-    public abstract getType(): number;
+export abstract class TransactionHandler implements ITransactionHandler {
+    public abstract getConstructor(): TransactionConstructor;
 
     // Common wallet logic for all transaction types
     public canBeApplied(transaction: Transaction, wallet: Wallet, walletManager?: IWalletManager): boolean {
@@ -224,12 +224,12 @@ export abstract class TransactionService implements ITransactionService {
 
 ```
 
-Now, the implementation for a simple TransferService of type 0 based on the abstract `TransactionService` class could look like the following:
+Now, the implementation for a simple `TransferHandler` of type 0 based on the abstract `TransactionHandler` class could look like the following:
 
 ```ts
-export class TransferTransactionService extends TransactionService {
-    public getType(): number {
-        return constants.TransactionTypes.Transfer;
+export class TransferTransactionHandler extends TransactionHandler {
+    public getConstructor(): TransactionConstructor {
+        return TransferTransaction;
     }
 
     // Type 0 specific wallet logic
@@ -262,12 +262,12 @@ export class TransferTransactionService extends TransactionService {
 
 ```
 
-If a custom type requires more flexibility it can implement the `ITransactionService` interface directly at the cost of more overhead.
+If a custom type requires more flexibility it can implement the `ITransactionHandler` interface directly at the cost of more overhead.
 
 
 ### Registering Transaction Types
 
-After we have created our custom transaction type and the accompaying transaction service we need a way of exposing it to the crypto package and core. To do this we will introduce a `TransactionRegistry` class inside the `crypto` package and a similar class for transaction services called `TransactionServiceRegistry` which both hold a few methods to guard against overwrites of core transaction types or already registered custom types.
+After we have created our custom transaction type and the accompaying transaction handler we need a way of exposing it to the crypto package and core. To do this we will introduce a `TransactionRegistry` class inside the `crypto` package and a similar class for transaction handlers called `TransactionHandlerRegistry` which both hold a few methods to guard against overwrites of core transaction types or already registered custom types.
 
 ```ts
 type TransactionConstructor = typeof Transaction;
@@ -292,11 +292,52 @@ class TransactionRegistry {
             return this.coreTypes.get(type);
         }
 
+        if (this.customTypes.has(type)) {
+            return this.customTypes.get(type);
+        }
+
+
         throw new UnkownTransactionError(type);
     }
 
     public registerCustomType(constructor: TransactionConstructor): void {
-        throw new NotImplementedError();
+        const { type } = constructor;
+        if (this.customTypes.has(type)) {
+            throw new TransactionAlreadyRegisteredError(constructor.name);
+        }
+
+        // TODO: subject to change, but for now the first 100 types are reserved by Core.
+        if (type < 100) {
+            throw new TransactionTypeInvalidRangeError(type);
+        }
+
+        this.customTypes.set(type, constructor);
+        this.updateSchemas(constructor);
+        this.updateStaticFees();
+    }
+
+    public deregisterCustomType(type: number): void {
+        if (this.customTypes.has(type)) {
+            const schema = this.customTypes.get(type);
+            this.updateSchemas(schema, true);
+            this.customTypes.delete(type);
+        }
+    }
+
+    public updateStaticFees(height?: number): void {
+        const customConstructors = Array.from(this.customTypes.values());
+        const milestone = configManager.getMilestone(height);
+        const { staticFees } = milestone.fees;
+        for (const constructor of customConstructors) {
+            const { type, name } = constructor;
+            if (milestone.fees && milestone.fees.staticFees) {
+                const value = staticFees[camelCase(name.replace("Transaction", ""))];
+                if (!value) {
+                    throw new MissingMilestoneFeeError(name);
+                }
+                feeManager.set(type, value);
+            }
+        }
     }
 
     private registerCoreType(constructor: TransactionConstructor) {
@@ -315,42 +356,68 @@ class TransactionRegistry {
 }
 ```
 
-The accompanying registry for transaction services:
+The accompanying registry for transaction handlers:
 ```ts
-import { transactionServices } from "./services";
-export type TransactionServiceConstructor = new () => TransactionService;
+import { transactionHandlers } from "./handlers";
+export type TransactionHandlerConstructor = new () => TransactionHandler;
 
-class TransactionServiceRegistry {
-    private readonly coreTransactionServices = new Map<constants.TransactionTypes, TransactionService>();
-    private readonly customTransactionServices = new Map<number, TransactionService>();
+class TransactionHandlerRegistry {
+    private readonly coreTransactionHandlers = new Map<constants.TransactionTypes, TransactionHandler>();
+    private readonly customTransactionHandlers = new Map<number, TransactionHandler>();
 
     constructor() {
-        transactionServices.forEach((service: TransactionServiceConstructor) => {
-            this.registerCoreTransactionService(service);
+        transactionHandlers.forEach((handler: TransactionHandlerConstructor) => {
+            this.registerCoreTransactionHandler(handler);
         });
     }
 
-    public get(type: constants.TransactionTypes): TransactionService {
-        if (!this.coreTransactionServices.has(type)) {
-            throw new InvalidTransactionTypeError(type);
+    public get(type: constants.TransactionTypes): TransactionHandler {
+        if (this.coreTransactionHandlers.has(type)) {
+            return this.coreTransactionHandlers.get(type);
         }
 
-        return this.coreTransactionServices.get(type);
-    }
-
-    public registerCustomTransactionService(service: TransactionServiceConstructor): void {
-        throw new NotImplementedError();
-    }
-
-    private registerCoreTransactionService(constructor: TransactionServiceConstructor) {
-        const service = new constructor();
-        const type = service.getType();
-
-        if (this.coreTransactionServices.has(type)) {
-            throw new TransactionServiceAlreadyRegisteredError(type);
+        if (this.customTransactionHandlers.has(type)) {
+            return this.customTransactionHandlers.get(type);
         }
 
-        this.coreTransactionServices.set(type, service);
+        throw new InvalidTransactionTypeError(type);
+    }
+
+    public registerCustomTransactionHandler(constructor: TransactionHandlerConstructor): void {
+        const handler = new constructor();
+        const transactionConstructor = handler.getConstructor();
+        const { type } = transactionConstructor;
+
+        if (this.customTransactionHandlers.has(type)) {
+            throw new TransactionHandlerAlreadyRegisteredError(type);
+        }
+
+        TransactionRegistry.registerCustomType(transactionConstructor);
+
+        this.customTransactionHandlers.set(type, handler);
+    }
+
+    public deregisterCustomTransactionHandler(constructor: TransactionHandlerConstructor): void {
+        const handler = new constructor();
+        const transactionConstructor = handler.getConstructor();
+        const { type } = transactionConstructor;
+
+        if (this.customTransactionHandlers.has(type)) {
+            TransactionRegistry.deregisterCustomType(type);
+            this.customTransactionHandlers.delete(type);
+        }
+    }
+
+    private registerCoreTransactionHandler(constructor: TransactionHandlerConstructor) {
+        const handler = new constructor();
+        const transactionConstructor = handler.getConstructor();
+        const { type } = transactionConstructor;
+
+        if (this.coreTransactionHandlers.has(type)) {
+            throw new TransactionHandlerAlreadyRegisteredError(type);
+        }
+
+        this.coreTransactionHandlers.set(type, handler);
     }
 }
 ```
@@ -361,15 +428,15 @@ The usage is fairly simple and the custom types would be easiest bootstrapped du
 
 ```ts
 import { Transaction } from "@arkecosystem/crypto";
-import { TransactionService, TransactionServiceRegistry } from "@arkecosystem/core-transactions";
+import { TransactionHandler, TransactionHandlerRegistry } from "@arkecosystem/core-transactions";
 
 // This is our custom transaction that we want to register for core
 class CustomTransaction extends Transaction {}
-class CustomTransactionService extends TransactionService {}
+class CustomTransactionHandler extends TransactionHandler {}
 
-// This will register a new transaction service with the core-transactions package which core will be able to pick up
-// NOTE: The `TransactionServiceRegistry` will call `registerType` on the `TransactionRegistry` for us
-TransactionServiceRegistry.registerCustomService(CustomTransactionService);
+// This will register a new transaction handler with the core-transactions package which core will be able to pick up
+// NOTE: The `TransactionHandlerRegistry` will call `registerType` on the `TransactionRegistry` for us
+TransactionHandlerRegistry.registerCustomHandler(CustomTransactionHandler);
 ```
 
 ### Database
@@ -383,3 +450,7 @@ SELECT * FROM transactions WHERE type = 5 AND asset @> '{"ipfs_id":1}';
 ```
 
 Queries like this will allow us to do searches on the `asset` information of a transaction without having to add real columns through migrations.
+
+### Fees
+All transaction types are required to define a `fee` in the `milestones.json` and `addonBytes` of
+the `core-transaction-pool` options.
