@@ -13,30 +13,54 @@
   Replaces (*optional):  
 --- 
 
-## Preamble
-RFC 822 style headers containing meta-data about the AIP, including the AIP number, a short descriptive title (limited to a maximum of 44 characters), the names, and optionally the contact info for each author, etc.
-
 ## Abstract
-Short (~200 word) description of the technical issue being addressed.
+The purpose of this document is to define specifications and expectations related to building ARK VM in terms of ARK’s technology stack, namely running as a core-plugin and enabling virtual machine execution inside a core-module.
 
 ## Copyright
-Each AIP must be licensed under the MIT License.
+MIT License
 
 ## Motivation
-The motivation is critical for AIPs that want to change the Ark protocol. It should clearly explain why the existing protocol specification is inadequate to address the problem that the AIP solves. AIP submissions without sufficient motivation may be rejected outright.
+The goal of this project is to launch ARK VM inside the `core` technology landscape and run it as a module, if enabled. Looking further at the virtual machine life-cycle and core execution lifecycle we have the following communication points with our core.
 
-## Specification
+### Deployment stage
+The goal of this project is to launch ARK VM inside the `core` technology landscape and run it as a module, if enabled. Looking further at the virtual machine life-cycle and core execution lifecycle we have the following communication points with our core.
+
+### Forging stage/Confirmation stage
+A smart-contract enters from the pool and is forged inside a block. This means that smart contract is now available for execution of its methods and parameters.
+
+### Execution stage
+Execution of the smart contract via one of the selected sandboxed environments. Secure and sandboxed design via javascript vm execution plugin. Current options are:
+- https://github.com/patriksimek/vm2  and 
+- https://nodejs.org/api/vm.html. 
+
+Execution is tightly coupled with blockchain state - available  via wallet manager. 
+
+### Storage 
+VirtualMachine will introduce a new storage option for smart contracts to store state in as secure and distributed way. A Light key-value database can be used, as state can be reproduced via rebuild - from transactions (blockchain replay).
+
+### General constraints
+#### Interfaces to other modules
+- core-blockchain
+- wallet-manager
+- transaction-pool
+
+#### Hardware limitations
+- size limitations related to number of variables, memory and storage options
+
+#### Audit function
+- strict logging of outcomes
+- A separate execution log of the VM engine
+
+#### Safety and security
+- sandboxed environment
+- timeout 
+- limited operations and execution scope
+- private contracts (limited by white-listed senders)
+
+#### Error handling and recovery
+General timeout for all execution points. Has to be “forged” quickly. Confirmation and compilation stage will be done in the deployment phase - while entering pool.
+
+
+# Technical Specification
 The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations.
 
-## Rationale
-The rationale fleshes out the specification by describing what motivated the design and why particular design decisions were made. It should describe alternate designs that were considered and related work, e.g. how the feature is supported in other languages.
-
-The rationale should provide evidence of consensus within the community and discuss important objections or concerns raised during discussion.
-
-## Backwards Compatibility
-All AIPs that introduce backwards incompatibilities must include a section describing these incompatibilities and their severity. The AIP must explain how the author proposes to deal with these incompatibilities. AIP submissions without a sufficient backwards compatibility treatise may be rejected outright.
-
-## Reference Implementation
-The reference implementation must be completed before any AIP is given status "Final", but it need not be completed before the AIP is accepted. It is better to finish the specification and rationale first and reach consensus on it before writing code.
-
-The final implementation must include test code and documentation appropriate for the Ark protocol.
