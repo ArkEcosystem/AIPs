@@ -49,7 +49,7 @@ VirtualMachine will introduce a new storage option for smart contracts to store 
 
 #### Audit function
 - strict logging of outcomes
-- A separate execution log of the VM engine
+- a separate execution log of the VM engine
 
 #### Safety and security
 - sandboxed environment
@@ -63,4 +63,3 @@ General timeout for all execution points. Has to be “forged” quickly. Confir
 
 # Technical Specification
 The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations.
-
