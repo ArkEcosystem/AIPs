@@ -1,16 +1,16 @@
 ---
-  AIP: *number*
-  Title: *title of the AIP*
-  Authors: *Firstname LastName <email@domain.com>*
+  AIP: *XX*
+  Title: *CORE-VM module specifications*
+  Authors: *Kristjan Kosic <kristjan@ark.io>*
   Status: *Draft, Rejected or Active*
   Discussions-To: https://github.com/arkecosystem/AIPS/issues
   Address: *Ark address used to collect votes for the specific AIP*
-  Type: *Standards (Applications, Consensus, Core, Network, Protocol)/Process/Informational*
-  Category *only required for Standards Track: <Applications | Consensus | Core | Network | Protocol>
-  Created: *YYYY-MM-DD*
-  Last Update: *YYYY-MM-DD*
-  Requires (*optional): <AIP number(s)>
-  Replaces (*optional): <AIP number(s)>
+  Type: *Standards*
+  Category *only required for Standards Track: <Core>
+  Created: *2019-04-09*
+  Last Update: *2019-04-09*
+  Requires (*optional): <AIP-29>
+  Replaces (*optional):  
 --- 
 
 ## Preamble
