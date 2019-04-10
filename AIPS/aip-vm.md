@@ -12,21 +12,19 @@
   Requires (*optional): <AIP-29>
   Replaces (*optional):  
 --- 
-
+ 
 ## Abstract
 The purpose of this document is to define specifications and expectations related to building ARK VM in terms of ARK’s technology stack, namely running as a core-plugin and enabling virtual machine execution inside a core-module.
 
 ## Copyright
 MIT License
 
-## TODO while operationg
+## Check items list
 - [x] AIP: define transaction outside of core-mode, e.g. inside our new module (store contract transaction)
 - [ ] Size, memory, execution stack limitations
 - [ ] Size of script
 - [ ] Number and size of storage options
 - [ ] Private smart-contracts (e.g. whitelisting addresses)
-
-
 
 ## Motivation
 The goal of this project is to launch ARK VM inside the `core` technology landscape and run it as a module, if enabled. Looking further at the virtual machine life-cycle and core execution lifecycle we have the following communication points with our core.
@@ -73,7 +71,8 @@ General timeout for all execution points. Has to be “forged” quickly. Confir
 # Technical Specification
 The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations.
 
-Ethereum notes for outgoing transaction
-- https://ethereum.stackexchange.com/questions/24031/how-ethereum-contracts-transfer-ether-without-a-blockchain-confirmation
-- https://www.mobilefish.com/developer/blockchain/blockchain_quickguide_ethereum_related_tutorials.html
-- https://github.com/takenobu-hs/ethereum-evm-illustrated
+
+# References
+1. Ethereum notes for outgoing transaction https://ethereum.stackexchange.com/questions/24031/how-ethereum-contracts-transfer-ether-without-a-blockchain-confirmation
+2. https://www.mobilefish.com/developer/blockchain/blockchain_quickguide_ethereum_related_tutorials.html
+3. https://github.com/takenobu-hs/ethereum-evm-illustrated
