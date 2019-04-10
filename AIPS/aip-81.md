@@ -19,12 +19,13 @@ The purpose of this document is to define specifications and expectations relate
 ## Copyright
 MIT License
 
-## Check items list
+## Check items list/Questions/To Address
 - [x] AIP: define transaction outside of core-mode, e.g. inside our new module (store contract transaction)
 - [ ] Size, memory, execution stack limitations
 - [ ] Size of script
 - [ ] Number and size of storage options
 - [ ] Private smart-contracts (e.g. whitelisting addresses)
+- [ ]
 
 ## Motivation
 The goal of this project is to launch ARK VM inside the `core` technology landscape and run it as a module, if enabled. Looking further at the virtual machine life-cycle and core execution lifecycle we have the following communication points with our core.
@@ -37,14 +38,14 @@ A smart-contract enters from the pool and is forged inside a block. This means t
 
 ### Execution stage
 Execution of the smart contract via one of the selected sandboxed environments. Secure and sandboxed design via javascript vm execution plugin. Current options are:
-- https://github.com/patriksimek/vm2  and 
-- https://nodejs.org/api/vm.html. 
+1. https://github.com/laverdet/isolated-vm
+2. https://github.com/patriksimek/vm2
+3. https://nodejs.org/api/vm.html. 
 
-Execution is tightly coupled with blockchain state - available  via wallet manager. 
+VM execution engine must be selected based on the security and memory management and overall isolation execution. State should be passed into the `vm` and used as the current source of trust/truth.
 
 ### Storage 
-Virtual Machine will introduce a new storage option for smart contracts to store state in as secure and distributed way. A Light key-value database can be used, as state can be reproduced via rebuild - from transactions (blockchain replay).
-
+Virtual Machine will introduce a new storage option for smart contracts to store state in as secure and distributed way. A Light key-value database can be used, as state can be reproduced via rebuild - from transactions (blockchain replay). 
 ### General constraints
 #### Interfaces to other modules
 - core-blockchain
