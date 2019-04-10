@@ -1,5 +1,5 @@
 ---
-  AIP: *XX*
+  AIP: *81*
   Title: *CORE-VM module specifications*
   Authors: *Kristjan Kosic <kristjan@ark.io>*
   Status: *Draft, Rejected or Active*
@@ -19,6 +19,15 @@ The purpose of this document is to define specifications and expectations relate
 ## Copyright
 MIT License
 
+## TODO while operationg
+- [x] AIP: define transaction outside of core-mode, e.g. inside our new module (store contract transaction)
+- [ ] Size, memory, execution stack limitations
+- [ ] Size of script
+- [ ] Number and size of storage options
+- [ ] Private smart-contracts (e.g. whitelisting addresses)
+
+
+
 ## Motivation
 The goal of this project is to launch ARK VM inside the `core` technology landscape and run it as a module, if enabled. Looking further at the virtual machine life-cycle and core execution lifecycle we have the following communication points with our core.
 
@@ -36,7 +45,7 @@ Execution of the smart contract via one of the selected sandboxed environments. 
 Execution is tightly coupled with blockchain state - available  via wallet manager. 
 
 ### Storage 
-VirtualMachine will introduce a new storage option for smart contracts to store state in as secure and distributed way. A Light key-value database can be used, as state can be reproduced via rebuild - from transactions (blockchain replay).
+Virtual Machine will introduce a new storage option for smart contracts to store state in as secure and distributed way. A Light key-value database can be used, as state can be reproduced via rebuild - from transactions (blockchain replay).
 
 ### General constraints
 #### Interfaces to other modules
@@ -63,3 +72,8 @@ General timeout for all execution points. Has to be “forged” quickly. Confir
 
 # Technical Specification
 The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations.
+
+Ethereum notes for outgoing transaction
+- https://ethereum.stackexchange.com/questions/24031/how-ethereum-contracts-transfer-ether-without-a-blockchain-confirmation
+- https://www.mobilefish.com/developer/blockchain/blockchain_quickguide_ethereum_related_tutorials.html
+- https://github.com/takenobu-hs/ethereum-evm-illustrated
