@@ -50,10 +50,11 @@ Virtual Machine will introduce a new storage option for smart contracts to store
 #### Interfaces to other modules
 - core-blockchain
 - wallet-manager
-- transaction-pool
 
 #### Hardware limitations
-- size limitations related to number of variables, memory and storage options
+- size limitations related to  overall script size
+- memory usage limitations 
+- isolated running environments per smart contract
 
 #### Audit function
 - strict logging of outcomes
@@ -77,3 +78,5 @@ The technical specification should describe the syntax and semantics of any new 
 1. Ethereum notes for outgoing transaction https://ethereum.stackexchange.com/questions/24031/how-ethereum-contracts-transfer-ether-without-a-blockchain-confirmation
 2. https://www.mobilefish.com/developer/blockchain/blockchain_quickguide_ethereum_related_tutorials.html
 3. https://github.com/takenobu-hs/ethereum-evm-illustrated
+4. https://ethereum.stackexchange.com/questions/20781/at-which-point-the-smart-contracts-get-executed
+5. https://ethereum.stackexchange.com/questions/765/what-is-the-difference-between-a-transaction-and-a-call
