@@ -30,10 +30,19 @@
             - [Audit function](#audit-function)
             - [Safety and security](#safety-and-security)
             - [Error handling and recovery](#error-handling-and-recovery)
-- [Technical Specification](#technical-specification)
+- [Technical Specification(initial/will be further updated with reference implementation)](#technical-specificationinitialwill-be-further-updated-with-reference-implementation)
     - [Transaction Types](#transaction-types)
-        - [Store smart contracts](#store-smart-contracts)
-        - [Execute smart contract](#execute-smart-contract)
+        - [TX: Store smart contracts/dApp](#tx-store-smart-contractsdapp)
+            - [Field descriptions](#field-descriptions)
+        - [TX: Execute smart contract/dApp calls](#tx-execute-smart-contractdapp-calls)
+            - [Field descriptions](#field-descriptions-1)
+    - [Core-vm module mechanics](#core-vm-module-mechanics)
+        - [AbstractSmartContract class](#abstractsmartcontract-class)
+        - [Compilation of Smart Contract](#compilation-of-smart-contract)
+        - [Execution of Smart Contract](#execution-of-smart-contract)
+            - [Storage definition](#storage-definition)
+            - [Inter-transaction execution](#inter-transaction-execution)
+        - [Storage capabilities](#storage-capabilities)
 - [Reference implementation](#reference-implementation)
     - [Copyright](#copyright)
 - [References](#references)
@@ -65,9 +74,9 @@ A smart-contract enters from the pool and is forged inside a block. This means t
 
 ### Execution stage
 Execution of the smart contract via one of the selected sandboxed environments. Secure and sandboxed design via javascript vm execution plugin. Current options are:
-1. https://github.com/laverdet/isolated-vm
-2. https://github.com/patriksimek/vm2 
-3. https://nodejs.org/api/vm.html. 
+1. Isolated-VM - https://github.com/laverdet/isolated-vm
+2. VM2 - https://github.com/patriksimek/vm2 
+3. NodeJs VM - https://nodejs.org/api/vm.html. 
 
 VM execution engine must be selected based on the security and memory management and overall isolation execution. State should be passed into the `vm` and used as the current source of trust/truth.
 
@@ -79,15 +88,18 @@ Virtual Machine will introduce a new storage option for smart contracts to store
 - wallet-manager
 
 ### Rebuilding capability
-Smart contract data history (any calls with all the details) must be saved on the blockchain. We could use our asset field where we store this.  fed
+Smart contract data history (any calls with all the details) must be saved on the blockchain. We could use our asset field where we store this. 
 
 #### Hardware limitations
 - size limitations related to  overall script size
 - memory usage limitations 
 - isolated running environments per smart contract
+- memory limitations
+- CPU time limitations (`while (true) {}` limit)
 
 #### Audit function
 - strict logging of outcomes
+- rebuilding relevant data must be added on the blockchain
 - a separate execution log of the VM engine
 
 #### Safety and security
@@ -95,6 +107,7 @@ Smart contract data history (any calls with all the details) must be saved on th
 - timeout 
 - limited operations and execution scope
 - private contracts (limited by white-listed senders)
+- general class implementation / as guideline and access to blockchain (wallet-manager)
 
 #### Error handling and recovery
 General timeout for all execution points. Has to be “forged” quickly. Confirmation and compilation stage will be done in the deployment phase - while entering pool.
@@ -116,18 +129,16 @@ A return value is status of smart contract deployment, and return address if suc
 | ----------    | ---- | ------ |
 | type          |      |        |
 | fee           |      |        |
-| abi           |      |        |
+| interaction   |      |        |
 | source-code   |      |        |
-| compiled-code |      |        |
-|               |      |        |
-|               |      |        |
-|               |      |        |
 
 #### Field descriptions
-1. abi -
+1. interaction / similar to eth abi -
 2. source code
 3. compiled source
 
+When smart contract enters the pool, we test it against internal compiled method from the virtual machine. If script is successfully compiled we accept it into the pool and it will be forged when its turn. 
+If not we will return error code to the user sending the script.
 
 ### TX: Execute smart contract/dApp calls
 When transaction is successfully deployed, it holds all the required information for anyone to execute the dApp (if allowed by the contract code). 
@@ -144,15 +155,37 @@ When transaction is successfully deployed, it holds all the required information
 #### Field descriptions
 1. contract-address
 2. method-name (name of one of the methods specified via abi)
-3. arguments (k/v pairs of arguments accepted by smart contract call)
+3. arguments (k/v pairs of arguments accepted by smart contract call). Must be aligned with dApp abi specifications
 
 
+## Core-vm module mechanics
+
+- [ ] Make basic code run
+- [ ] Sync Variables
+- [ ] Initialize a class
+- [ ] Run methods from class
+- [ ] Save data to common storage/outside of secure execution - just return
+- [ ] Prepare internal transaction calls - based on smart contract output
 
 
+### AbstractSmartContract class
+
+### Compilation of Smart Contract
+- [ ] Determine to be run locally or on the node/ currently node is preferred / possible errors can be returned?
+
+### Execution of Smart Contract
+Output results of smart contract execution are storage updates or transaction execution - transfer from contract to another contract or normal address.
+
+#### Storage definition
+
+#### Inter-transaction execution
+
+### Storage capabilities
 
 
 # Reference implementation
-
+Based on research and some demo stuff, currently `isolated-vm` looks like most promising.
+- https://github.com/kristjank/virtual-machine/
 
 ## Copyright
 MIT License
@@ -163,3 +196,4 @@ MIT License
 3. https://github.com/takenobu-hs/ethereum-evm-illustrated
 4. https://ethereum.stackexchange.com/questions/20781/at-which-point-the-smart-contracts-get-executed
 5. https://ethereum.stackexchange.com/questions/765/what-is-the-difference-between-a-transaction-and-a-call 
+6. https://github.com/laverdet/isolated-vm
