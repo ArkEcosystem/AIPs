@@ -116,6 +116,8 @@ General timeout for all execution points. Has to be “forged” quickly. Confir
 # Technical Specification(initial/will be further updated with reference implementation)
 The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations.
 
+*THIS IS WIP, AND IT WILL CHANGE ALONG THE LINES AS REFERENCE IMPLEMENTATION CHANGES*
+
 ## Transaction Types
 New transaction types need to be implemented in order to support interaction with the blockchain in terms of sending/loading smart contract to the blockchain and giving possibilities to call the smart contract methods.
 
@@ -123,6 +125,8 @@ New transaction types need to be implemented in order to support interaction wit
 Transaction type store smart contract will send smart contract payload to the chain `post/transactions` endpoint. 
 dApp developer implements smart contract following the predefined interface provided from `core-vm`. SmartContract interface defines the structure and the methods an ARK smart contract must implement, as well as access to super class (TBD/Link).
 A return value is status of smart contract deployment, and return address if successfully deployed. 
+
+Size of the source code and duration of compilation(computing power needed) will be taken into account. Dynamic fee will be strongly affected by size.
 
 
 | Description   | Size | Sample |
@@ -169,8 +173,11 @@ When transaction is successfully deployed, it holds all the required information
 
 
 ### AbstractSmartContract class
+SmartContrac
 
 ### Compilation of Smart Contract
+Smart contract will be deployed as a normal javascript(transpiled typescript) source-code to the core. Both options can be supported. This will give use the power to leverage the huge community of js/ts developers.
+
 - [ ] Determine to be run locally or on the node/ currently node is preferred / possible errors can be returned?
 
 ### Execution of Smart Contract
@@ -197,3 +204,4 @@ MIT License
 4. https://ethereum.stackexchange.com/questions/20781/at-which-point-the-smart-contracts-get-executed
 5. https://ethereum.stackexchange.com/questions/765/what-is-the-difference-between-a-transaction-and-a-call 
 6. https://github.com/laverdet/isolated-vm
+7. https://github.com/gianluca-venturini/isolated-vm-actors/blob/master/src/index.ts
