@@ -66,6 +66,14 @@ The purpose of this document is to define specifications and expectations relate
 ## Motivation
 The goal of this project is to launch ARK VM inside the `core` technology landscape and run it as a module, if enabled. Looking further at the virtual machine life-cycle and core execution lifecycle we have the following communication points with our core.
 
+### Why?
+In comparison to AIP-29 that provides custom application logic in form of smart contracts, there is a difference between trust-less execution and transaction broadcast, such as:
+
+- AIP-29 requires transactions to be emitted to the network. 
+This adds additional layer of security, as every transaction needs to be signed. By doing so we limit the automation capability of trust-less execution.
+- State storage 
+Custom transaction implementation via AIP-29 can introduce options to enable state storage, but is still limited with its implementation, and replication capabilities. By introducing a new VM Engine capabilities we get state storage related to a specific Contract. Contract storage will be fully deterministic via blockchain  replay logic.
+
 ### Deployment stage
 The goal of this project is to launch ARK VM inside the `core` technology landscape and run it as a module, if enabled. Looking further at the virtual machine life-cycle and core execution lifecycle we have the following communication points with our core.
 
@@ -74,7 +82,7 @@ A smart-contract enters from the pool and is forged inside a block. This means t
 
 ### Execution stage
 Execution of the smart contract via one of the selected sandboxed environments. Secure and sandboxed design via javascript vm execution plugin. Current options are:
-1. Isolated-VM - https://github.com/laverdet/isolated-vm
+1. Isolated-VM - https://github.com/laverdet/isolated-vm (based on first research, looks like the most viable and secure option)
 2. VM2 - https://github.com/patriksimek/vm2 
 3. NodeJs VM - https://nodejs.org/api/vm.html. 
 
