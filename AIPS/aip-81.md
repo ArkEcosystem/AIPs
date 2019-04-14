@@ -37,10 +37,10 @@ Replaces (*optional):
     - [Transaction Types](#transaction-types)
         - [TX: Deployment of dApp](#tx-deployment-of-dapp)
             - [Field descriptions](#field-descriptions)
-        - [TX: Execute dApp/dApp calls](#tx-execute-dappdapp-calls)
+        - [TX: Execute dApp method/A message call](#tx-execute-dapp-methoda-message-call)
             - [Field descriptions](#field-descriptions-1)
     - [Core-vm module mechanics](#core-vm-module-mechanics)
-        - [AbstractSmartContract class](#abstractsmartcontract-class)
+        - [dApp Interface](#dapp-interface)
         - [Compilation of DApp](#compilation-of-dapp)
         - [Execution of DApp](#execution-of-dapp)
             - [Storage definition](#storage-definition)
@@ -154,12 +154,12 @@ A return value is status of dApp deployment, and return address if successfully 
 Size of the source code and duration of compilation(computing power needed) will be taken into account. Dynamic fee will be strongly affected by size.
 
 
-| Description   | Size | Sample |
-| ----------    | ---- | ------ |
-| type          |      |        |
-| fee           |      |        |
-| interaction   |      |        |
-| source-code   |      |        |
+| Description | Size | Sample |
+| ----------  | ---- | ------ |
+| type        |      |        |
+| fee         |      |        |
+| interface   | var  |        |
+| source-code | var  |        |
 
 #### Field descriptions
 1. interaction / similar to eth abi -
@@ -169,7 +169,7 @@ Size of the source code and duration of compilation(computing power needed) will
 When dApp enters the pool, we test it against internal compiled method from the virtual machine. If script is successfully compiled we accept it into the pool and it will be forged when its turn. 
 If not we will return error code to the user sending the script.
 
-### TX: Execute dApp/dApp calls
+### TX: Execute dApp method/A message call
 When transaction is successfully deployed, it holds all the required information for anyone to execute the dApp (if allowed by the contract code). 
 
 | Description      | Size | Sample |
@@ -186,7 +186,6 @@ When transaction is successfully deployed, it holds all the required information
 2. method-name (name of one of the methods specified via abi)
 3. arguments (k/v pairs of arguments accepted by dApp call). Must be aligned with dApp abi specifications
 
-
 ## Core-vm module mechanics
 
 - [ ] Make basic code run
@@ -196,9 +195,7 @@ When transaction is successfully deployed, it holds all the required information
 - [ ] Save data to common storage/outside of secure execution - just return
 - [ ] Prepare internal transaction calls - based on dApp output
 
-
-### AbstractSmartContract class
-SmartContrac
+### dApp Interface
 
 ### Compilation of DApp
 dApp will be deployed as a normal javascript(transpiled typescript) source-code to the core. Both options can be supported. This will give use the power to leverage the huge community of js/ts developers.
