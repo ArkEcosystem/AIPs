@@ -92,12 +92,10 @@ The goal of this proposal is to launch VM engine inside the `core` technology la
 ### Deployment stage
 Deployment stage introduces new transaction types (see below). Deployment stage must validate, test, store new dApp. Introducing of new endpoints/transaction types will be needed.
 
-### Forger: Forging stage/Confirmation stage
-SmartContract execution during block creation stage.
-A smart-contract enters from the pool and is forged inside a block. This means that dApp is now available for execution of its methods and parameters.
+### Forger: Execution stage
+dApp execution during block creation stage. A dApp function call is sent via dAppExecution transaction. 
+dApp is executed inside the virtual-machine(`isolated-vm`) thus changing the state/storage options.
 
-### Execution stage
-Execution of the dApp via one of the selected sandboxed environments. Secure and sandboxed design via javascript vm execution plugin. Current options are:
 1. Isolated-VM - https://github.com/laverdet/isolated-vm (based on first research, looks like the most viable and secure option)
 2. VM2 - https://github.com/patriksimek/vm2 (used in desktop wallet)
 3. NodeJs VM - https://nodejs.org/api/vm.html. (basic and limited functionality of nodejs)
