@@ -11,7 +11,7 @@ Category *only required for Standards Track: <Core>
 Created: *2019-04-09*
 Last Update: *2019-04-09*
 Requires (*optional): AIP-11, AIP-18, AIP-29
-Replaces (*optional):
+Replaces (*optional): AIP-12
 --- 
 
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
@@ -78,12 +78,12 @@ This adds additional layer of security, as every transaction needs to be signed.
 Custom transaction implementation via AIP-29 can introduce options to enable state storage, but is still limited with its implementation, and replication capabilities. By introducing a new VM Engine capabilities we get state storage related to a specific Contract. Contract storage will be fully deterministic via blockchain  replay logic.
 
 
-| Pros                                                                                                                       | Cons                                        |
-| ----------------------------------                                                                                         | ----                                        |
-| - javascript / typescript codebase                                                                                         | - running VM environment  not as big as ETH |
-| - isolated running environment                                                                                             | - rebuilding logic/protocol level           |
-| - adding custom behavior in our control (destroy contract, retire)                                                         | -                                           |
-| - allowing more function inside dApp instead of introducing new tx types for each functionality |                                             |
+| Pros                                                                                                                          | Cons                                       |
+| ----------------------------------                                                                                            | ----                                       |
+| - javascript / typescript codebase                                                                                            | - running VM environment not as big as ETH |
+| - isolated running environment                                                                                                | - rebuilding logic/protocol level          |
+| - adding custom behavior in our control (destroy contract, retire)                                                            | - tooling?                                 |
+| - allowing more functionality inside dApp instead of introducing new tx types for each new functionality/or plugin deployment |                                            |
 
 ## General overview
 The goal of this proposal is to launch VM engine inside the `core` technology landscape and run it as a module, if enabled. Looking further at the virtual machine life-cycle and core execution lifecycle we have the following interaction points with our cor]e.
@@ -153,7 +153,6 @@ A return value is status of dApp deployment, and return address if successfully 
 
 Size of the source code and duration of compilation(computing power needed) will be taken into account. Dynamic fee will be strongly affected by size.
 
-
 | Description | Size | Sample |
 | ----------  | ---- | ------ |
 | type        |      |        |
@@ -162,12 +161,10 @@ Size of the source code and duration of compilation(computing power needed) will
 | source-code | var  |        |
 
 #### Field descriptions
-1. interaction / similar to eth abi -
-2. source code
-3. compiled source
+1. interface - descriptions and definition of  public dApp methods, that will be available via message call functionality
+2. source code - javascript source code to be run
 
-When dApp enters the pool, we test it against internal compiled method from the virtual machine. If script is successfully compiled we accept it into the pool and it will be forged when its turn. 
-If not we will return error code to the user sending the script.
+When dApp Deployment transaction enters the pool, we test it against internal compiled method from the virtual machine. If script is successfully compiled we accept it into the pool and it will be forged when its turn. If not we will return error code to the user sending the dApp.
 
 ### TX: Execute dApp method/A message call
 When transaction is successfully deployed, it holds all the required information for anyone to execute the dApp (if allowed by the contract code). 
