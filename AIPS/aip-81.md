@@ -1,18 +1,18 @@
 
----
-AIP: *81*
-Title: *CORE-VM module specifications*
-Authors: *Kristjan Kosic <kristjan@ark.io>*
-Status: *Draft, Rejected or Active*
-Discussions-To: https://github.com/arkecosystem/AIPS/issues
-Address: *Ark address used to collect votes for the specific AIP*
-Type: *Standards*
-Category *only required for Standards Track: <Core>
-Created: *2019-04-09*
-Last Update: *2019-04-09*
-Requires (*optional): AIP-11, AIP-18, AIP-29
-Replaces (*optional): AIP-12
---- 
+<pre>
+  AIP: *81*
+  Title: *CORE-VM module specifications*
+  Authors: *Kristjan Kosic <kristjan@ark.io>*
+  Status: *Draft, Rejected or Active*
+  Discussions-To: https://github.com/arkecosystem/AIPS/issues
+  Address: *Ark address used to collect votes for the specific AIP*
+  Type: *Standards*
+  Category *only required for Standards Track: <Core>
+  Created: *2019-04-09*
+  Last Update: *2019-04-09*
+  Requires (*optional): AIP-11, AIP-18, AIP-29
+  Replaces (*optional): AIP-12
+</pre> 
 
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
 **Table of Contents**
