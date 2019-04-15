@@ -56,7 +56,7 @@
 The purpose of this document is to define specifications and expectations related to building ARK VM in terms of ARK’s technology stack, namely running as a core-plugin and enabling virtual machine execution inside a core-module.
 
 
-## Check items list/Questions/To Address [/] [%]
+## TODO Check items list/Questions/To Address [/] [%]
 - [ ] AIP: define transaction outside of core-mode, e.g. inside our new module (store contract transaction)
 - [ ] Size, memory, execution stack limitations
 - [ ] Size of script
@@ -75,7 +75,7 @@ In comparison to AIP-29 that provides custom application logic in the form of dA
 - automated trust-less execution
 - AIP-29 requires transactions to be signed/emitted to the network, thus making execution of secure functionalities a bit more difficult as compared to the `internal calls`.
 This adds additional layer of security, as every transaction needs to be signed. By doing so we limit the automation capability of trust-less execution.
-- State storage - custom transaction implementation via AIP-29 can introduce options to enable state storage, but is still limited with its implementation, and replication capabilities. By introducing a new VM Engine capabilities we get state storage related to a specific Contract. Contract storage will be fully deterministic via blockchain  replay logic.
+- state storage - custom transaction implementation via AIP-29 introduces options for additional storage, but is still limited with its implementation, and replication capabilities. By introducing a new VM Engine we need to introduce dApp state storage. Storage must be fully deterministic via blockchain  replay logic.
 
 
 | Pros                                                                                                                          | Cons                                       |
@@ -105,9 +105,9 @@ VM execution engine was selected based on the security and memory management and
 the current source of truth. Currently the best candidate is `isolated-vm`.
 
 ### Storage 
-Virtual Machine will introduce a new storage option for dApps to store state in a secure and distributed way. A Light key-value database can be used, as state can be reproduced via rebuild - from transactions (blockchain replay). All dApp calls need to be stored (calls and parameters) so we can replay and execute on each node.
+Virtual Machine will introduce a new storage option for dApps to store state in a secure and distributed way. A Light key-value database can be used, as state can be reproduced via rebuild - from transactions (blockchain replay). All dApp calls need to be stored (calls and parameters) so we can replay and execute on each node (part of protocol).
 
-#### Interfaces to other modules
+### Interfaces to other modules
 - core-blockchain
 - wallet-manager
 
@@ -144,7 +144,7 @@ The technical specification should describe the syntax and semantics of any new 
 *THIS IS WIP, AND IT WILL CHANGE ALONG THE LINES AS REFERENCE IMPLEMENTATION CHANGES*
 
 ## Transaction Types
-New transaction types need to be implemented in order to support interaction with the blockchain in terms of sending/loading dApp to the blockchain and giving possibilities to call the smart contract methods.
+New transaction types need to be implemented in order to support interaction with the blockchain in terms of sending/loading dApp to the blockchain and giving possibilities to call the smart contract methods. This part references AIP-12 and continues on the definition of new transaction types related to dApp deployment and calling of their methods (execution).
 
 ### TX: Deployment of dApp
 Transaction type dAppDeployment will send dApp payload to the chain `post/transactions` endpoint. 
@@ -185,12 +185,18 @@ When transaction is successfully deployed, it holds all the required information
 
 ## Core-vm module mechanics
 
-- [ ] Make basic code run
-- [ ] Sync Variables
-- [ ] Initialize a class
-- [ ] Run methods from class
-- [ ] Save data to common storage/outside of secure execution - just return
-- [ ] Prepare internal transaction calls - based on dApp output
+   * [ ] Integrate `isolated-vm` in the new plugin `core-vm`
+   * [ ] Implement first sync mechanism to share state
+   * [ ] Solve - return call logic (to provide a base for internal calls and execution)
+
+
+### General checkpoints
+  * [ ] Make basic code run
+  * [ ] Sync Variables
+  * [ ] Initialize a class
+  * [ ] Run methods from class
+  * [ ] Save data to common storage/outside of secure execution - just return
+  * [ ] Prepare internal transaction calls - based on dApp output
 
 ### dApp Interface
 
