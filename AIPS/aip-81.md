@@ -56,14 +56,14 @@
 The purpose of this document is to define specifications and expectations related to building ARK VM in terms of ARK’s technology stack, namely running as a core-plugin and enabling virtual machine execution inside a core-module.
 
 
-## TODO Check items list/Questions/To Address [/] [%]
-- [ ] AIP: define transaction outside of core-mode, e.g. inside our new module (store contract transaction)
-- [ ] Size, memory, execution stack limitations
-- [ ] Size of script
-- [ ] Number and size of storage options
-- [ ] Private smart-contracts (e.g. whitelisting addresses)
-- [ ] Rebuild from zero - saving data on the blockchain
-- [ ] Storage
+## Check items list/Questions/To Address
+  * [ ] AIP: define transaction outside of core-mode, e.g. inside our new module (store contract transaction)
+  * [ ] Size, memory, execution stack limitations
+  * [ ] Size of script
+  * [ ] Number and size of storage options
+  * [ ] Private smart-contracts (e.g. whitelisting addresses)
+  * [ ] Rebuild from zero - saving data on the blockchain
+  * [ ] Storage
 
 ## Motivation
 The goal of this project is to launch ARK VM inside the `core` technology landscape and run it as a module, if enabled. Looking further at the virtual machine life-cycle and core execution lifecycle we have the following communication points with our core.
@@ -185,9 +185,9 @@ When transaction is successfully deployed, it holds all the required information
 
 ## Core-vm module mechanics
 
-   * [ ] Integrate `isolated-vm` in the new plugin `core-vm`
-   * [ ] Implement first sync mechanism to share state
-   * [ ] Solve - return call logic (to provide a base for internal calls and execution)
+  * [ ] Integrate `isolated-vm` in the new plugin `core-vm`
+  * [ ] Implement first sync mechanism to share state
+  * [ ] Solve - return call logic (to provide a base for internal calls and execution)
 
 
 ### General checkpoints
@@ -218,6 +218,7 @@ Output results of dApp execution are storage updates or transaction execution - 
 # Reference implementation
 Based on research and some demo stuff, currently `isolated-vm` looks like most promising.
 - https://github.com/kristjank/virtual-machine/
+- https://github.com/kristjank/virtual-machine/packages/core-vm
 
 ## Copyright
 MIT License
