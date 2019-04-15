@@ -70,19 +70,20 @@ The goal of this project is to launch ARK VM inside the `core` technology landsc
 
 ### Why?
 In comparison to AIP-29 that provides custom application logic in the form of dApps delivered via plugin. This introduces  a difference between trust-less execution or internal transfers and state and "normal" transaction broadcast (transfer transaction), such as:
-
-- AIP-29 requires transactions to be emitted to the network. 
+- no special plugin installation and deployment is needed
+- modifications are possible via REST endpoints, no need for node operators 
+- automated trust-less execution
+- AIP-29 requires transactions to be signed/emitted to the network, thus making execution of secure functionalities a bit more difficult as compared to the `internal calls`.
 This adds additional layer of security, as every transaction needs to be signed. By doing so we limit the automation capability of trust-less execution.
-- State storage 
-Custom transaction implementation via AIP-29 can introduce options to enable state storage, but is still limited with its implementation, and replication capabilities. By introducing a new VM Engine capabilities we get state storage related to a specific Contract. Contract storage will be fully deterministic via blockchain  replay logic.
+- State storage - custom transaction implementation via AIP-29 can introduce options to enable state storage, but is still limited with its implementation, and replication capabilities. By introducing a new VM Engine capabilities we get state storage related to a specific Contract. Contract storage will be fully deterministic via blockchain  replay logic.
 
 
 | Pros                                                                                                                          | Cons                                       |
 | ----------------------------------                                                                                            | ----                                       |
-| - javascript / typescript codebase                                                                                            | - running VM environment not as big as ETH |
-| - isolated running environment                                                                                                | - rebuilding logic/protocol level          |
-| - adding custom behavior in our control (destroy contract, retire)                                                            | - tooling?                                 |
-| - allowing more functionality inside dApp instead of introducing new tx types for each new functionality/or plugin deployment |                                            |
+| javascript / typescript codebase                                                                                              | running VM environment not as big as ETH    |
+| isolated running environment                                                                                                  | rebuilding logic/protocol level            |
+| adding custom behavior in our control (destroy contract, retire)                                                              | tooling?                                   |
+| allowing more functionality inside dApp instead of introducing new tx types for each new functionality/or plugin deployment   |                                            |
 
 ## General overview
 The goal of this proposal is to launch VM engine inside the `core` technology landscape and run it as a module, if enabled. Looking further at the virtual machine life-cycle and core execution lifecycle we have the following interaction points with our cor]e.
