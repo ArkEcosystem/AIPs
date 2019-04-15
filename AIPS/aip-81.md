@@ -17,7 +17,7 @@
 **Table of Contents**
 
 - [-](#-)
-- [Check items list/Questions/To Address [/] [%]](#check-items-listquestionsto-address--)
+- [Check items list/Questions/To Address](#check-items-listquestionsto-address)
 - [Motivation](#motivation)
     - [Why?](#why)
     - [General overview](#general-overview)
@@ -25,7 +25,7 @@
         - [Forger: Forging stage/Confirmation stage](#forger-forging-stageconfirmation-stage)
         - [Execution stage](#execution-stage)
         - [Storage](#storage)
-            - [Interfaces to other modules](#interfaces-to-other-modules)
+        - [Interfaces to other modules](#interfaces-to-other-modules)
         - [Rebuilding capability](#rebuilding-capability)
         - [General constraints](#general-constraints)
             - [Hardware limitations](#hardware-limitations)
@@ -39,6 +39,7 @@
         - [TX: Execute dApp method/A message call](#tx-execute-dapp-methoda-message-call)
             - [Field descriptions](#field-descriptions-1)
     - [Core-vm module mechanics](#core-vm-module-mechanics)
+        - [General checkpoints](#general-checkpoints)
         - [dApp Interface](#dapp-interface)
         - [Compilation of DApp](#compilation-of-dapp)
         - [Execution of DApp](#execution-of-dapp)
@@ -162,7 +163,9 @@ Size of the source code and duration of compilation(computing power needed) will
 
 #### Field descriptions
 1. interface - descriptions and definition of  public dApp methods, that will be available via message call functionality
-2. source code - javascript source code to be run
+2. source code - javascript source code to be compiled and run
+
+Also think about saving already compiled VM script - to save on blockchain size?
 
 When dApp Deployment transaction enters the pool, we test it against internal compiled method from the virtual machine. If script is successfully compiled we accept it into the pool and it will be forged when its turn. If not we will return error code to the user sending the dApp.
 
@@ -185,10 +188,9 @@ When transaction is successfully deployed, it holds all the required information
 
 ## Core-vm module mechanics
 
-  * [ ] Integrate `isolated-vm` in the new plugin `core-vm`
+  * [x] Integrate `isolated-vm` in the new plugin `core-vm`
   * [ ] Implement first sync mechanism to share state
   * [ ] Solve - return call logic (to provide a base for internal calls and execution)
-
 
 ### General checkpoints
   * [ ] Make basic code run
@@ -206,14 +208,14 @@ dApp will be deployed as a normal javascript(transpiled typescript) source-code 
 - [ ] Determine to be run locally or on the node/ currently node is preferred / possible errors can be returned?
 
 ### Execution of DApp
-Output results of dApp execution are storage updates or transaction execution - transfer from contract to another contract or normal address.
+- Output results of dApp execution are storage updates or transaction execution - transfer from contract to another contract or normal address.
+- We will be running already pre-compiled scripts (execution time)
 
 #### Storage definition
 
 #### Inter-transaction execution
 
 ### Storage capabilities
-
 
 # Reference implementation
 Based on research and some demo stuff, currently `isolated-vm` looks like most promising.
