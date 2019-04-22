@@ -204,31 +204,32 @@ One of the decision to use `isolated-vm` was also to ensure deterministic execut
 - store value call `save-value` will be injected during the bootstrap process
 
 ```ts
-    // Get a Reference{} to the global object within the context.
-    let jail = context.global;
+// Get a Reference{} to the global object within the context.
+let jail = context.global;
 
-    // This make the global object available in the context as `global`. We use `derefInto()` here
-    // because otherwise `global` would actually be a Reference{} object in the new isolate.
-    jail.setSync('global', jail.derefInto());
+// This make the global object available in the context as `global`. We use `derefInto()` here
+// because otherwise `global` would actually be a Reference{} object in the new isolate.
+jail.setSync('global', jail.derefInto());
 
-    // The entire ivm module is transferable! We transfer the module to the new isolate so that we
-    // have access to the library from within the isolate.
-    jail.setSync('_ivm', ivm);
+// The entire ivm module is transferable! We transfer the module to the new isolate so that we
+// have access to the library from within the isolate.
+jail.setSync('_ivm', ivm);
 
-    // We will create a basic `log` function for the new isolate to use.
-    jail.setSync('_internalTransfer', new ivm.Reference(function(...args) {
-        // WalletManager logic here
-        console.log(...args);
-    }));
+// We will create a basic `log` function for the new isolate to use.
+jail.setSync('_internalTransfer', new ivm.Reference(function(...args) {
+    // WalletManager logic here
+    console.log(...args);
+}));
 
-    // We will create a basic `log` function for the new isolate to use.
-    jail.setSync('_storeValue', new ivm.Reference(function(...args) {
-        // Storage logic here (also via wallet manager)
-        console.log(...args);
-    }));
+// We will create a basic `log` function for the new isolate to use.
+jail.setSync('_storeValue', new ivm.Reference(function(...args) {
+    // Storage logic here (also via wallet manager)
+    console.log(...args);
+}));
 
 
-    // This will bootstrap the context. let bootstrap = isolate.compileScriptSync('new '+ function() {
+// This will bootstrap the context. 
+let bootstrap = isolate.compileScriptSync('new '+ function() {
     // Grab a reference to the ivm module and delete it from global scope. Now this closure is the
     // only place in the context with a reference to the module. The `ivm` module is very powerful
     // so you should not put it in the hands of untrusted code.
@@ -240,13 +241,13 @@ One of the decision to use `isolated-vm` was also to ensure deterministic execut
     let internalTransfer = _internalTransfer;
     delete _internalTransfer;
     global.internalTransfer = function(...args) {
-      internalTransfer.applySync(undefined, args.map(arg => new ivm.ExternalCopy(arg).copyInto()));
+        internalTransfer.applySync(undefined, args.map(arg => new ivm.ExternalCopy(arg).copyInto()));
     };
 
     let storeValue = _storeValue;
     delete _storeValue;
     global.storeValue = function(...args) {
-      storeValue.applySync(undefined, args.map(arg => new ivm.ExternalCopy(arg).copyInto()));
+        storeValue.applySync(undefined, args.map(arg => new ivm.ExternalCopy(arg).copyInto()));
     };
 });
 
