@@ -96,7 +96,7 @@ Deployment stage introduces new transaction types (see below). Deployment stage 
 dApp execution during block creation stage. A dApp function call is sent via dAppExecution transaction. 
 dApp is executed inside the virtual-machine(`isolated-vm`) thus changing the state/storage options.
 
-1. Isolated-VM - https://github.com/laverdet/isolated-vm (based on first research, looks like the most viable and secure option)
+1. Isolated-VM - https://github.com/laverdet/isolated-vm (based on first research, looks like the most viable and secure option - using Google's V8 OSS JavaScript Engine)
 2. VM2 - https://github.com/patriksimek/vm2 (used in desktop wallet)
 3. NodeJs VM - https://nodejs.org/api/vm.html. (basic and limited functionality of nodejs)
 
@@ -198,6 +198,65 @@ When transaction is successfully deployed, it holds all the required information
   * [ ] Save data to common storage/outside of secure execution - just return
   * [ ] Prepare internal transaction calls - based on dApp output
 
+### Ensuring deterministic execution
+One of the decision to use `isolated-vm` was also to ensure deterministic execution on all nodes/hardware configurations. We will introduce the same logic as we have in the transaction validation mechanism:
+- internal message call `internal-trans action` will be a function injected into the `virtual-machine` engine at bootstrap time
+- store value call `save-value` will be injected during the bootstrap process
+
+```ts
+    // Get a Reference{} to the global object within the context.
+    let jail = context.global;
+
+    // This make the global object available in the context as `global`. We use `derefInto()` here
+    // because otherwise `global` would actually be a Reference{} object in the new isolate.
+    jail.setSync('global', jail.derefInto());
+
+    // The entire ivm module is transferable! We transfer the module to the new isolate so that we
+    // have access to the library from within the isolate.
+    jail.setSync('_ivm', ivm);
+
+    // We will create a basic `log` function for the new isolate to use.
+    jail.setSync('_internalTransfer', new ivm.Reference(function(...args) {
+        // WalletManager logic here
+        console.log(...args);
+    }));
+
+    // We will create a basic `log` function for the new isolate to use.
+    jail.setSync('_storeValue', new ivm.Reference(function(...args) {
+        // Storage logic here (also via wallet manager)
+        console.log(...args);
+    }));
+
+
+    // This will bootstrap the context. let bootstrap = isolate.compileScriptSync('new '+ function() {
+	// Grab a reference to the ivm module and delete it from global scope. Now this closure is the
+	// only place in the context with a reference to the module. The `ivm` module is very powerful
+	// so you should not put it in the hands of untrusted code.
+	let ivm = _ivm;
+	delete _ivm;
+
+	// Now we create the other half of the `log` function in this isolate. We'll just take every
+	// argument, create an external copy of it and pass it along to the log function above.
+	let internalTransfer = _internalTransfer;
+	delete _internalTransfer;
+	global.internalTransfer = function(...args) {
+		internalTransfer.applySync(undefined, args.map(arg => new ivm.ExternalCopy(arg).copyInto()));
+	};
+    
+    let storeValue = _storeValue;
+	delete _storeValue;
+	global.storeValue = function(...args) {
+		storeValue.applySync(undefined, args.map(arg => new ivm.ExternalCopy(arg).copyInto()));
+	};
+});
+
+// we execute and share running environments
+bootstrap.runSync(context);
+
+```
+
+
+
 ### dApp Interface
 
 ### Compilation of DApp
@@ -231,5 +290,6 @@ MIT License
 5. https://ethereum.stackexchange.com/questions/765/what-is-the-difference-between-a-transaction-and-a-call 
 6. https://github.com/laverdet/isolated-vm
 7. https://github.com/gianluca-venturini/isolated-vm-actors/blob/master/src/index.ts
-
+8. https://v8.dev
+9. https://v8docs.nodesource.com/
 
