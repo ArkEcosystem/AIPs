@@ -22,8 +22,7 @@
     - [Why?](#why)
     - [General overview](#general-overview)
         - [Deployment stage](#deployment-stage)
-        - [Forger: Forging stage/Confirmation stage](#forger-forging-stageconfirmation-stage)
-        - [Execution stage](#execution-stage)
+        - [Forger: Execution stage](#forger-execution-stage)
         - [Storage](#storage)
         - [Interfaces to other modules](#interfaces-to-other-modules)
         - [Rebuilding capability](#rebuilding-capability)
@@ -40,6 +39,7 @@
             - [Field descriptions](#field-descriptions-1)
     - [Core-vm module mechanics](#core-vm-module-mechanics)
         - [General checkpoints](#general-checkpoints)
+        - [Ensuring deterministic execution](#ensuring-deterministic-execution)
         - [dApp Interface](#dapp-interface)
         - [Compilation of DApp](#compilation-of-dapp)
         - [Execution of DApp](#execution-of-dapp)
@@ -229,25 +229,25 @@ One of the decision to use `isolated-vm` was also to ensure deterministic execut
 
 
     // This will bootstrap the context. let bootstrap = isolate.compileScriptSync('new '+ function() {
-	// Grab a reference to the ivm module and delete it from global scope. Now this closure is the
-	// only place in the context with a reference to the module. The `ivm` module is very powerful
-	// so you should not put it in the hands of untrusted code.
-	let ivm = _ivm;
-	delete _ivm;
+    // Grab a reference to the ivm module and delete it from global scope. Now this closure is the
+    // only place in the context with a reference to the module. The `ivm` module is very powerful
+    // so you should not put it in the hands of untrusted code.
+    let ivm = _ivm;
+    delete _ivm;
 
-	// Now we create the other half of the `log` function in this isolate. We'll just take every
-	// argument, create an external copy of it and pass it along to the log function above.
-	let internalTransfer = _internalTransfer;
-	delete _internalTransfer;
-	global.internalTransfer = function(...args) {
-		internalTransfer.applySync(undefined, args.map(arg => new ivm.ExternalCopy(arg).copyInto()));
-	};
-    
+    // Now we create the other half of the `log` function in this isolate. We'll just take every
+    // argument, create an external copy of it and pass it along to the log function above.
+    let internalTransfer = _internalTransfer;
+    delete _internalTransfer;
+    global.internalTransfer = function(...args) {
+      internalTransfer.applySync(undefined, args.map(arg => new ivm.ExternalCopy(arg).copyInto()));
+    };
+
     let storeValue = _storeValue;
-	delete _storeValue;
-	global.storeValue = function(...args) {
-		storeValue.applySync(undefined, args.map(arg => new ivm.ExternalCopy(arg).copyInto()));
-	};
+    delete _storeValue;
+    global.storeValue = function(...args) {
+      storeValue.applySync(undefined, args.map(arg => new ivm.ExternalCopy(arg).copyInto()));
+    };
 });
 
 // we execute and share running environments
