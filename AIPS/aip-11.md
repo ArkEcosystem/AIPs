@@ -34,7 +34,9 @@ The current status of protocol has several limitations that prevent from future 
 
 # Specifications
 
-**All numbers are stored as unsigned Least Endian forms.**
+**All numeric values are stored in unsigned little-endian form.**
+
+The preferred signature scheme will be Schnorr. Schnorr signatures are fixed 64 bytes long while ECDSA signatures vary between 70-72 bytes. The latter will still be supported just fine, although discouraged.
 
 ## General form (total header size excluding vendorfield: 50 bytes)
 
@@ -52,8 +54,6 @@ The current status of protocol has several limitations that prevent from future 
 | asset              | variable     | see details below                                                    |
 
 Version 0x01 will be notifying former use of protocol to serialise the tx before computing signatures. The transaction timestamp is replaced by a nonce.
-
-With AIP11 the preferred signature scheme is Schnorr. Schnorr signatures are fixed 64 bytes long. ECDSA signatures vary between 70-72 bytes and are still supported, although discouraged.
 
 ## Assets
 
