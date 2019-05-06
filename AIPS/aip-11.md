@@ -12,7 +12,7 @@
 
 # Abstract
 
-In order to move forward with the ark blockchain for future evolution, the transaction protocol needs to be upgraded.
+In order to move forward with the ARK blockchain for future evolution, the transaction protocol needs to be upgraded.
 Comment thread: https://github.com/ArkEcosystem/AIPs/issues/11
 
 # Motivation
@@ -20,7 +20,7 @@ Comment thread: https://github.com/ArkEcosystem/AIPs/issues/11
 The current status of protocol has several limitations that prevent from future development of services as envisioned on the roadmap:
 
 - impossibility to have cost efficient deserialisation, preventing from scalability of the network
-- `retention-replay` attack: a third part can prevent transaction from hitting blockchain inducing the transaction author to create a new transaction. However the transaction is still valid and could be included in the blockchain whenever in the future
+- `retention-replay` attack: a third party can prevent transaction from hitting blockchain inducing the transaction author to create a new transaction. However the transaction is still valid and could be included in the blockchain whenever in the future
 - impossible to upgrade transactions without hard fork / no support for private transactions
 - impossible to scale fees following the market price
 
@@ -44,15 +44,14 @@ The current status of protocol has several limitations that prevent from future 
 | version            | 1            | 0x02                                                                 |
 | network            | 1            | 0x17                                                                 |
 | type               | 1            | 0x00                                                                 |
-| nonce/timestamp    | 4            | 0x00293fa0                                                           |
+| nonce              | 8            | 0x00293fa0                                                           |
 | sender public key  | 33           | 0x025f81956d5826bad7d30daed2b5c8c98e72046c1ec8323da336445476183fb7ca |
 | fee                | 8            | 0x00000000000e7468                                                   |
 | vendorfield length | 1            | 0x0e                                                                 |
 | vendorfield        | 0-255        | 0x7468697320697320612074657374                                       |
 | payload            | variable     | see details below                                                    |
 
-In application, nonce is equivalent as formerly known timestamp and can be used.
-Version 0x01 will be notifying former use of protocol to serialise the tx before computing signatures.
+Version 0x01 will be notifying former use of protocol to serialise the tx before computing signatures. The transaction timestamp is replaced by a nonce.
 
 ## Payloads
 
@@ -82,35 +81,33 @@ In other words, if the block height is equal or bigger than the transaction expi
 | length          | 1            | 0x10 (minimum 0x03, maximum 0x14) |
 | username (utf8) | 3-20         | 0x6669786372797074                |
 
-**Type 3 (vote, 1 + 34N bytes)**
+**Type 3 (vote, 34 bytes)**
 
 | Description     | Size (bytes) | Example                                                                                                                                    |
 | --------------- | ------------ | :----------------------------------------------------------------------------------------------------------------------------------------- |
-| number of votes | 1            | 0x02                                                                                                                                       |
-| votes           | 34\*N        | 0x0103a02b9d5fdd1307c2ee4652ba54d492d1fd11a7d1bb3f3a44c4a05e79f19de933000380728436880a0a11eadf608c4d4e7f793719e044ee5151074a5f2d5d43cb9066 |
+| vote           | 34            | 0x0103a02b9d5fdd1307c2ee4652ba54d492d1fd11a7d1bb3f3a44c4a05e79f19de933000380728436880a0a11eadf608c4d4e7f793719e044ee5151074a5f2d5d43cb9066 |
 
-`Votes` is a concatenation of votes of the form
+A `Vote` consists of:
 
 - Vote flag (0x01 if vote, 0x00 if unvote)
 - Public key of the delegate
-  In the case of ark only there is only one possible vote, so the payload is maximum 35 bytes.
 
-**Type 4 (multisignature registration, 3 + 33N bytes)**
+**Type 4 (multisignature registration, 1 + 33N bytes)**
 
 | Description          | Size (bytes) | Example                                                                                                                                                                                                  |
 | -------------------- | ------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| minimum              | 1            | 0x02                                                                                                                                                                                                     |
-| number of signatures | 1            | 0x03                                                                                                                                                                                                     |
-| lifetime (hours)     | 1            | 0x1a                                                                                                                                                                                                     |
-| Public keys          | 33\*N        | 0x03a02b9d5fdd1307c2ee4652ba54d492d1fd11a7d1bb3f3a44c4a05e79f19de9330380728436880a0a11eadf608c4d4e7f793719e044ee5151074a5f2d5d43cb906603a02b9d5fdd1307c2ee4652ba54d492d1fd11a7d1bb3f3a44c4a05e79f19de933 |
+| min participants     | 1            | 0x02 (minimum 0x01, maximum 0x10)                                                                                                                                                         
+| public keys          | 33\*N        | 0x03a02b9d5fdd1307c2ee4652ba54d492d1fd11a7d1bb3f3a44c4a05e79f19de9330380728436880a0a11eadf608c4d4e7f793719e044ee5151074a5f2d5d43cb906603a02b9d5fdd1307c2ee4652ba54d492d1fd11a7d1bb3f3a44c4a05e79f19de933 |
 
-`Public keys` are the concatenation of public keys of the people signing on this account.
+`Public keys` is the concatenation of the public key of all participants of the multi signature wallet.
+Limited to a maximum of 16 participants for now.
 
-**Type 5 (IPFS, 1 + 0-255 bytes)**
+Also see [AIP18](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-16.md)
+
+**Type 5 (IPFS, 0-255 bytes)**
 
 | Description   | Size (bytes) | Example            |
 | ------------- | ------------ | :----------------- |
-| Length of dag | 1            | 0xea               |
 | dag           | 0-255        | 0x6669786372797074 |
 
 **Type 6 (timelock transfer 34 bytes)**
@@ -118,28 +115,25 @@ In other words, if the block height is equal or bigger than the transaction expi
 | Description       | Size (bytes) | Example                                      |
 | ----------------- | ------------ | :------------------------------------------- |
 | amount            | 8            | 0x8096980000000000                           |
-| timelock type     | 1            | 0x00 (timestamp), 0x01 (blockheight)         |
+| timelock type     | 1            | 0x00 (block height)                          |
 | timelock          | 4            | 0x0087e5a8                                   |
-| recipient address | 21           | 0x171dfc69b54c7fe901e91d5a9ab78388645e2427ea |
+| recipient address | 21           | DFJ5Z51F1euNNdRUQJKQVdG4h495LZkc6T |
 
-`Timelock type` defines different types for `timelock` value field (current supported types are `0:for timestamp type` timelock and `1:for blockheight type` timelock value). If timelock type=0, timelock value shall be specified with timestamp, and if type=1, timelock value shall be specified with blockheight.
-
-- TimeLockType=0, timelock value=timestamp: transaction will be forged when timestamp is passed
-- TimeLockType=1, timelock value=blockHeight: transaction will be forged when blockchain reaches height specified at timelock value for blockHeight
+`Timelock type` defines different types for `timelock` value field (current supported types are `0:for block height` timelock value). If timelock type=0, timelock value shall be specified in block height.
 
 **Type 7 (multipayment, 2-65546 bytes)**
 
 | Description | Size (bytes) | Example                                      |
 | ----------- | ------------ | :------------------------------------------- |
-| N outputs   | 2            | 0x0021                                       |
+| N payments  | 2            | 0x0021                                       |
 | amount1     | 8            | 0x8096980000000000                           |
-| address1    | 21           | 0x171dfc69b54c7fe901e91d5a9ab78388645e2427ea |
+| address1    | 21           | DFJ5Z51F1euNNdRUQJKQVdG4h495LZkc6T |
 | ...         | ...          | ...                                          |
 | amountN     | 8            | 0x8096980000000000                           |
-| addressN    | 21           | 0x171dfc69b54c7fe901e91d5a9ab78388645e2427ea |
+| addressN    | 21           | DFJ5Z51F1euNNdRUQJKQVdG4h495LZkc6T |
 
 - N > 1 (ideally fees should be higher than type 0 if N < 2)
-- Max 2259 possible outputs. first versions of network will cap this max
+- Maximum of possible payments per transaction: 2^16 / 29 or 2259. Initially capped via milestone.
 
 **Type 8 (delegate resignation)**
 
@@ -147,10 +141,9 @@ In other words, if the block height is equal or bigger than the transaction expi
 | ----------- | ------------ | :------ |
 | No payload  | 0            | .       |
 
-basically this will make:
-
-- impossible to vote for this delegate anymore
-- impossible to be selected as active delegate
+The sender must be a delegate. Once forged the delegate is irreversibly deactivated:
+- no longer possible to vote for this delegate
+- no longer treated as an active delegates, regardless of vote balance
 
 ## Dynamic Fees calculation
 
