@@ -49,15 +49,15 @@ The current status of protocol has several limitations that prevent from future 
 | fee                | 8            | 0x00000000000e7468                                                   |
 | vendorfield length | 1            | 0x0e                                                                 |
 | vendorfield        | 0-255        | 0x7468697320697320612074657374                                       |
-| payload            | variable     | see details below                                                    |
+| asset              | variable     | see details below                                                    |
 
 Version 0x01 will be notifying former use of protocol to serialise the tx before computing signatures. The transaction timestamp is replaced by a nonce.
 
 With AIP11 the preferred signature scheme is Schnorr. Schnorr signatures are fixed 64 bytes long. ECDSA signatures vary between 70-72 bytes and are still supported, although discouraged.
 
-## Payloads
+## Assets
 
-The payload is defined according to the type of the transaction. This may be changed with a version change in the future.
+The asset is defined according to the type of the transaction. This may be changed with a version change in the future.
 
 **Type 0 (transfer, 33bytes)**
 
