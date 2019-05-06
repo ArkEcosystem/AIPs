@@ -53,6 +53,8 @@ The current status of protocol has several limitations that prevent from future 
 
 Version 0x01 will be notifying former use of protocol to serialise the tx before computing signatures. The transaction timestamp is replaced by a nonce.
 
+With AIP11 the preferred signature scheme is Schnorr. Schnorr signatures are fixed 64 bytes long. ECDSA signatures vary between 70-72 bytes and are still supported, although discouraged.
+
 ## Payloads
 
 The payload is defined according to the type of the transaction. This may be changed with a version change in the future.
