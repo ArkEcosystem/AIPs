@@ -6,7 +6,7 @@ type: Standards Track
 category: Core/Protocol
 status: Active
 created: 2018-05-24
-updated: 2018-08-21
+updated: 2019-05-06
 ```
 
 History
@@ -14,6 +14,7 @@ History
 - 2018-05-01 inital content (@fix)
 - 2018-08-21 moving to AIP folder from issues (@kristjank)
 - 2019-02-05 clarified technical aspects and processes (@fix)
+- 2019-05-06 updated to reflect actual implementation (@supaiku0)
 
 Abstract
 ========
@@ -31,7 +32,7 @@ This protocol has the advantage over p2sh or smart contract in term of governanc
 In essence the multisignature registration transaction contains the set of public keys, the signatures of the owners of these keys and the parameters of the multisign (minimum signatures in m/n as well as lifetime).
 
 Limitations:
-- Multisignatures are not upgradeable,
+- multisignatures are not upgradeable,
 - multisignatures cannot be resigned,
 - multisignatures contain one single public key owner to conform to normal addressing system,
 - lifetime parameter does not prevent from performing filling attacks on the transaction pool.
@@ -49,8 +50,12 @@ Legacy protocol:
 
 New protocol:
 - `lifetime` is removed from protocol together with above rule 3.
-- Address is derived from a combination of committing public keys, removing the need of the owner's public key `base58_check(version + ripemd160(sha256(concat(min, pk1, ..., pkn))))`.
-- when creating a multisign address, there is no need to publish publickeys, the wallet can start to receive funds on the created address
-- in order to remove funds, the first transaction should contain: `min` and (`pk1`, ..., `pkn`) as an asset. Part of the validating process is to be able to match the address with this provided asset. Ordering of pk is important.
-- the signatures scheme is the combo (i, Si) (i being the index of the pki in the multisign), so it is fast to verify against the right Pk
-- technically the multisign asset is needed only once, so no need to send for subsequent transactions.
+- The sender's wallet is no longer modified, instead a multi signature registration creates a new wallet
+- The multi signature wallet's public key `pkms` is derived as follows:
+    - create a public key from the seed `hex(min)`
+    - add together all public keys (`concat(pkMin + pk1 + ... + pkn)`)
+    - the order of public keys is not important
+- The multi signature address is then derived as usual `base58_check(version + hash160(pkms))` 
+- In order to remove funds, outgoing transactions have to be signed by `min` participants
+- The signatures scheme is the combo (i, Si) (`i` being the index of the ith public key in the multi signature asset), so it is fast to verify against the right Pk
+- In theory n-of-n multi signature wallets can leverage the `MuSig` algorithm making it possible to hide all participants (a sophisticated ritual)
