@@ -5,7 +5,7 @@
   Status: Draft
   Type: Standards Track
   Created: 2017-09-25
-  Last Update: 2018-12-04
+  Last Update: 2019-05-07
 </pre>
 
 ![Ark Improvement Proposals](https://cdn-images-1.medium.com/max/2000/1*vD5i8JJVGjvIAdOxSi-iFA.png)
@@ -37,7 +37,7 @@ The current status of protocol has several limitations that prevent from future 
 
 The preferred signature scheme will be Schnorr. Schnorr signatures are fixed 64 bytes long while ECDSA signatures vary between 70-72 bytes. The latter will still be supported just fine, although discouraged.
 
-## General form (total header size excluding vendorfield: 50 bytes)
+## General form (total header size excluding vendorfield: 53 bytes)
 
 | Description        | Size (bytes) | Example                                                              |
 | ------------------ | ------------ | :------------------------------------------------------------------- |
