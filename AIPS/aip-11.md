@@ -103,7 +103,7 @@ A `Vote` consists of:
 `Public keys` is the concatenation of the public key of all participants of the multi signature wallet.
 Limited to a maximum of 16 participants for now.
 
-Also see [AIP18](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-16.md)
+Also see [AIP18](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-18.md)
 
 **Type 5 (IPFS, 0-255 bytes)**
 
