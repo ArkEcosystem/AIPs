@@ -27,7 +27,6 @@ The current status of protocol has several limitations that prevent from future 
 # Rationale
 
 - Fast serialisation and deserialisation
-- Compatible with former version of protocol (0xff head flag)
 - Lay groundwork for future upgrade without the need of a fork
 - Able to validate custom private transactions
 - Prevent “retention-replay” attack scheme
@@ -42,7 +41,6 @@ The preferred signature scheme will be Schnorr. Schnorr signatures are fixed 64 
 
 | Description        | Size (bytes) | Example                                                              |
 | ------------------ | ------------ | :------------------------------------------------------------------- |
-| header             | 1            | 0xff                                                                 |
 | version            | 1            | 0x02                                                                 |
 | network            | 1            | 0x17                                                                 |
 | type               | 1            | 0x00                                                                 |
