@@ -51,7 +51,8 @@ The preferred signature scheme will be Schnorr. Schnorr signatures are fixed 64 
 | vendorfield        | 0-255        | 0x7468697320697320612074657374                                       |
 | asset              | variable     | see details below                                                    |
 
-Version 0x01 will be notifying former use of protocol to serialise the tx before computing signatures. The transaction timestamp is replaced by a nonce.
+Version 0x01 is used for the legacy v1 signature format. Starting at 0x02 all transactions are going to follow
+the new signature format. Additionally, the transaction timestamp is going to be replaced by a nonce.
 
 ## Assets
 
