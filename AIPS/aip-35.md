@@ -1,42 +1,43 @@
 ---
-  AIP: *number*
-  Title: *title of the AIP*
-  Authors: *Firstname LastName <email@domain.com>*
-  Status: *Draft, Rejected or Active*
-  Discussions-To: https://github.com/arkecosystem/AIPS/issues
-  Address: *Ark address used to collect votes for the specific AIP*
-  Type: *Standards (Applications, Consensus, Core, Network, Protocol)/Process/Informational*
-  Category *only required for Standards Track: <Applications | Consensus | Core | Network | Protocol>
-  Created: *YYYY-MM-DD*
-  Last Update: *YYYY-MM-DD*
-  Requires (*optional): <AIP number(s)>
-  Replaces (*optional): <AIP number(s)>
---- 
+  AIP: 35
+  Title: Plugin Package Manager
+  Authors: *Brian Faust*
+  Status: *Draft*
+  Discussions-To: n/a
+  Type: *Standards Track*
+  Category: Core
+  Created: *2019-05-19*
+  Last Update: *2019-05-19*
+---
 
-## Preamble
-RFC 822 style headers containing meta-data about the AIP, including the AIP number, a short descriptive title (limited to a maximum of 44 characters), the names, and optionally the contact info for each author, etc.
+> This AIP is a draft and subject to a lot of change until the development of Core 3.0 begins.
 
 ## Abstract
-Short (~200 word) description of the technical issue being addressed.
 
-## Copyright
-Each AIP must be licensed under the MIT License.
+This AIP proposes the implementation of a package manager specifically for Core and ARK that can rely on information stored on the blockchain.
 
 ## Motivation
-The motivation is critical for AIPs that want to change the Ark protocol. It should clearly explain why the existing protocol specification is inadequate to address the problem that the AIP solves. AIP submissions without sufficient motivation may be rejected outright.
+
+Core is an application developed in TypeScript so the obvious solution to the distribution of plugins is to use `npm` which works for everything that is free.
+
+As the ecosystem grows there will eventually be paid plugins and there should be an easy way to distribute, manage and purchase them via the blockchain.
 
 ## Specification
-The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations.
 
-## Rationale
-The rationale fleshes out the specification by describing what motivated the design and why particular design decisions were made. It should describe alternate designs that were considered and related work, e.g. how the feature is supported in other languages.
+The package manager will need to be able to store packages for a fee on the blockchain where the fee should vary between free and paid plugins. Besides the fee it should also be possible to specify a trial period and requirements for the package to be installed like a minimum version of Core or dependence on other plugins.
 
-The rationale should provide evidence of consensus within the community and discuss important objections or concerns raised during discussion.
+After a plugin is published on the blockchain it should be possible to install it via `ark plugin:install @vendor/pkg` which will first check if `@vendor/pkg` exists on the blockchain and if that fails it will check the `npm` registry for a normal package.
 
-## Backwards Compatibility
-All AIPs that introduce backwards incompatibilities must include a section describing these incompatibilities and their severity. The AIP must explain how the author proposes to deal with these incompatibilities. AIP submissions without a sufficient backwards compatibility treatise may be rejected outright.
+If `@vendor/pkg` doesn't exist on the blockchain then it's as simple as installing a package via `npm` if it does exist there, otherwiwse `@vendor/pkg` a few actions have to be taken.
 
-## Reference Implementation
-The reference implementation must be completed before any AIP is given status "Final", but it need not be completed before the AIP is accepted. It is better to finish the specification and rationale first and reach consensus on it before writing code.
+1. Check if the plugin requires a paid license. If it does we have to check if the wallet of the node maintainer contains a transaction for a license purchase. If it does we will install the plugin, otherwise we will check if a trial period is granted by the plugin.
+2. Check if the plugin has any requirements like a specific Core version or dependency on other plugins. If a required plugin is missing the installation has to fail.
+3. Register and configure the plugin via a UI like the Core CLI.
 
-The final implementation must include test code and documentation appropriate for the Ark protocol.
+A requirement for all of this to work is the introduction of 2 new transacton types that allow the publishment and purchase of plugins.
+
+## Implementation
+
+> This AIP relies on a lot infrastructure changes in Core 3.0 being implemented first.
+
+> An example implementation will be provided as development gets closer to Core 3.0
