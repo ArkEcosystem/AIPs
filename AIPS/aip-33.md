@@ -36,7 +36,7 @@ In order for voting to work but still be flexible we need 3 main things from plu
 
 ### Contract
 
-> All voting plugins will need to implement the `IVotingSystem` contract in order for Core to be able to provide a consistent behaviour for forging lists.
+> All voting plugins will need to implement the `ISystem` contract in order for Core to be able to provide a consistent behaviour for forging lists.
 
 ```ts
 interface ISystem {
