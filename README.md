@@ -41,3 +41,6 @@ When your Pull Request is merged you will continue to work on the AIP together w
 | [29](AIPS/aip-29.md) | Generic Transaction Interface | Brian Faust, Kristjan Kosic, Joshua Noack | Standard  | Core / Protocol | [Draft](/AIPs/aip-29.md) |
 | [31](AIPS/aip-31.md) | Command Line Interface | Brian Faust | Standard  | Core / Protocol | [Draft](/AIPS/aip-31.md) |
 | [32](AIPS/aip-32.md) | Plugin System Improvements | Brian Faust | Standard  | Core / Protocol | [Draft](/AIPS/aip-32.md) |
+| [33](AIPS/aip-33.md) | Modular Voting Logic | Brian Faust, Joshua Noack | Standard  | Core / Protocol | [Draft](/AIPS/aip-33.md) |
+| [34](AIPS/aip-34.md) | Modular Consensus Logic | Brian Faust, Joshua Noack | Standard  | Core / Protocol | [Draft](/AIPS/aip-34.md) |
+| [35](AIPS/aip-35.md) | Plugin Package Manager | Brian Faust | Standard  | Core | [Draft](/AIPS/aip-35.md) |
