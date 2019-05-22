@@ -22,7 +22,7 @@ At the moment all logic that relates to how voting works and delegates are ranke
 
 ## Specification
 
-In order to centralise all logic that involves voting and ranking of delegates a `core-voting` package will be implemented that will provide a service that will expose a small surface public API to other pckages and contracts (interfaces) that need to be satisfied by the concrete implementations. The contracts will guarantee that we always receive the same type of data no mattter how the underlying voting logic works as the implementation shouldn't be a concern of core as long as the data it receives matches what we need to know who is allowed to forge blocks.
+In order to centralise all logic that involves voting and ranking of delegates a `core-voting` package will be implemented that will provide a service that will expose a small surface public API to other packages and contracts (interfaces) that need to be satisfied by the concrete implementations. The contracts will guarantee that we always receive the same type of data no matter how the underlying voting logic works as the implementation shouldn't be a concern of core as long as the data it receives matches what we need to know who is allowed to forge blocks.
 
 A first implementation of `core-voting` will be `core-voting-ark` (name is subject to change) which will contain all of the voting logic that comes by default with core and is currently on ARK Mainnet and all other ARK based networks.
 
