@@ -12,7 +12,7 @@
 --- 
 
 ## Abstract
-Sybil attacks are an unsolved problem in cryptocurrency networks. Although such attacks are relatively benign in PoW networks they pose a significant threat in a (D)PoS network because SPV users and exchanges depending on public APIs can become targets of sybil attacks and result in loss of funds. This article discusses a strategy that can be used to increase the cost of carrying out Sybil attacks in (D)PoS networks and how that can be used as a deterrent against wannabe attackers. This approach essentially adds a dynamically set friction between the relaying of blocks and API data in a way that it raises the cost of a sybil attack while still ensuring that forging nodes don't get overencumbered.
+Sybil attacks are an unsolved problem in cryptocurrency networks. Although such attacks are relatively benign in PoW networks they pose a significant threat in a (D)PoS network because SPV users and exchanges depending on public APIs can become targets of sybil attacks and may end up losing funds. This article discusses a strategy that can be used to increase the cost of carrying out Sybil attacks in (D)PoS networks and how that can be used as a deterrent against wannabe attackers. This approach essentially adds a dynamically set friction between the relaying of blocks and API data in a way that it raises the cost of a sybil attack while still ensuring that forging nodes don't get overencumbered.
 
 ## Motivation
 In traditional (D)PoS systems it is difficult for SPV wallets and API users to ensure if the data received from a relay represents the correct chain or if it's some fake chain being used to feed the user invalid data to attack them. To maximize the chances of success of such an exploit attackers spam the network with many nodes or relays that run their malicious code instead of the honest code that respects the protocol. Generally this takes the form of running a cloud based process where one machine can be mapped to thousands of IPs so that legitimate nodes are eclipsed by the sheer number of malicious nodes in the network. As a result an IP ban is not enough to defend against the attack.
@@ -40,10 +40,9 @@ The detailed steps involved are as follows:
 * If either one of these is invalid then the server is not dependable and the client can switch to another peer
 * If both tests passed and the nonce and signature are valid then client rebroadcasts all received data including height, block hash, challenge, solution nonce, and signature to other nodes of the network
 * The number of nodes to be broadcast to is determined based on network size and deterrence factor
-* The receiving nodes in the network check if the data provided to the client was incorrect. If so then slash the relay's stake
+* The receiving nodes in the network check if the data provided to the client was incorrect. If so then slash the relay's stake and time out the relevant nodes registered against that public key
 * If the relay has no stake then time it out
-* Forging delegates don't need to solve PoW and they don't get slashed
-
+* Delegates that are currently in forging positions don't need to solve PoW and they don't get slashed
 
 ## Rationale
 The main idea here can be summarized shortly as adding friction for all relay operations i.e forwarding of blocks and API calls need the caller and relay both to solve 0.1 seconds of PoW so that executing a sybil attack is no longer free and instead creates a lot of upfront investment in energy. As an added benefit this process can also make it possible to follow the longest chain rule and make fork resolution easier. Additionally it prevents the race condition caused by selecting leader based on PoW.
