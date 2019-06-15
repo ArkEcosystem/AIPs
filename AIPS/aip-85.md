@@ -6,7 +6,7 @@
   Discussions-To: https://github.com/ArkEcosystem/AIPs/issues/85
   Address: *Ark address used to collect votes for the specific AIP*
   Type: *Standards*
-  Category *Protocol>
+  Category: *Protocol*
   Created: *2019-05-07*
   Last Update: *2019-06-15*
 --- 
