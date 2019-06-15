@@ -51,7 +51,7 @@ Some points about how this mechanism "should" be used in an idea scenario:
 * Relay runners stake a small amount of ark in order to be part of the network
 * PoW is kept small in normal cases
 * If a sudden jump in number of relays is detected then relay difficulty can be increased by delegates. This can be thought of as being similar to fever response of the body where the whole body suffers a little bit in order to kill an invasive threat.
-* PoW only increases as network has higher usage and it might be useful to reduce the PoW difficulty as more and more legitimate relays join the network
+* Overall PoW only increases as network has higher usage and it might be useful to reduce the PoW difficulty as more and more legitimate relays join the network
 * Parameters are setup so that network behaves nominally in the absence of an attack
 
 One concern using this approach is that IoT based low power devices might not be able to solve the PoW requirement. To solve that issue it might be warranted to attach an additional variable in the data field that is established during the handshake that exempts both parties from solving the PoW challenge. However this field will essentially revert the network into the way it works right now and the added security offered by this approach isn't leveraged at all. 
