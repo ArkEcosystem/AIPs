@@ -47,3 +47,5 @@ When your Pull Request is merged you will continue to work on the AIP together w
 | [81](AIPS/aip-81.md) | Core Virtual Machine | Kristjan Kosic | Standard  | Protocol | [Draft](/AIPS/aip-81.md) |
 | [85](AIPS/aip-85.md) | Sybil deterrence via relay friction | mak | Standard  | Protocol | [Draft](/AIPS/aip-85.md) |
 | [102](AIPS/aip-102.md) | Hashed Time-Locked Contracts | ARK.io Team | Standard  | Protocol | [Draft](/AIPS/aip-102.md) |
+| [103](AIPS/aip-103.md) | BridgeChain Registration Types | ARK.io Team | Standard  | Protocol | [Draft](/AIPS/aip-103.md) |
+
