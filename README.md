@@ -44,4 +44,6 @@ When your Pull Request is merged you will continue to work on the AIP together w
 | [33](AIPS/aip-33.md) | Modular Voting Logic | Brian Faust, Joshua Noack | Standard  | Core / Protocol | [Draft](/AIPS/aip-33.md) |
 | [34](AIPS/aip-34.md) | Modular Consensus Logic | Brian Faust, Joshua Noack | Standard  | Core / Protocol | [Draft](/AIPS/aip-34.md) |
 | [35](AIPS/aip-35.md) | Plugin Package Manager | Brian Faust | Standard  | Core | [Draft](/AIPS/aip-35.md) |
+| [81](AIPS/aip-81.md) | Core Virtual Machine | Kristjan Kosic | Standard  | Protocol | [Draft](/AIPS/aip-81.md) |
 | [85](AIPS/aip-85.md) | Sybil deterrence via relay friction | mak | Standard  | Protocol | [Draft](/AIPS/aip-85.md) |
+| [102](AIPS/aip-102.md) | Hashed Time-Locked Contracts | ARK.io Team | Standard  | Protocol | [Draft](/AIPS/aip-102.md) |
