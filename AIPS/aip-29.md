@@ -7,7 +7,7 @@
   Type: *Standards Track*
   Category: Core
   Created: *2019-01-21*
-  Last Update: *2019-01-21*
+  Last Update: *2019-08-07*
 ---
 
 ## Abstract
@@ -30,11 +30,11 @@ The `Transaction` abstract on a very basic level would look like the following.
 
 ```ts
 export abstract class Transaction {
-    public static type: TransactionTypes = null;
+    public static type: number = undefined;
+    public static typeGroup: number = undefined;
+    public static key: string = undefined;
 
-    public static fromHex(hex: string): Transactions;
-    public static fromData(data: ITransactionData): Transactions;
-    public static toBytes(data: ITransactionData): Buffer;
+    protected static defaultStaticFee: BigNumber = BigNumber.ZERO;
 
     public abstract serialize(): ByteBuffer;
     public abstract deserialize(buf: ByteBuffer): void;
@@ -61,16 +61,28 @@ A very basic `TransactionHandler` could look like the following:
 export interface ITransactionHandler {
     getConstructor(): TransactionConstructor;
 
-    canBeApplied(transaction: Transaction, wallet: Wallet, walletManager?: IWalletManager): boolean;
-    applyToSender(transaction: Transaction, wallet: Wallet): void;
-    applyToRecipient(transaction: Transaction, wallet: Wallet): void;
-    revertForSender(transaction: Transaction, wallet: Wallet): void;
-    revertForRecipient(transaction: Transaction, wallet: Wallet): void;
-    apply(transaction: Transaction, wallet: Wallet): void;
-    revert(transaction: Transaction, wallet: Wallet): void;
+    dependencies(): ReadonlyArray<TransactionHandlerConstructor>;
+    walletAttributes(): ReadonlyArray<string>;
+    bootstrap(connection: Database.IConnection, walletManager: State.IWalletManager): Promise<void>;
+    isActivated(): Promise<boolean>;
 
-    canEnterTransactionPool(data: ITransactionData, guard: ITransactionGuard): boolean;
-    emitEvents(transaction: Transaction, emitter: EventEmitter): void;
+    dynamicFee(transaction: Interfaces.ITransaction, addonBytes: number, satoshiPerByte: number): Utils.BigNumber;
+
+    throwIfCannotBeApplied(
+        transaction: Interfaces.ITransaction,
+        wallet: State.IWallet,
+        databaseWalletManager: State.IWalletManager,
+    ): Promise<void>;
+    
+    applyToSender(transaction: Interfaces.Transaction, wallet: Wallet): Promise<void>;
+    applyToRecipient(transaction: Interfaces.Transaction, wallet: Wallet): Promise<void>;
+    revertForSender(transaction: Interfaces.Transaction, wallet: Wallet): Promise<void>;
+    revertForRecipient(transaction: Interfaces.Transaction, wallet: Wallet): Promise<void>;
+    apply(transaction: Interfaces.Transaction, wallet: Wallet): Promise<void>;
+    revert(transaction: Interfaces.Transaction, wallet: Wallet): Promise<void>;
+
+    canEnterTransactionPool(data: Interfaces.ITransactionData, pool: TransactionPool.IConnection, processor: TransactionPool.IProcessor): Promise<boolean>;
+    emitEvents(transaction: Interfaces.Transaction, emitter: EventEmitter): void;
 }
 ```
 A `TransactionHandler` will tell Core for example how a transaction type operates on wallets and what requirements must be met in order to enter the `TransactionPool`.
@@ -80,7 +92,11 @@ Implementing transaction types will be easier as their logic is isolated and boi
 
 ```ts
 export class TransferTransaction extends Transaction {
-    public static type: TransactionTypes = TransactionTypes.Transfer;
+    public static typeGroup: number = TransactionTypeGroup.Core;
+    public static type: number = TransactionType.Transfer;
+    public static key: string = "transfer";
+
+    protected static defaultStaticFee: BigNumber = BigNumber.make("10000000");
 
     public static getSchema(): schemas.TransactionSchema {
         // This represents an AJV schema (https://github.com/epoberezkin/ajv)
@@ -115,104 +131,199 @@ To reduce boilerplate and ease the implementation of custom transaction handlers
 
 ```ts
 export abstract class TransactionHandler implements ITransactionHandler {
-    public abstract getConstructor(): TransactionConstructor;
+    public abstract getConstructor(): Transactions.TransactionConstructor;
+
+    public abstract dependencies(): ReadonlyArray<TransactionHandlerConstructor>;
+
+    public abstract walletAttributes(): ReadonlyArray<string>;
+
+    public abstract async bootstrap(
+        connection: Database.IConnection,
+        walletManager: State.IWalletManager,
+    ): Promise<void>;
+
+    public abstract async isActivated(): Promise<boolean>;
+
+    public dynamicFee(
+        transaction: Interfaces.ITransaction,
+        addonBytes: number,
+        satoshiPerByte: number,
+    ): Utils.BigNumber {
+        addonBytes = addonBytes || 0;
+
+        if (satoshiPerByte <= 0) {
+            satoshiPerByte = 1;
+        }
+
+        const transactionSizeInBytes: number = transaction.serialized.length / 2;
+        return Utils.BigNumber.make(addonBytes + transactionSizeInBytes).times(satoshiPerByte);
+    }
 
     // Common wallet logic for all transaction types
-    public canBeApplied(transaction: Transaction, wallet: Wallet, walletManager?: IWalletManager): boolean {
-        const { data } = transaction;
-        if (wallet.multisignature) {
-            throw new UnexpectedMultiSignatureError();
+     public async throwIfCannotBeApplied(
+        transaction: Interfaces.ITransaction,
+        sender: State.IWallet,
+        databaseWalletManager: State.IWalletManager,
+    ): Promise<void> {
+        const data: Interfaces.ITransactionData = transaction.data;
+
+        if (Utils.isException(data)) {
+            return;
+        }
+
+        if (data.version > 1 && data.nonce.isLessThanOrEqualTo(sender.nonce)) {
+            throw new UnexpectedNonceError(data.nonce, sender.nonce, false);
         }
 
         if (
-            wallet.balance
+            sender.balance
                 .minus(data.amount)
                 .minus(data.fee)
-                .isLessThan(0)
+                .isNegative()
         ) {
             throw new InsufficientBalanceError();
         }
 
-        if (data.senderPublicKey !== wallet.publicKey) {
+        if (data.senderPublicKey !== sender.publicKey) {
             throw new SenderWalletMismatchError();
         }
 
-        if (wallet.secondPublicKey) {
-            if (!crypto.verifySecondSignature(data, wallet.secondPublicKey)) {
+        if (sender.hasSecondSignature()) {
+            // Ensure the database wallet already has a 2nd signature, in case we checked a pool wallet.
+            const dbSender: State.IWallet = databaseWalletManager.findByPublicKey(data.senderPublicKey);
+
+            if (!dbSender.hasSecondSignature()) {
+                throw new UnexpectedSecondSignatureError();
+            }
+
+            const secondPublicKey: string = dbSender.getAttribute("secondPublicKey");
+            if (!Transactions.Verifier.verifySecondSignature(data, secondPublicKey)) {
                 throw new InvalidSecondSignatureError();
             }
-        } else {
-            if (data.secondSignature || data.signSignature) {
-                if (!configManager.getMilestone().ignoreInvalidSecondSignatureField) {
-                    throw new UnexpectedSecondSignatureError();
-                }
+        } else if (data.secondSignature || data.signSignature) {
+            const isException =
+                Managers.configManager.get("network.name") === "devnet" &&
+                Managers.configManager.getMilestone().ignoreInvalidSecondSignatureField;
+            if (!isException) {
+                throw new UnexpectedSecondSignatureError();
             }
         }
 
-        return true;
-    }
+        if (sender.hasMultiSignature()) {
+            // Ensure the database wallet already has a multi signature, in case we checked a pool wallet.
+            const dbSender: State.IWallet = databaseWalletManager.findByPublicKey(transaction.data.senderPublicKey);
 
-    public applyToSender(transaction: Transaction, wallet: models.Wallet): void {
-        const { data } = transaction;
-        if (data.senderPublicKey === wallet.publicKey || crypto.getAddress(data.senderPublicKey) === wallet.address) {
-            wallet.balance = wallet.balance.minus(data.amount).minus(data.fee);
+            if (!dbSender.hasMultiSignature()) {
+                throw new UnexpectedMultiSignatureError();
+            }
 
-            this.apply(transaction, wallet);
-
-            wallet.dirty = true;
+            if (!dbSender.verifySignatures(data, dbSender.getAttribute("multiSignature"))) {
+                throw new InvalidMultiSignatureError();
+            }
+        } else if (transaction.type !== Enums.TransactionType.MultiSignature && transaction.data.signatures) {
+            throw new UnexpectedMultiSignatureError();
         }
     }
 
-    public applyToRecipient(transaction: Transaction, wallet: models.Wallet): void {
-        const { data } = transaction;
-        if (data.recipientId === wallet.address) {
-            wallet.balance = wallet.balance.plus(data.amount);
-            wallet.dirty = true;
+    public async apply(transaction: Interfaces.ITransaction, walletManager: State.IWalletManager): Promise<void> {
+        await this.applyToSender(transaction, walletManager);
+        await this.applyToRecipient(transaction, walletManager);
+    }
+
+    public async revert(transaction: Interfaces.ITransaction, walletManager: State.IWalletManager): Promise<void> {
+        await this.revertForSender(transaction, walletManager);
+        await this.revertForRecipient(transaction, walletManager);
+    }
+
+    public async applyToSender(
+        transaction: Interfaces.ITransaction,
+        walletManager: State.IWalletManager,
+    ): Promise<void> {
+        const sender: State.IWallet = walletManager.findByPublicKey(transaction.data.senderPublicKey);
+        const data: Interfaces.ITransactionData = transaction.data;
+
+        if (Utils.isException(data)) {
+            walletManager.logger.warn(`Transaction forcibly applied as an exception: ${transaction.id}.`);
+        }
+
+        await this.throwIfCannotBeApplied(transaction, sender, walletManager);
+
+        if (data.version > 1) {
+            if (!sender.nonce.plus(1).isEqualTo(data.nonce)) {
+                throw new UnexpectedNonceError(data.nonce, sender.nonce, false);
+            }
+
+            sender.nonce = data.nonce;
+        }
+
+        const newBalance: Utils.BigNumber = sender.balance.minus(data.amount).minus(data.fee);
+
+        if (process.env.CORE_ENV === "test") {
+            assert(Utils.isException(transaction.data) || !newBalance.isNegative());
+        } else {
+            assert(!newBalance.isNegative());
+        }
+
+        sender.balance = newBalance;
+    }
+
+    public async revertForSender(
+        transaction: Interfaces.ITransaction,
+        walletManager: State.IWalletManager,
+    ): Promise<void> {
+        const sender: State.IWallet = walletManager.findByPublicKey(transaction.data.senderPublicKey);
+        const data: Interfaces.ITransactionData = transaction.data;
+
+        sender.balance = sender.balance.plus(data.amount).plus(data.fee);
+
+        if (data.version > 1) {
+            if (!sender.nonce.isEqualTo(data.nonce)) {
+                throw new UnexpectedNonceError(data.nonce, sender.nonce, true);
+            }
+
+            sender.nonce = sender.nonce.minus(1);
         }
     }
 
-    public revertForSender(transaction: Transaction, wallet: models.Wallet): void {
-        const { data } = transaction;
-        if (data.senderPublicKey === wallet.publicKey || crypto.getAddress(data.senderPublicKey) === wallet.address) {
-            wallet.balance = wallet.balance.plus(data.amount).plus(data.fee);
+    public abstract async applyToRecipient(
+        transaction: Interfaces.ITransaction,
+        walletManager: State.IWalletManager,
+    ): Promise<void>;
 
-            this.revert(transaction, wallet);
-
-            wallet.dirty = true;
-        }
-    }
-
-    public revertForRecipient(transaction: Transaction, wallet: models.Wallet): void {
-        const { data } = transaction;
-        if (data.recipientId === wallet.address) {
-            wallet.balance = wallet.balance.minus(data.amount);
-            wallet.dirty = true;
-        }
-    }
-
-    // Transaction type specific wallet logic is implemented in subclasses
-    public abstract apply(transaction: Transaction, wallet: models.Wallet): void;
-    public abstract revert(transaction: Transaction, wallet: models.Wallet): void;
+    public abstract async revertForRecipient(
+        transaction: Interfaces.ITransaction,
+        walletManager: State.IWalletManager,
+    ): Promise<void>;
 
     /**
      * Transaction Pool logic
      */
-    public canEnterTransactionPool(data: ITransactionData, guard: TransactionPool.ITransactionGuard): boolean {
-        guard.pushError(
+    public async canEnterTransactionPool(
+        data: Interfaces.ITransactionData,
+        pool: TransactionPool.IConnection,
+        processor: TransactionPool.IProcessor,
+    ): Promise<boolean> {
+        processor.pushError(
             data,
             "ERR_UNSUPPORTED",
-            `Invalidating transaction of unsupported type '${TransactionTypes[data.type]}'`,
+            `Invalidating transaction of unsupported type '${Enums.TransactionType[data.type]}'`,
         );
+
         return false;
     }
 
-    protected typeFromSenderAlreadyInPool(data: ITransactionData, guard: TransactionPool.ITransactionGuard): boolean {
-        const { senderPublicKey, type } = data;
-        if (guard.pool.senderHasTransactionsOfType(senderPublicKey, type)) {
-            guard.pushError(
+    protected async typeFromSenderAlreadyInPool(
+        data: Interfaces.ITransactionData,
+        pool: TransactionPool.IConnection,
+        processor: TransactionPool.IProcessor,
+    ): Promise<boolean> {
+        const { senderPublicKey, type }: Interfaces.ITransactionData = data;
+
+        if (await pool.senderHasTransactionsOfType(senderPublicKey, type)) {
+            processor.pushError(
                 data,
                 "ERR_PENDING",
-                `Sender ${senderPublicKey} already has a transaction of type '${TransactionTypes[type]}' in the pool`,
+                `Sender ${senderPublicKey} already has a transaction of type '${Enums.TransactionType[type]}' in the pool`,
             );
 
             return true;
@@ -220,6 +331,8 @@ export abstract class TransactionHandler implements ITransactionHandler {
 
         return false;
     }
+
+    public emitEvents(transaction: Interfaces.ITransaction, emitter: EventEmitter.EventEmitter): void {}
 }
 
 ```
@@ -228,30 +341,68 @@ Now, the implementation for a simple `TransferHandler` of type 0 based on the ab
 
 ```ts
 export class TransferTransactionHandler extends TransactionHandler {
-    public getConstructor(): TransactionConstructor {
-        return TransferTransaction;
+    public getConstructor(): Transactions.TransactionConstructor {
+        return Transactions.TransferTransaction;
+    }
+
+    public dependencies(): ReadonlyArray<TransactionHandlerConstructor> {
+        return [];
+    }
+
+    public walletAttributes(): ReadonlyArray<string> {
+        return [];
+    }
+
+    public async bootstrap(connection: Database.IConnection, walletManager: State.IWalletManager): Promise<void> {
+        const transactions = await connection.transactionsRepository.getReceivedTransactions();
+
+        for (const transaction of transactions) {
+            const wallet = walletManager.findByAddress(transaction.recipientId);
+            wallet.balance = wallet.balance.plus(transaction.amount);
+        }
+    }
+
+    public async isActivated(): Promise<boolean> {
+        return true;
     }
 
     // Type 0 specific wallet logic
-    public canBeApplied(transaction: Transaction, wallet: models.Wallet, walletManager?: Database.IWalletManager): boolean {
-        return super.canBeApplied(transaction, wallet, walletManager);
+    public async throwIfCannotBeApplied(
+        transaction: Interfaces.ITransaction,
+        sender: State.IWallet,
+        databaseWalletManager: State.IWalletManager,
+    ): Promise<void> {
+        return super.throwIfCannotBeApplied(transaction, sender, databaseWalletManager);
     }
 
-    public apply(transaction: Transaction, wallet: models.Wallet): void {
-        return;
+    public async applyToRecipient(
+        transaction: Interfaces.ITransaction,
+        walletManager: State.IWalletManager,
+    ): Promise<void> {
+        const recipient: State.IWallet = walletManager.findByAddress(transaction.data.recipientId);
+        recipient.balance = recipient.balance.plus(transaction.data.amount);
     }
 
-    public revert(transaction: Transaction, wallet: models.Wallet): void {
-        return;
+    public async revertForRecipient(
+        transaction: Interfaces.ITransaction,
+        walletManager: State.IWalletManager,
+    ): Promise<void> {
+        const recipient: State.IWallet = walletManager.findByAddress(transaction.data.recipientId);
+        recipient.balance = recipient.balance.minus(transaction.data.amount);
     }
 
-    // Type 0 specific transaction pool logic
-    public canEnterTransactionPool(data: ITransactionData, guard: TransactionPool.ITransactionGuard): boolean {
+    public async canEnterTransactionPool(
+        data: Interfaces.ITransactionData,
+        pool: TransactionPool.IConnection,
+        processor: TransactionPool.IProcessor,
+    ): Promise<boolean> {
         if (!isRecipientOnActiveNetwork(data)) {
-            guard.pushError(
+            processor.pushError(
                 data,
                 "ERR_INVALID_RECIPIENT",
-                `Recipient ${data.recipientId} is not on the same network: ${configManager.get("pubKeyHash")}`,
+                `Recipient ${data.recipientId} is not on the same network: ${Managers.configManager.get(
+                    "network.pubKeyHash",
+                )}`,
             );
             return false;
         }
@@ -273,85 +424,52 @@ After we have created our custom transaction type and the accompaying transactio
 type TransactionConstructor = typeof Transaction;
 
 class TransactionRegistry {
-    private readonly coreTypes = new Map<TransactionTypes, TransactionConstructor>();
-    private readonly customTypes = new Map<number, TransactionConstructor>();
+    private readonly transactionTypes: Map<InternalTransactionType, TransactionConstructor> = new Map();
 
     constructor() {
-        Object.values(coreTypes).forEach(coreType => this.registerCoreType(coreType));
+        this.registerTransactionType(TransferTransaction);
+        this.registerTransactionType(SecondSignatureRegistrationTransaction);
+        this.registerTransactionType(DelegateRegistrationTransaction);
+        this.registerTransactionType(VoteTransaction);
+        this.registerTransactionType(MultiSignatureRegistrationTransaction);
+        this.registerTransactionType(IpfsTransaction);
+        this.registerTransactionType(MultiPaymentTransaction);
+        this.registerTransactionType(DelegateResignationTransaction);
+        this.registerTransactionType(HtlcLockTransaction);
+        this.registerTransactionType(HtlcClaimTransaction);
+        this.registerTransactionType(HtlcRefundTransaction);
     }
 
-    public create(data: ITransactionData): Transaction {
-        const instance = new (this.get(data.type) as any)() as Transaction;
-        instance.data = data;
-
-        return instance;
-    }
-
-    public get(type: TransactionTypes): TransactionConstructor {
-        if (this.coreTypes.has(type)) {
-            return this.coreTypes.get(type);
-        }
-
-        if (this.customTypes.has(type)) {
-            return this.customTypes.get(type);
-        }
-
-
-        throw new UnkownTransactionError(type);
-    }
-
-    public registerCustomType(constructor: TransactionConstructor): void {
-        const { type } = constructor;
-        if (this.customTypes.has(type)) {
+    public registerTransactionType(constructor: TransactionConstructor): void {
+        const { typeGroup, type } = constructor;
+        const internalType: InternalTransactionType = InternalTransactionType.from(type, typeGroup);
+        if (this.transactionTypes.has(internalType)) {
             throw new TransactionAlreadyRegisteredError(constructor.name);
         }
 
-        // TODO: subject to change, but for now the first 100 types are reserved by Core.
-        if (type < 100) {
-            throw new TransactionTypeInvalidRangeError(type);
-        }
-
-        this.customTypes.set(type, constructor);
-        this.updateSchemas(constructor);
-        this.updateStaticFees();
-    }
-
-    public deregisterCustomType(type: number): void {
-        if (this.customTypes.has(type)) {
-            const schema = this.customTypes.get(type);
-            this.updateSchemas(schema, true);
-            this.customTypes.delete(type);
-        }
-    }
-
-    public updateStaticFees(height?: number): void {
-        const customConstructors = Array.from(this.customTypes.values());
-        const milestone = configManager.getMilestone(height);
-        const { staticFees } = milestone.fees;
-        for (const constructor of customConstructors) {
-            const { type, name } = constructor;
-            if (milestone.fees && milestone.fees.staticFees) {
-                const value = staticFees[camelCase(name.replace("Transaction", ""))];
-                if (!value) {
-                    throw new MissingMilestoneFeeError(name);
-                }
-                feeManager.set(type, value);
-            }
-        }
-    }
-
-    private registerCoreType(constructor: TransactionConstructor) {
-        const { type } = constructor;
-        if (this.coreTypes.has(type)) {
-            throw new TransactionAlreadyRegisteredError(constructor.name);
-        }
-
-        this.coreTypes.set(type, constructor);
+        this.transactionTypes.set(internalType, constructor);
         this.updateSchemas(constructor);
     }
 
-    private updateSchemas(transaction: TransactionConstructor) {
-        AjvWrapper.extendTransaction(transaction.getSchema());
+    public deregisterTransactionType(constructor: TransactionConstructor): void {
+        const { typeGroup, type } = constructor;
+        const internalType: InternalTransactionType = InternalTransactionType.from(type, typeGroup);
+
+        if (!this.transactionTypes.has(internalType)) {
+            throw new UnkownTransactionError(internalType.toString());
+        }
+
+        if (typeGroup === TransactionTypeGroup.Core) {
+            throw new CoreTransactionTypeGroupImmutableError();
+        }
+
+        const schema = this.transactionTypes.get(internalType);
+        this.updateSchemas(schema, true);
+        this.transactionTypes.delete(internalType);
+    }
+
+    private updateSchemas(transaction: TransactionConstructor, remove?: boolean): void {
+        validator.extendTransaction(transaction.getSchema(), remove);
     }
 }
 ```
@@ -362,67 +480,112 @@ import { transactionHandlers } from "./handlers";
 export type TransactionHandlerConstructor = new () => TransactionHandler;
 
 class TransactionHandlerRegistry {
-    private readonly coreTransactionHandlers = new Map<constants.TransactionTypes, TransactionHandler>();
-    private readonly customTransactionHandlers = new Map<number, TransactionHandler>();
+    private readonly registeredTransactionHandlers: Map<
+        Transactions.InternalTransactionType,
+        TransactionHandler
+    > = new Map();
+
+    private readonly knownWalletAttributes: Map<string, boolean> = new Map();
 
     constructor() {
-        transactionHandlers.forEach((handler: TransactionHandlerConstructor) => {
-            this.registerCoreTransactionHandler(handler);
-        });
+        this.registerTransactionHandler(TransferTransactionHandler);
+        this.registerTransactionHandler(SecondSignatureTransactionHandler);
+        this.registerTransactionHandler(DelegateRegistrationTransactionHandler);
+        this.registerTransactionHandler(VoteTransactionHandler);
+        this.registerTransactionHandler(MultiSignatureTransactionHandler);
+        this.registerTransactionHandler(IpfsTransactionHandler);
+        this.registerTransactionHandler(MultiPaymentTransactionHandler);
+        this.registerTransactionHandler(DelegateResignationTransactionHandler);
+        this.registerTransactionHandler(HtlcLockTransactionHandler);
+        this.registerTransactionHandler(HtlcClaimTransactionHandler);
+        this.registerTransactionHandler(HtlcRefundTransactionHandler);
     }
 
-    public get(type: constants.TransactionTypes): TransactionHandler {
-        if (this.coreTransactionHandlers.has(type)) {
-            return this.coreTransactionHandlers.get(type);
+    public get(type: number, typeGroup?: number): TransactionHandler {
+        const internalType: Transactions.InternalTransactionType = Transactions.InternalTransactionType.from(
+            type,
+            typeGroup,
+        );
+        if (this.registeredTransactionHandlers.has(internalType)) {
+            return this.registeredTransactionHandlers.get(internalType);
         }
 
-        if (this.customTransactionHandlers.has(type)) {
-            return this.customTransactionHandlers.get(type);
-        }
-
-        throw new InvalidTransactionTypeError(type);
+        throw new InvalidTransactionTypeError(internalType.toString());
     }
 
-    public registerCustomTransactionHandler(constructor: TransactionHandlerConstructor): void {
-        const handler = new constructor();
-        const transactionConstructor = handler.getConstructor();
-        const { type } = transactionConstructor;
+    public async getActivatedTransactions(): Promise<TransactionHandler[]> {
+        const activatedTransactions: TransactionHandler[] = [];
 
-        if (this.customTransactionHandlers.has(type)) {
-            throw new TransactionHandlerAlreadyRegisteredError(type);
+        for (const handler of this.registeredTransactionHandlers.values()) {
+            if (await handler.isActivated()) {
+                activatedTransactions.push(handler);
+            }
         }
 
-        TransactionRegistry.registerCustomType(transactionConstructor);
-
-        this.customTransactionHandlers.set(type, handler);
+        return activatedTransactions;
     }
 
-    public deregisterCustomTransactionHandler(constructor: TransactionHandlerConstructor): void {
-        const handler = new constructor();
-        const transactionConstructor = handler.getConstructor();
-        const { type } = transactionConstructor;
+    public registerTransactionHandler(constructor: TransactionHandlerConstructor) {
+        const service: TransactionHandler = new constructor();
+        const transactionConstructor = service.getConstructor();
+        const { typeGroup, type } = transactionConstructor;
 
-        if (this.customTransactionHandlers.has(type)) {
-            TransactionRegistry.deregisterCustomType(type);
-            this.customTransactionHandlers.delete(type);
+        for (const dependency of service.dependencies()) {
+            this.registerTransactionHandler(dependency);
         }
+
+        const internalType: Transactions.InternalTransactionType = Transactions.InternalTransactionType.from(
+            type,
+            typeGroup,
+        );
+        if (this.registeredTransactionHandlers.has(internalType)) {
+            return;
+        }
+
+        if (!(type in Enums.TransactionType)) {
+            Transactions.TransactionRegistry.registerTransactionType(transactionConstructor);
+        }
+
+        const walletAttributes: ReadonlyArray<string> = service.walletAttributes();
+        for (const attribute of walletAttributes) {
+            assert(!this.knownWalletAttributes.has(attribute), `Wallet attribute is already known: ${attribute}`);
+            this.knownWalletAttributes.set(attribute, true);
+        }
+
+        this.registeredTransactionHandlers.set(internalType, service);
     }
 
-    private registerCoreTransactionHandler(constructor: TransactionHandlerConstructor) {
-        const handler = new constructor();
-        const transactionConstructor = handler.getConstructor();
-        const { type } = transactionConstructor;
+    public deregisterTransactionHandler(constructor: TransactionHandlerConstructor): void {
+        const service: TransactionHandler = new constructor();
+        const transactionConstructor = service.getConstructor();
+        const { typeGroup, type } = transactionConstructor;
 
-        if (this.coreTransactionHandlers.has(type)) {
-            throw new TransactionHandlerAlreadyRegisteredError(type);
+        if (typeGroup === Enums.TransactionTypeGroup.Core || typeGroup === undefined) {
+            throw new Errors.CoreTransactionTypeGroupImmutableError();
         }
 
-        this.coreTransactionHandlers.set(type, handler);
+        const internalType: Transactions.InternalTransactionType = Transactions.InternalTransactionType.from(
+            type,
+            typeGroup,
+        );
+        if (!this.registeredTransactionHandlers.has(internalType)) {
+            throw new InvalidTransactionTypeError(internalType.toString());
+        }
+
+        const walletAttributes: ReadonlyArray<string> = service.walletAttributes();
+        for (const attribute of walletAttributes) {
+            this.knownWalletAttributes.delete(attribute);
+        }
+
+        Transactions.TransactionRegistry.deregisterTransactionType(transactionConstructor);
+        this.registeredTransactionHandlers.delete(internalType);
+    }
+
+    public isKnownWalletAttribute(attribute: string): boolean {
+        return this.knownWalletAttributes.has(attribute);
     }
 }
 ```
-
-As you can see we are only able to add and get transaction types, this is to prevent that transaction types accidentally disappear at runtime which core needs to handle.
 
 The usage is fairly simple and the custom types would be easiest bootstrapped during the start up of the node.
 
@@ -436,7 +599,7 @@ class CustomTransactionHandler extends TransactionHandler {}
 
 // This will register a new transaction handler with the core-transactions package which core will be able to pick up
 // NOTE: The `TransactionHandlerRegistry` will call `registerType` on the `TransactionRegistry` for us
-TransactionHandlerRegistry.registerCustomHandler(CustomTransactionHandler);
+TransactionHandlerRegistry.registerTransactionHandler(CustomTransactionHandler);
 ```
 
 ### Database
@@ -452,5 +615,4 @@ SELECT * FROM transactions WHERE type = 5 AND asset @> '{"ipfs_id":1}';
 Queries like this will allow us to do searches on the `asset` information of a transaction without having to add real columns through migrations.
 
 ### Fees
-All transaction types are required to define a `fee` in the `milestones.json` and `addonBytes` of
-the `core-transaction-pool` options.
+All transaction types specify default fees in the respective handler, but if a `fee` is defined inside  `milestones.json` and/or `addonBytes` of the `core-transaction-pool` options that will be taken.
