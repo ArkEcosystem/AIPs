@@ -18,11 +18,15 @@ This AIP proposes improvements to the structure and expandability of transaction
 
 At the moment all logic that relates to how transactions are applied, serialised and deserialised is scattered all over the place.
 
-The problem with that is that it makes it more tedious to implement new transaction types and leaves a lot of room for mistakes as logic is not shared and more has to be known about implementation specifics.
+The problem with that is that it makes it more tedious to implement new transaction types and leaves a lot of room for mistakes as logic is not shared and more has to be known about implementation specifics. Another issue is that the `transaction type` is stored as a 1 byte integer. Core already takes the types 0 - 10 for it’s own transaction types. As more and more custom transaction types are written we are bound to run out of numbers. Additionally, there’s no way to prevent collisions since two different plugins could register a completely different transaction type with the same number. Therefore there needs to be 1) more room for transaction types and 2) a way to group transaction types to make collisions less likely to occur.
 
 ## Specification
 
 In order to reduce the amount of duplication and complexity that currently plagues anything transaction related we will implement a `Transaction` class that will make it possible to implement de/serialization logic in a single place while the actual transaction logic for modifying wallets, etc. will be provided by `TransactionHandlers`.
+
+To increase the number of maximum transaction types and decrease the likelihood of collisions between plugins that provide transactions, Core will register it’s own transaction types inside a reserved `type group` which cannot be used by any plugin and thus no collision can occur here. However, we cannot completely prevent different plugins from choosing the same group and same type numbering. But it will be a lot less likely.
+
+In other words, we will introduce a 4 bytes transaction type group and increase the transaction type from 1 byte to 2 bytes. Then Core will use both `typeGroup` and `type` to address transactions internally. All V2 transactions will be signed with `typeGroup` and `type`. Non-core transactions will have to provide the `typeGroup` otherwise Core will fall back to `typeGroup: 1`, which is the default Core group.
 
 ### Transaction
 
@@ -600,6 +604,17 @@ class CustomTransactionHandler extends TransactionHandler {}
 // This will register a new transaction handler with the core-transactions package which core will be able to pick up
 // NOTE: The `TransactionHandlerRegistry` will call `registerType` on the `TransactionRegistry` for us
 TransactionHandlerRegistry.registerTransactionHandler(CustomTransactionHandler);
+```
+
+### Reserved Type Groups
+Core will reserve the first 1000 type groups . Everything beyond is freely available to other developers.
+
+```ts
+enum TransactionTypeGroup {
+    Test: 0,
+    Core: 1,
+    Reserved: 1000,
+}
 ```
 
 ### Database
