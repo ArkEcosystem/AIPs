@@ -17,7 +17,7 @@ History
 Abstract
 ========
 
-This AIP proposes a replacement for AIP 13 (URI Scheme), intending to support AIP11 (Upgrade of Transaction Protocol) dynamic fees, multiple networks, and to provide means of direct communication with specific sections of wallets, relays and services. 
+This AIP proposes a replacement for AIP 13 (URI Scheme), intending to support AIP11 (Upgrade of Transaction Protocol) dynamic fees, multiple networks, and to provide means of direct communication with specific sections of wallets, relays and services.
 
 Motivation
 ==========
@@ -44,7 +44,7 @@ When the optional `relay` parameter is populated, a transaction can be sent thro
 
 - Different NFC tags can instruct clients to post transactions to different relay nodes, based on their own requirements
 
-- Local relay nodes could be used as a caching layer for offline transactions.  
+- Local relay nodes could be used as a caching layer for offline transactions.
 
 Specification
 =========
@@ -90,7 +90,7 @@ Instructs the wallet to add a new network.
 
 #### Endpoint
 
-`ark://add-network`
+`ark:add-network`
 
 #### URI Parameters
 
@@ -104,7 +104,7 @@ Instructs the wallet to add a new network.
 
 #### Example
 
-`ark://add-network?name=Mainnet&seedServer=https%3A%2F%2Fexplorer.ark.io%3A8443`
+`ark:add-network?name=Mainnet&seedServer=https%3A%2F%2Fexplorer.ark.io%3A8443`
 
 #### Specification
 
@@ -144,7 +144,7 @@ Instructs the wallet to send a transaction according to the given parameters.
 
 #### Endpoint
 
-`ark://transfer`
+`ark:transfer`
 
 #### URI Parameters
 
@@ -161,7 +161,7 @@ Instructs the wallet to send a transaction according to the given parameters.
 
 #### Example
 
-`ark://transfer?recipient=AUDud8tvyVZa67p3QY7XPRUTjRGnWQQ9Xv&amount=10&vendorField=Message%20for%20Ark`
+`ark:transfer?recipient=AUDud8tvyVZa67p3QY7XPRUTjRGnWQQ9Xv&amount=10&vendorField=Message%20for%20Ark`
 
 #### Specification
 
@@ -174,7 +174,7 @@ Prompts the wallet to vote for a given delegate
 
 #### Endpoint
 
-`ark://vote`
+`ark:vote`
 
 ##### URI Parameters
 
@@ -188,7 +188,7 @@ Prompts the wallet to vote for a given delegate
 
 #### Example
 
-`ark://vote?delegate=genesis_10&fee=0.10&relay=https%3A%2F%2Fexplorer.ark.io%3A8443`
+`ark:vote?delegate=genesis_10&fee=0.10&relay=https%3A%2F%2Fexplorer.ark.io%3A8443`
 
 #### Specification
 
@@ -201,7 +201,7 @@ Prompts the wallet to register a delegate
 
 #### Endpoint
 
-`ark://register-delegate`
+`ark:register-delegate`
 
 #### URI Parameters
 
@@ -215,7 +215,7 @@ Prompts the wallet to register a delegate
 
 #### Example
 
-`ark://register-delegate?username=mydelegatename&fee=12&relay=https%3A%2F%2Fexplorer.ark.io%3A8443`
+`ark:register-delegate?username=mydelegatename&fee=12&relay=https%3A%2F%2Fexplorer.ark.io%3A8443`
 
 
 #### Specification
@@ -229,7 +229,7 @@ Prompts the wallet to sign a given message
 
 ##### Endpoint
 
-`ark://sign-message`
+`ark:sign-message`
 
 #### URI Parameters
 
@@ -240,7 +240,7 @@ Prompts the wallet to sign a given message
 
 #### Example
 
-`ark://sign-message?message=This%20is%20my%20message`
+`ark:sign-message?message=This%20is%20my%20message`
 
 ### Backwards Compatibility
 
@@ -250,7 +250,7 @@ To ensure backwards compatibility with 1.x networks and clients, the AIP13 stand
 
 #### Endpoint
 
-`ark://<arkaddress>`
+`ark:<arkaddress>`
 
 #### URI Parameters
 
