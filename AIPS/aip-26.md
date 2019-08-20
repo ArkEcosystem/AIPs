@@ -69,9 +69,9 @@ transferAction = "transfer?" transferParams *[ "&" defaultParam ]
 transferParams = "recipient=" recipient "&amount=" amount *[ "&" transferParam ]
 transferParam = [ ("vendorField=" *qchar) / ("label=" *qchar) / otherParams ]
 voteAction = "vote?" voteParams *[ "&" defaultParam ]
-voteParams = "username=" *qchar
+voteParams = "delegate=" *qchar
 delegateAction = "register-delegate?" delegateParams *[ "&" defaultParam ]
-delegateParams = "username=" *qchar
+delegateParams = "delegate=" *qchar
 signAction = "sign-message?" signParams
 signParams = "message=" *qchar
 otherAction = qchar "?" *[ "&" otherParams ]
@@ -180,7 +180,7 @@ Prompts the wallet to vote for a given delegate
 
 | Parameter  | Description                                        | Type          | Required           |
 |------------|----------------------------------------------------|---------------|--------------------|
-| username   | The delegate name to vote for                      | String        | :white_check_mark: |
+| delegate   | The delegate name to vote for                      | String        | :white_check_mark: |
 | fee        | The fee amount to be used to send this transaction | Numeric       | :x:                |
 | relay      | The relay node to be used to send this transaction | UTF-8 Encoded | :x:                |
 | nethash    | The network to be used for this transaction        | String        | :x:                |
@@ -207,7 +207,7 @@ Prompts the wallet to register a delegate
 
 | Parameter  | Description                                        | Type          | Required           |
 |------------|----------------------------------------------------|---------------|--------------------|
-| username   | The delegate name to be registered                 | String        | :white_check_mark: |
+| delegate   | The delegate name to be registered                 | String        | :white_check_mark: |
 | fee        | The fee amount to be used to send this transaction | Numeric       | :x:                |
 | relay      | The relay node to be used to send this transaction | UTF-8 Encoded | :x:                |
 | nethash    | The network to be used for this transaction        | String        | :x:                |
@@ -215,7 +215,7 @@ Prompts the wallet to register a delegate
 
 #### Example
 
-`ark:register-delegate?username=mydelegatename&fee=12&relay=https%3A%2F%2Fexplorer.ark.io%3A8443`
+`ark:register-delegate?delegate=mydelegatename&fee=12&relay=https%3A%2F%2Fexplorer.ark.io%3A8443`
 
 
 #### Specification
