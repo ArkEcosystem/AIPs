@@ -6,7 +6,7 @@ type: Standards Track
 category: Core/Protocol
 status: Active
 created: 2018-05-24
-updated: 2019-05-06
+updated: 2019-08-31
 ```
 
 History
@@ -15,6 +15,7 @@ History
 - 2018-08-21 moving to AIP folder from issues (@kristjank)
 - 2019-02-05 clarified technical aspects and processes (@fix)
 - 2019-05-06 updated to reflect actual implementation (@supaiku0)
+- 2019-09-31 clarifications (@supaiku0)
 
 Abstract
 ========
@@ -44,18 +45,36 @@ Specifications
 ==============
 
 Legacy protocol:
-- Rule 1 - multisign registration: `ownerPublickey` (from where the address is derived), list of committing public keys (N), `lifetime` (from 1 to 72 hours), `min` minimum (0 < M < N+1), list of N signatures.
+- Rule 1 - multisignature registration: `ownerPublickey` (from where the address is derived), list of committing public keys (N), `lifetime` (from 1 to 72 hours), `min` minimum (0 < M < N+1), list of N signatures.
 - Rule 2 - transaction acceptance: minimum of M different signatures corresponding to different committing public keys should be included into the transaction.
 - Rule 3 - if not enough signatures are present, the transaction is stocked into the transaction pool for `lifetime` hours until enough signatures are sent via the API - this rule is Lisk legacy ans has been removed from the beginning.
 
 New protocol:
-- `lifetime` is removed from protocol together with above rule 3.
-- The sender's wallet is no longer modified, instead a multi signature registration creates a new wallet
+- `lifetime` is removed from protocol together with rule 3 from above
+- A multisignature registration does *not* turn the sender wallet into a multisignature wallet
+- A wallet address is derived from the multisignature registration asset
 - The multi signature wallet's public key `pkms` is derived as follows:
-    - create a public key from the seed `hex(min)`
-    - add together all public keys (`concat(pkMin + pk1 + ... + pkn)`)
-    - the order of public keys is not important
+    - create a public key from the seed `hex(min)` where `min` is taken from the multisignature asset
+    - add together all public keys (`concat(pkMin + pk1 + ... + pkn)`) of the participants taken from the multisignature asset
+    - the order of public keys does not affect the generated `pkms`
 - The multi signature address is then derived as usual `base58_check(version + hash160(pkms))` 
-- In order to remove funds, outgoing transactions have to be signed by `min` participants
-- The signatures scheme is the combo (i, Si) (`i` being the index of the ith public key in the multi signature asset), so it is fast to verify against the right Pk
-- In theory n-of-n multi signature wallets can leverage the `MuSig` algorithm making it possible to hide all participants (a sophisticated ritual)
+- In order to remove funds, outgoing transactions of the multisignature wallet have to be signed by `min` participants
+- The signatures scheme is the combo (i, Si) (`i` being the index of the ith public key in the multisignature asset), so it is fast to verify against the right public key
+- All signatures of a multisignature transaction are required to be Schnorr signatures.
+- The size of each signature is 65 bytes in total. 64 bytes from the Schnorr signature plus 1 byte for the public key index
+- A multisignature wallet cannot register a second passphrase
+- A multisignature wallet cannot register a delegate (may be allowed in the future)
+- Technically, a total of 255 participants per multisignature wallet is possible. For now this is limited to 16 participants
+- A multisignature wallet cannot be upgraded, because the address is derived from the asset
+- A multisignature wallet cannot be resigned, but it may be possible in the future.
+
+MuSig
+==============
+
+In theory n-of-n multisignature wallets can leverage the [MuSig algorithm](https://blockstream.com/2019/02/18/en-musig-a-new-multisignature-standard/) which makes it possible to hide all participants (requires a sophisticated ritual). However, this has not been tested so yet.
+
+Multisignature Server
+==============
+
+A multisignature server will be supplied which can be hosted by individuals to aid in the process of creating
+multisignature transactions between participants. Additionally, the desktop wallet will provide a graphical interface to connect and talk to a multisignature server.
