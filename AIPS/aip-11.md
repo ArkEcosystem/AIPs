@@ -5,7 +5,7 @@
   Status: Draft
   Type: Standards Track
   Created: 2017-09-25
-  Last Update: 2019-05-07
+  Last Update: 2019-08-31
 </pre>
 
 ![Ark Improvement Proposals](https://cdn-images-1.medium.com/max/2000/1*vD5i8JJVGjvIAdOxSi-iFA.png)
@@ -37,13 +37,15 @@ The current status of protocol has several limitations that prevent from future 
 
 The preferred signature scheme will be Schnorr. Schnorr signatures are fixed 64 bytes long while ECDSA signatures vary between 70-72 bytes. The latter will still be supported just fine, although discouraged.
 
-## General form (total header size excluding vendorfield: 53 bytes)
+## General form (total header size excluding vendorfield: 59 bytes)
 
 | Description        | Size (bytes) | Example                                                              |
 | ------------------ | ------------ | :------------------------------------------------------------------- |
+| header             | 1            | 0xff                                                                 |
 | version            | 1            | 0x02                                                                 |
 | network            | 1            | 0x17                                                                 |
-| type               | 1            | 0x00                                                                 |
+| typeGroup          | 4            | 0x01                                                                 |
+| type               | 2            | 0x00                                                                 |
 | nonce              | 8            | 0x00293fa0                                                           |
 | sender public key  | 33           | 0x025f81956d5826bad7d30daed2b5c8c98e72046c1ec8323da336445476183fb7ca |
 | fee                | 8            | 0x00000000000e7468                                                   |
@@ -51,8 +53,14 @@ The preferred signature scheme will be Schnorr. Schnorr signatures are fixed 64 
 | vendorfield        | 0-255        | 0x7468697320697320612074657374                                       |
 | asset              | variable     | see details below                                                    |
 
-Version 0x01 is used for the legacy v1 signature format. Starting at 0x02 all transactions are going to follow
-the new signature format. Additionally, the transaction timestamp is going to be replaced by a nonce.
+Version 0x01 is used for the legacy V1 signature format. Starting at 0x02 all transactions will follow
+the new signature format and the transaction timestamp will be replaced by a nonce.
+
+## Type & TypeGroup
+See [AIP29](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-29.md#motivation)
+
+## Nonce
+A monotonically increasing number derived from the sender wallet.
 
 ## Assets
 
@@ -111,18 +119,7 @@ Also see [AIP18](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-18.md
 | ------------- | ------------ | :----------------- |
 | dag           | 0-255        | 0x6669786372797074 |
 
-**Type 6 (timelock transfer 34 bytes)**
-
-| Description       | Size (bytes) | Example                                      |
-| ----------------- | ------------ | :------------------------------------------- |
-| amount            | 8            | 0x8096980000000000                           |
-| timelock type     | 1            | 0x00 (block height)                          |
-| timelock          | 4            | 0x0087e5a8                                   |
-| recipient address | 21           | DFJ5Z51F1euNNdRUQJKQVdG4h495LZkc6T |
-
-`Timelock type` defines different types for `timelock` value field (current supported types are `0:for block height` timelock value). If timelock type=0, timelock value shall be specified in block height.
-
-**Type 7 (multipayment, 2-65546 bytes)**
+**Type 6 (multipayment, 2-65546 bytes)**
 
 | Description | Size (bytes) | Example                                      |
 | ----------- | ------------ | :------------------------------------------- |
@@ -136,7 +133,7 @@ Also see [AIP18](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-18.md
 - N > 1 (ideally fees should be higher than type 0 if N < 2)
 - Maximum of possible payments per transaction: 2^16 / 29 or 2259. Initially capped via milestone.
 
-**Type 8 (delegate resignation)**
+**Type 7 (delegate resignation)**
 
 | Description | Size (bytes) | Example |
 | ----------- | ------------ | :------ |
@@ -145,6 +142,35 @@ Also see [AIP18](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-18.md
 The sender must be a delegate. Once forged the delegate is irreversibly deactivated:
 - no longer possible to vote for this delegate
 - no longer treated as an active delegates, regardless of vote balance
+
+**Type 8 (htlc lock 70 bytes)**
+
+| Description       | Size (bytes) | Example                                                            |
+| ----------------- | ------------ | :----------------------------------------------------------------- |
+| amount            | 8            | 0x8096980000000000                                                 |
+| secretHash        | 32           | 0x0f128d401958b1b30ad0d10406f47f9489321017b4614e6cb993fc63913c5454 |
+| expirationType    | 1            | 0x01(unix timestamp), 0x02 (block height)                          |
+| expirationValue   | 8            | 0x8096980000000000                                                 |
+| recipient         | 21           | DFJ5Z51F1euNNdRUQJKQVdG4h495LZkc6T                                 |
+
+Also see [AIP102](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-102.md)
+
+**Type 9 (htlc claim 64 bytes)**
+
+| Description       | Size (bytes) | Example                                                            |
+| ----------------- | ------------ | :----------------------------------------------------------------- |
+| lockTransactionId | 32           | 0x025f81956d5826bad7d30daed2b5c8c98e72046c1ec8323da336445476183fb7 |
+| unlockSecret      | 32           | 0x025f81956d5826bad7d30daed2b5c8c98e72046c1ec8323da336445476183fb7 |
+
+Also see [AIP102](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-102.md)
+
+**Type 10 (htlc refund 32 bytes)**
+
+| Description       | Size (bytes) | Example                                                            |
+| ----------------- | ------------ | :----------------------------------------------------------------- |
+| lockTransactionId | 8            | 0x025f81956d5826bad7d30daed2b5c8c98e72046c1ec8323da336445476183fb7 |
+
+Also see [AIP102](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-102.md)
 
 ## Dynamic Fees calculation
 
