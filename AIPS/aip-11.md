@@ -5,7 +5,7 @@
   Status: Draft
   Type: Standards Track
   Created: 2017-09-25
-  Last Update: 2019-08-31
+  Last Update: 2019-09-15
 </pre>
 
 ![Ark Improvement Proposals](https://cdn-images-1.medium.com/max/2000/1*vD5i8JJVGjvIAdOxSi-iFA.png)
@@ -119,7 +119,7 @@ Also see [AIP18](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-18.md
 | ------------- | ------------ | :----------------- |
 | dag           | 0-255        | 0x6669786372797074 |
 
-**Type 6 (multipayment, 2-65546 bytes)**
+**Type 6 (multipayment, 2-1900544 bytes)**
 
 | Description | Size (bytes) | Example                                      |
 | ----------- | ------------ | :------------------------------------------- |
@@ -131,7 +131,8 @@ Also see [AIP18](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-18.md
 | addressN    | 21           | DFJ5Z51F1euNNdRUQJKQVdG4h495LZkc6T |
 
 - N > 1 (ideally fees should be higher than type 0 if N < 2)
-- Maximum of possible payments per transaction: 2^16 / 29 or 2259. Initially capped via milestone.
+- Maximum of possible payments per transaction: 2^16 or 65536. Initially capped to 500 for performance
+reasons.
 
 **Type 7 (delegate resignation)**
 
@@ -143,14 +144,14 @@ The sender must be a delegate. Once forged the delegate is irreversibly deactiva
 - no longer possible to vote for this delegate
 - no longer treated as an active delegates, regardless of vote balance
 
-**Type 8 (htlc lock 70 bytes)**
+**Type 8 (htlc lock 66 bytes)**
 
 | Description       | Size (bytes) | Example                                                            |
 | ----------------- | ------------ | :----------------------------------------------------------------- |
 | amount            | 8            | 0x8096980000000000                                                 |
 | secretHash        | 32           | 0x0f128d401958b1b30ad0d10406f47f9489321017b4614e6cb993fc63913c5454 |
-| expirationType    | 1            | 0x01(unix timestamp), 0x02 (block height)                          |
-| expirationValue   | 8            | 0x8096980000000000                                                 |
+| expirationType    | 1            | 0x01(network epoch timestamp), 0x02 (block height)                 |
+| expirationValue   | 4            | 0x80969800                                                         |
 | recipient         | 21           | DFJ5Z51F1euNNdRUQJKQVdG4h495LZkc6T                                 |
 
 Also see [AIP102](https://github.com/ArkEcosystem/AIPs/blob/master/AIPS/aip-102.md)
