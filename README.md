@@ -48,4 +48,5 @@ When your Pull Request is merged you will continue to work on the AIP together w
 | [85](AIPS/aip-85.md) | Sybil deterrence via relay friction | mak | Standard  | Core / Protocol | [Draft](/AIPS/aip-85.md) |
 | [102](AIPS/aip-102.md) | Hashed Time-Locked Contracts | ARK.io Team | Standard  | Core / Protocol | [Draft](/AIPS/aip-102.md) |
 | [103](AIPS/aip-103.md) | BridgeChain Registration Types | ARK.io Team | Standard  | Core / Protocol | [Draft](/AIPS/aip-103.md) |
+| [126](AIPS/aip-126.md) | Safer cold storage using Ark covenants | mak | Standard  | Core / Protocol | [Draft](/AIPS/aip-126.md) |
 
