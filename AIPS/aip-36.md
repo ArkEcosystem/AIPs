@@ -114,6 +114,7 @@ The following example illustrates how the asset part of the entity declaration c
 ```ts
 {
     asset: {
+        action: "resign",
         registrationId: "ID of Registration Transaction"
     }
 }
@@ -124,6 +125,7 @@ The following example illustrates how the asset part of the entity declaration c
 ```ts
 {
     asset: {
+        action: "update",
         registrationId: "ID of Registration Transaction",
         data: {
             repository: "...",
