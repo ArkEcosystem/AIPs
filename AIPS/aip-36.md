@@ -1,47 +1,195 @@
----
+```
   AIP: 36
   Title: Entity Declaration - Transaction Type
   Authors: Brian Faust <hello@basecode.sh>
-  Status: *Draft*
+  Status: Draft
   Discussions-To: https://github.com/arkecosystem/AIPS/issues
   Type: Standards Track
-  Category Core
+  Category: Core
   Created: 2020-04-20
   Last Update: 2020-04-20
---- 
-
-## Preamble
-
-RFC 822 style headers containing meta-data about the AIP, including the AIP number, a short descriptive title (limited to a maximum of 44 characters), the names, and optionally the contact info for each author, etc.
+```
 
 ## Abstract
 
-Short (~200 word) description of the technical issue being addressed.
-
-## Copyright
-
-Each AIP must be licensed under the MIT License.
+This AIP proposes a new transaction type that will improve the way entities can be declared on the blockchain while also reducing the development overhead due to the simplicity and expandability of the transaction type.
 
 ## Motivation
 
-The motivation is critical for AIPs that want to change the Ark protocol. It should clearly explain why the existing protocol specification is inadequate to address the problem that the AIP solves. AIP submissions without sufficient motivation may be rejected outright.
+The design of Business and Bridgechain transaction types is inherently flawed and did not satisfy the previously discussed goals and needs that are necessary for certain use-cases of the data they provide. The Entity Declaration will remedy this by providing a generic way for entities to declare their status in terms of registrations, resignations and updates.
+
+The key difference to the Business and Bridgechain transaction types is that it is kept as generic as possible which will allow us to use the transaction type for multiple types of entities without having to introduce completely new transaction types. Instead we will simply add a new type, subType, action, validation schema and bump the version to support a new type which brings new features and backwards compatibility.
+
+**This will be the first transaction type that will make proper use of the AIP-29 features.**
 
 ## Specification
 
-The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations.
+The specifications are fairly straightforward due to the fact that things are kept as generic as possible and are just a simple key-value pair with generic data that will run against a validation schema based on the type of entity that is registered.
 
-## Rationale
+### Transaction
 
-The rationale fleshes out the specification by describing what motivated the design and why particular design decisions were made. It should describe alternate designs that were considered and related work, e.g. how the feature is supported in other languages.
+There are 4 properties that make up the entity declaration asset.
 
-The rationale should provide evidence of consensus within the community and discuss important objections or concerns raised during discussion.
+#### `type`
+
+The `type` property identitifies the type of entitity we are interacting with. This is the first step to decide what validation schema we should apply.
+
+#### `subType`
+
+The `subType` gives us more details about the type of entitiy we are interacting with. This is necessary for plugins as there will be at last `core` and `desktop-wallet` sub-types and more to come eventually. This sub-type could also be useful for businesses because they could register as a corporation, sole-trader and so on.
+
+#### `action`
+
+The `action` property lets us know what we should do. Valid actions would be `register`, `resign` and `update`. Note that it is possible that not every `action` is available for every `type` due to some of them might enforcing immutability after their registration.
+
+#### `data`
+
+The `data` property contains all of the information about the entity.
+
+1. For the `register` action this would be all required properties.
+2. For the `resign` action this would be the `registrationId` so core can figure out who wants to be resigned.
+3. For the `update` action this would be the `registrationId` and some `data` like for the `register` action.
+
+### Asset
+
+The following example illustrates how the asset part of the entity declaration could look like for a desktop wallet specific plugin.
+
+#### Registration
+
+```ts
+{
+    asset: {
+        type: "plugin",
+        subType: "desktop-wallet",
+        action: "registration",
+        data: {
+            name: "...",
+            description: "...",
+            repository: "...",
+        }
+    }
+}
+```
+
+#### Resignation
+
+```ts
+{
+    asset: {
+        registrationId: "ID of Registration Transaction"
+    }
+}
+```
+
+#### Update
+
+```ts
+{
+    asset: {
+        registrationId: "ID of Registration Transaction",
+        data: {
+            repository: "...",
+        }
+    }
+}
+```
+
+### Examples
+
+#### Business
+
+```ts
+{
+    asset: {
+        type: "business",
+        action: "registration",
+        data: {
+            name: "...",
+            description: "...",
+            website: "...",
+            taxId: "...",
+        }
+    }
+}
+```
+
+#### Bridgechain
+
+```ts
+{
+    asset: {
+        type: "bridgechain",
+        action: "registration",
+        data: {
+            name: "...",
+            description: "...",
+            repository: "...",
+            mediaAssets: "...",
+        }
+    }
+}
+```
+
+#### Developer
+
+```ts
+{
+    asset: {
+        type: "plugin",
+        action: "registration",
+        data: {
+            name: "...",
+            description: "...",
+            github: "...",
+            gitlab: "...",
+            bitbucket: "...",
+        }
+    }
+}
+```
+
+#### Plugin (Core)
+
+```ts
+{
+    asset: {
+        type: "plugin",
+        subType: "core",
+        action: "registration",
+        data: {
+            name: "...",
+            description: "...",
+            repository: "...",
+        }
+    }
+}
+```
+
+#### Plugin (Desktop Wallet)
+
+```ts
+{
+    asset: {
+        type: "plugin",
+        subType: "desktop-wallet",
+        action: "registration",
+        data: {
+            name: "...",
+            description: "...",
+            repository: "...",
+        }
+    }
+}
+```
+
+#### Note
+
+This transaction type could in theory also replace the delegate registration and resignation due to how generic it is. This would streamline things and free us from maintaining 2 separate transaction types for the same basic behaviours as other entities.
 
 ## Backwards Compatibility
 
-Backwards Compatibility is not provided due to the fact that the Business and Bridgechain transaction types will be disabled.
+Backwards Compatibility is not provided due to the fact that the Business and Bridgechain transaction types will be disabled in favour of the Entity Declaration.
 
 ## Reference Implementation
 
 The reference implementation must be completed before any AIP is given status "Final", but it need not be completed before the AIP is accepted. It is better to finish the specification and rationale first and reach consensus on it before writing code.
-
-The final implementation must include test code and documentation appropriate for the Ark protocol.
