@@ -30,6 +30,8 @@ The specifications are fairly straightforward due to the fact that things are ke
 
 There are 4 properties that make up the entity declaration asset.
 
+### Properties
+
 #### `type`
 
 The `type` property identitifies the type of entitity we are interacting with. This is the first step to decide what validation schema we should apply.
@@ -50,6 +52,41 @@ The `data` property contains all of the information about the entity.
 2. For the `resign` action this would be the `registrationId` so core can figure out who wants to be resigned.
 3. For the `update` action this would be the `registrationId` and some `data` like for the `register` action.
 
+### Data
+
+#### Business
+
+| Name    | Type   | Description |
+| ------- | ------ | ----------- |
+| name    | String | The name of the business. |
+| website | String | The website of the business. |
+| taxId   | String | The tax ID of the business. **Has to be valid and verifiedable through governement services.** |
+
+#### Bridgechain
+
+| Name       | Type   | Description |
+| ---------- | ------ | ----------- |
+| name       | String | The name of the bridgechain. |
+| website    | String | The website of the bridgechain. |
+| repository | String | The core repository of the bridgechain. **(Optional if no core repository exists.)** |
+
+#### Developer
+
+| Name      | Type   | Description |
+| --------- | ------ | ----------- |
+| name      | String | The name of the developer. |
+| github    | String | The github profile of the developer. **(Optional if GitLab or BitBucket are provided)** |
+| gitlab    | String | The gitlab profile of the developer. **(Optional if GitHub or BitBucket are provided)** |
+| bitbucket | String | The bitbucket profile of the developer. **(Optional if GitHub or GitLab are provided)** |
+
+#### Plugin
+
+| Name | Type   | Description |
+| ---- | ------ | ----------- |
+| name | String | The name of the plugin. |
+| url  | String | The informational URL of the plugin. **Has to be a valid URL of a public repository or website.** |
+| git  | String | The clone URL of the plugin. **Has to be a valid URL of a URL that can be used by `git clone`.** |
+
 ### Asset
 
 The following example illustrates how the asset part of the entity declaration could look like for a desktop wallet specific plugin.
@@ -64,7 +101,6 @@ The following example illustrates how the asset part of the entity declaration c
         action: "registration",
         data: {
             name: "...",
-            description: "...",
             repository: "...",
         }
     }
@@ -105,7 +141,6 @@ The following example illustrates how the asset part of the entity declaration c
         action: "registration",
         data: {
             name: "...",
-            description: "...",
             website: "...",
             taxId: "...",
         }
@@ -122,9 +157,8 @@ The following example illustrates how the asset part of the entity declaration c
         action: "registration",
         data: {
             name: "...",
-            description: "...",
+            website: "...",
             repository: "...",
-            mediaAssets: "...",
         }
     }
 }
@@ -139,7 +173,6 @@ The following example illustrates how the asset part of the entity declaration c
         action: "registration",
         data: {
             name: "...",
-            description: "...",
             github: "...",
             gitlab: "...",
             bitbucket: "...",
@@ -158,7 +191,6 @@ The following example illustrates how the asset part of the entity declaration c
         action: "registration",
         data: {
             name: "...",
-            description: "...",
             repository: "...",
         }
     }
@@ -175,7 +207,6 @@ The following example illustrates how the asset part of the entity declaration c
         action: "registration",
         data: {
             name: "...",
-            description: "...",
             repository: "...",
         }
     }
