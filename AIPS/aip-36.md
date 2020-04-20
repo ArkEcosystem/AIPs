@@ -217,6 +217,67 @@ The following example illustrates how the asset part of the entity declaration c
 
 This transaction type could in theory also replace the delegate registration and resignation due to how generic it is. This would streamline things and free us from maintaining 2 separate transaction types for the same basic behaviours as other entities.
 
+### Core Implementation (Pseudo Code)
+
+The implementation in Core will slightly differ from other transaction types due to how generic it is kept. The `EntityDeclarationTransactionHandler` will be the transaction handler for that specific type but the actual handler logic will be handled by sub-handlers that are transaction handlers of their own, just not publicly exposed or exported.
+
+Keeping the actual handler logic separated into their own handler classes has 2 benefits. The first being that we make use of existing internals provided by AIP-29 and the second being that things are kept easy to test while still not having to be exposed outside of its usage in the `EntityDeclarationTransactionHandler`.
+
+**`EntityDeclarationTransactionHandler` is basically a proxy to other transaction handlers that are private.**
+
+```ts
+export class EntityDeclarationTransactionHandler extends AbstractTransactionHandler {
+    // ...
+    
+    readonly #handlers: Record<string, TypeDeclarationHandler> = {
+        business: {
+            register: BusinessRegisterHandler,
+            resign: BusinessResignHandler,
+            update: BusinessUpdateHandler,
+        },
+        bridgechain: {
+            register: BridgechainRegisterHandler,
+            resign: BridgechainResignHandler,
+            update: BridgechainUpdateHandler,
+        },
+        developer: {
+            register: DeveloperRegisterHandler,
+            resign: DeveloperResignHandler,
+            update: DeveloperUpdateHandler,
+        },
+        plugin: {
+            core: {
+                register: CorePluginRegisterHandler,
+                resign: CorePluginResignHandler,
+                update: CorePluginUpdateHandler,
+            },
+            'desktop-wallet': {
+                register: DesktopWalletPluginRegisterHandler,
+                resign: DesktopWalletPluginResignHandler,
+                update: DesktopWalletPluginUpdateHandler,
+            },
+        },
+    };
+    
+    // ...
+    
+    public async applyToSender(
+        transaction: Interfaces.ITransaction,
+        customWalletRepository?: Contracts.State.WalletRepository,
+    ): Promise<void> {
+        let handler: TypeDeclarationHandler = this.#handlers[transaction.asset.type];
+        
+        if (transaction.asset.subType) {
+            handler = handler[transaction.asset.subType]
+        }
+        
+        handler.applyToSender(transaction, customWalletRepository);
+    }
+
+    // ...
+}
+```
+
 ## Backwards Compatibility
 
 Backwards Compatibility is not provided due to the fact that the Business and Bridgechain transaction types will be disabled in favour of the Entity Declaration.
