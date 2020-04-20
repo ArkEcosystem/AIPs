@@ -278,6 +278,16 @@ export class EntityDeclarationTransactionHandler extends AbstractTransactionHand
 }
 ```
 
+## Benefits
+
+This section will summarise some of the key benefits of this transaction type compared to the existing transaction types that exist.
+
+1. It's easy to expand and alter due to its use of the `type`, `subType` and `action` properties which dictate its behaviour and functionality.
+2. Due to point 1 we won't have to introduce completely new transaction types whenever a new entity with different properties is needed.
+3. Less overhead for clients. Instead of having to remember multiple type IDs and groups there will be only 1 transaction type for which you need to remember those 2 values and then use string based types, sub-types and actions to do what you want to do.
+
+**The biggest benefit of all of the above combined is that the development of new and existing types and sub-types becomes significantly faster due to serialiser and deserialiser being able to be re-used with a fixed data structure. Only new handlers have to be implemented or altered to achieve new behaviours.**
+
 ## Backwards Compatibility
 
 Backwards Compatibility is not provided due to the fact that the Business and Bridgechain transaction types will be disabled in favour of the Entity Declaration.
