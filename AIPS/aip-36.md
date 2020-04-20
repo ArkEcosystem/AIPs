@@ -114,6 +114,8 @@ The following example illustrates how the asset part of the entity declaration c
 ```ts
 {
     asset: {
+        type: "plugin",
+        subType: "desktop-wallet",
         action: "resign",
         registrationId: "ID of Registration Transaction"
     }
@@ -125,6 +127,8 @@ The following example illustrates how the asset part of the entity declaration c
 ```ts
 {
     asset: {
+        type: "plugin",
+        subType: "desktop-wallet",
         action: "update",
         registrationId: "ID of Registration Transaction",
         data: {
