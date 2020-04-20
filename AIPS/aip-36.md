@@ -54,6 +54,8 @@ The `data` property contains all of the information about the entity.
 
 ### Data
 
+> These `data` properties are preliminary.
+
 #### Business
 
 | Name    | Type   | Description |
