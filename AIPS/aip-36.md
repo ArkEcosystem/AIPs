@@ -75,10 +75,18 @@ All types and sub-types will share a common data schema. The validation schema s
             name: "Dummy  ",
             description: "...",
             website: "https://dummy.com",
-            sourceControl: ["https://github.com/dummy"],
-            socialMedia: ["https://twitter.com/dummy"],
-            images: ["https://flickr.com/dummy"],
-            videos: ["https://youtube.com/dummy"],
+            sourceControl: {
+                github: "https://github.com/dummy",
+            },
+            socialMedia: {
+                twitter: "https://twitter.com/dummy",
+            },
+            images: {
+                flickr: "https://flickr.com/dummy",
+            },
+            videos: {
+                youtube: "https://youtube.com/dummy",
+            },
         }
     }
 }
