@@ -54,40 +54,58 @@ The `data` property contains all of the information about the entity.
 
 ### Data
 
-> These `data` properties are preliminary.
+All types and sub-types will share a common data schema. The validation schema specifics of these can vary, for example a plugin could have stricter validation on the `sourceControl` property compared to a business.
+
+> These `data` properties are preliminary and are subject to change.
 
 #### Business
 
-| Name    | Type   | Description |
-| ------- | ------ | ----------- |
-| name    | String | The name of the business. |
-| website | String | The website of the business. |
-| taxId   | String | The tax ID of the business. **Has to be valid and verifiedable through governement services.** |
+| Name          | Type   | Description                                                                                    |
+| ------------- | ------ | ---------------------------------------------------------------------------------------------- |
+| name          | String | The name of the business.                                                                      |
+| description.  | String | The website of the business.                                                                   |
+| website       | String | The website of the business.                                                                   |
+| sourceControl | Object | The source control links of the business. **These should be links to GitHub or alike.**        |
+| socialMedia   | Object | The social media links of the business. **These should be links to Twitter or alike.**.        |
+| images        | Object | Relevant images about the business. **These should be links to Flickr or alike.**              |
+| videos        | Object | Relevant videos about the business. **These should be links to YouTube or alike.**             |
+| taxId         | String | The tax ID of the business. **Has to be valid and verifiedable through governement services.** |
 
 #### Bridgechain
 
-| Name       | Type   | Description |
-| ---------- | ------ | ----------- |
-| name       | String | The name of the bridgechain. |
-| website    | String | The website of the bridgechain. |
-| repository | String | The core repository of the bridgechain. **(Optional if no core repository exists.)** |
+| Name          | Type   | Description                                                                                |
+| ------------- | ------ | ------------------------------------------------------------------------------------------ |
+| name          | String | The name of the bridgechain.                                                               |
+| description.  | String | The website of the bridgechain.                                                            |
+| website       | String | The website of the bridgechain.                                                            |
+| sourceControl | Object | The source control links of the bridgechain. **These should be links to GitHub or alike.** |
+| socialMedia   | Object | The social media links of the bridgechain. **These should be links to Twitter or alike.**  |
+| images        | Object | Relevant images about the bridgechain. **These should be links to Flickr or alike.**       |
+| videos        | Object | Relevant videos about the bridgechain. **These should be links to YouTube or alike.**      |
 
 #### Developer
 
-| Name      | Type   | Description |
-| --------- | ------ | ----------- |
-| name      | String | The name of the developer. |
-| github    | String | The github profile of the developer. **(Optional if GitLab or BitBucket are provided)** |
-| gitlab    | String | The gitlab profile of the developer. **(Optional if GitHub or BitBucket are provided)** |
-| bitbucket | String | The bitbucket profile of the developer. **(Optional if GitHub or GitLab are provided)** |
+| Name          | Type   | Description                                                                             |
+| ------------- | ------ | --------------------------------------------------------------------------------------- |
+| name          | String | The name of the developer.                                                              |
+| description.  | String | The website of the developer.                                                           |
+| website       | String | The website of the developer.                                                           |
+| sourceControl | Object | The source control links of the business. **These should be links to GitHub or alike.** |
+| socialMedia   | Object | The social media links of the business. **These should be links to Twitter or alike.**  |
+| images        | Object | Relevant images about the business. **These should be links to Flickr or alike.**       |
+| videos        | Object | Relevant videos about the business. **These should be links to YouTube or alike.**      |
 
 #### Plugin
 
-| Name | Type   | Description |
-| ---- | ------ | ----------- |
-| name | String | The name of the plugin. |
-| url  | String | The informational URL of the plugin. **Has to be a valid URL of a public repository or website.** |
-| git  | String | The clone URL of the plugin. **Has to be a valid URL of a URL that can be used by `git clone`.** |
+| Name          | Type   | Description                                                                             |
+| ------------- | ------ | --------------------------------------------------------------------------------------- |
+| name          | String | The name of the plugin.                                                              |
+| description.  | String | The website of the plugin.                                                           |
+| website       | String | The website of the plugin.                                                           |
+| sourceControl | Object | The source control links of the plugin. **These should be links to GitHub or alike.** |
+| socialMedia   | Object | The social media links of the plugin. **These should be links to Twitter or alike.**  |
+| images        | Object | Relevant images about the plugin. **These should be links to Flickr or alike.**       |
+| videos        | Object | Relevant videos about the plugin. **These should be links to YouTube or alike.**      |
 
 ### Asset
 
