@@ -81,12 +81,8 @@ All types and sub-types will share a common data schema. The validation schema s
             socialMedia: {
                 twitter: "https://twitter.com/dummy",
             },
-            images: {
-                flickr: "https://flickr.com/dummy",
-            },
-            videos: {
-                youtube: "https://youtube.com/dummy",
-            },
+            images: ["https://flickr.com/dummy.png"],
+            videos: ["https://youtube.com/dummy.mp4"],
         }
     }
 }
