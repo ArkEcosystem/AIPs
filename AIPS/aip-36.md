@@ -63,8 +63,8 @@ All types and sub-types will share a common data schema. The validation schema s
 | website       | String | The website of the business.                                                          |
 | sourceControl | Object | The source control links of the entity. **These should be links to GitHub or alike.** |
 | socialMedia   | Object | The social media links of the entity. **These should be links to Twitter or alike.**  |
-| images        | Object | Relevant images about the entity. **These should be links to Flickr or alike.**       |
-| videos        | Object | Relevant videos about the entity. **These should be links to YouTube or alike.**      |
+| images        | Array  | Relevant images about the entity. **These should be links to Flickr or alike.**       |
+| videos        | Array  | Relevant videos about the entity. **These should be links to YouTube or alike.**      |
 
 ```ts
 {
