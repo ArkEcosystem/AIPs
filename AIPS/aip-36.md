@@ -178,7 +178,7 @@ The following example illustrates how the asset part of the entity declaration c
 ```ts
 {
     asset: {
-        type: "plugin",
+        type: "developer",
         action: "registration",
         data: {
             name: "...",
