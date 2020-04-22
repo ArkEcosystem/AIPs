@@ -56,15 +56,47 @@ The `data` property contains all of the information about the entity.
 
 All types and sub-types will share a common data schema. The validation schema specifics of these can vary, for example a plugin could have stricter validation on the `sourceControl` property compared to a business.
 
-| Name          | Type   | Description                                                                           |
-| ------------- | ------ | ------------------------------------------------------------------------------------- |
-| name          | String | The name of the entity.                                                               |
-| description.  | String | The website of the entity.                                                            |
-| website       | String | The website of the business.                                                          |
-| sourceControl | Object | The source control links of the entity. **These should be links to GitHub or alike.** |
-| socialMedia   | Object | The social media links of the entity. **These should be links to Twitter or alike.**  |
-| images        | Array  | Relevant images about the entity. **These should be links to Flickr or alike.**       |
-| videos        | Array  | Relevant videos about the entity. **These should be links to YouTube or alike.**      |
+#### Generic
+
+| Name          | Type   | Description                             |
+| ------------- | ------ | --------------------------------------- |
+| name          | String | The name of the entity.                 |
+| description   | String | The website of the entity.              |
+| website       | String | The website of the business.            |
+| sourceControl | Object | The source control links of the entity. |
+| socialMedia   | Object | The social media links of the entity.   |
+| images        | Array  | Relevant images about the entity.       |
+| videos        | Array  | Relevant videos about the entity.       |
+
+#### Source Control
+
+| Name      | Type   | Description                |
+| --------- | ------ | -------------------------- |
+| github    | String | A valid github.com URL.    |
+| gitlab    | String | A valid gitlab.com URL.    |
+| bitbucket | String | A valid bitbucket.com URL. |
+| npmjs     | String | A valid npmjs.com URL.     |
+
+#### Social Media
+
+| Name     | Type   | Description               |
+| -------- | ------ | ------------------------- |
+| twitter  | String | A valid twitter.com URL.  |
+| facebook | String | A valid facebook.com URL. |
+| linkedin | String | A valid linkedin.com URL. |
+
+#### Images
+
+| Name   | Type   | Description             |
+| ------ | ------ | ----------------------- |
+| flickr | String | A valid flickr.com URL. |
+
+#### Videos
+
+| Name    | Type   | Description              |
+| ------- | ------ | ------------------------ |
+| youtube | String | A valid youtube.com URL. |
+| vimeo   | String | A valid vimeo.com URL.   |
 
 ```ts
 {
