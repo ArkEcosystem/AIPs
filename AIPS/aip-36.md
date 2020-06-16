@@ -102,10 +102,13 @@ All types and sub-types will share a common data schema. The validation schema s
         type: "image",
         link: "https://imgur.com/username.png"
     }],
-    videos: [
-        "https://youtube.com/username.mp4",
-        "https://vimeo.com/username.mp4",
-    ],
+    videos: [{
+        type: "video",
+        link: "https://youtube.com/username.png"
+    }, {
+        type: "video",
+        link: "https://vimeo.com/username.png"
+    }],
 }
 ```
 
