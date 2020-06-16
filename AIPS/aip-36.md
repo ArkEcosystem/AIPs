@@ -58,45 +58,10 @@ All types and sub-types will share a common data schema. The validation schema s
 
 #### Generic
 
-| Name          | Type   | Description                             |
-| ------------- | ------ | --------------------------------------- |
-| name          | String | The name of the entity.                 |
-| description   | String | The website of the entity.              |
-| website       | String | The website of the business.            |
-| sourceControl | Object | The source control links of the entity. |
-| socialMedia   | Object | The social media links of the entity.   |
-| images        | Array  | Relevant images about the entity.       |
-| videos        | Array  | Relevant videos about the entity.       |
-
-#### Source Control
-
-| Name      | Type   | Description                |
-| --------- | ------ | -------------------------- |
-| github    | String | A valid github.com URL.    |
-| gitlab    | String | A valid gitlab.com URL.    |
-| bitbucket | String | A valid bitbucket.com URL. |
-| npmjs     | String | A valid npmjs.com URL.     |
-
-#### Social Media
-
-| Name     | Type   | Description               |
-| -------- | ------ | ------------------------- |
-| twitter  | String | A valid twitter.com URL.  |
-| facebook | String | A valid facebook.com URL. |
-| linkedin | String | A valid linkedin.com URL. |
-
-#### Images
-
-| Name   | Type   | Description             |
-| ------ | ------ | ----------------------- |
-| flickr | String | A valid flickr.com URL. |
-
-#### Videos
-
-| Name    | Type   | Description              |
-| ------- | ------ | ------------------------ |
-| youtube | String | A valid youtube.com URL. |
-| vimeo   | String | A valid vimeo.com URL.   |
+| Name     | Type   | Description                      |
+| -------- | ------ | -------------------------------- |
+| name     | String | The name of the entity.          |
+| ipfsData | String | The IPFS hash for the meta data. |
 
 ```ts
 {
@@ -104,19 +69,49 @@ All types and sub-types will share a common data schema. The validation schema s
         type: "business",
         action: "registration",
         data: {
-            name: "Dummy  ",
-            description: "...",
-            website: "https://dummy.com",
-            sourceControl: {
-                github: "https://github.com/dummy",
-            },
-            socialMedia: {
-                twitter: "https://twitter.com/dummy",
-            },
-            images: ["https://flickr.com/dummy.png"],
-            videos: ["https://youtube.com/dummy.mp4"],
+            name: "John Doe",
+            ipfsData: "Qmbw6QmF6tuZpyV6WyEsTmExkEG3rW4khattQidPfbpmNZ",
         }
     }
+}
+```
+
+#### IPFS
+
+```ts
+{
+    sourceControl: {
+        bitbucket: "https://bitbucket.com/username",
+        github: "https://github.com/username",
+        gitlab: "https://gitlab.com/username",
+    },
+    socialMedia: {
+        discord: "https://discord.com/username",
+        facebook: "https://facebook.com/username",
+        instagram: "https://instagram.com/username",
+        linkedin: "https://linkedin.com/username",
+        medium: "https://medium.com/username",
+        reddit: "https://reddit.com/username",
+        slack: "https://slack.com/username",
+        telegram: "https://telegram.com/username",
+        twitter: "https://twitter.com/username",
+        wechat: "https://wechat.com/username",
+        youtube: "https://youtube.com/username",
+    },
+    images: [{
+        type: "logo",
+        link: "https://flickr.com/username.png"
+    }, {
+        type: "image",
+        link: "https://imgur.com/username.png"
+    }],
+    videos: [{
+        type: "video",
+        link: "https://youtube.com/username.png"
+    }, {
+        type: "video",
+        link: "https://vimeo.com/username.png"
+    }],
 }
 ```
 
@@ -136,7 +131,7 @@ The following example illustrates how the asset part of the entity declaration c
         action: "registration",
         data: {
             name: "...",
-            repository: "...",
+            ipfsData: "...",
         }
     }
 }
@@ -165,7 +160,8 @@ The following example illustrates how the asset part of the entity declaration c
         action: "update",
         registrationId: "ID of Registration Transaction",
         data: {
-            repository: "...",
+            name: "...",
+            ipfsData: "...",
         }
     }
 }
@@ -182,8 +178,7 @@ The following example illustrates how the asset part of the entity declaration c
         action: "registration",
         data: {
             name: "...",
-            website: "...",
-            taxId: "...",
+            ipfsData: "...",
         }
     }
 }
@@ -198,8 +193,7 @@ The following example illustrates how the asset part of the entity declaration c
         action: "registration",
         data: {
             name: "...",
-            website: "...",
-            repository: "...",
+            ipfsData: "...",
         }
     }
 }
@@ -214,9 +208,7 @@ The following example illustrates how the asset part of the entity declaration c
         action: "registration",
         data: {
             name: "...",
-            github: "...",
-            gitlab: "...",
-            bitbucket: "...",
+            ipfsData: "...",
         }
     }
 }
@@ -232,7 +224,7 @@ The following example illustrates how the asset part of the entity declaration c
         action: "registration",
         data: {
             name: "...",
-            repository: "...",
+            ipfsData: "...",
         }
     }
 }
@@ -248,7 +240,7 @@ The following example illustrates how the asset part of the entity declaration c
         action: "registration",
         data: {
             name: "...",
-            repository: "...",
+            ipfsData: "...",
         }
     }
 }
@@ -268,54 +260,56 @@ Keeping the actual handler logic separated into their own handler classes has 2 
 
 ```ts
 export class EntityDeclarationTransactionHandler extends AbstractTransactionHandler {
-    // ...
-    
-    readonly #handlers: Record<string, TypeDeclarationHandler> = {
-        business: {
-            register: BusinessRegisterHandler,
-            resign: BusinessResignHandler,
-            update: BusinessUpdateHandler,
-        },
-        bridgechain: {
-            register: BridgechainRegisterHandler,
-            resign: BridgechainResignHandler,
-            update: BridgechainUpdateHandler,
-        },
-        developer: {
-            register: DeveloperRegisterHandler,
-            resign: DeveloperResignHandler,
-            update: DeveloperUpdateHandler,
-        },
-        plugin: {
-            core: {
-                register: CorePluginRegisterHandler,
-                resign: CorePluginResignHandler,
-                update: CorePluginUpdateHandler,
-            },
-            'desktop-wallet': {
-                register: DesktopWalletPluginRegisterHandler,
-                resign: DesktopWalletPluginResignHandler,
-                update: DesktopWalletPluginUpdateHandler,
-            },
-        },
-    };
-    
-    // ...
-    
-    public async applyToSender(
-        transaction: Interfaces.ITransaction,
-        customWalletRepository?: Contracts.State.WalletRepository,
-    ): Promise<void> {
-        let handler: TypeDeclarationHandler = this.#handlers[transaction.asset.type];
-        
-        if (transaction.asset.subType) {
-            handler = handler[transaction.asset.subType]
-        }
-        
-        handler.applyToSender(transaction, customWalletRepository);
+  // ...
+
+  readonly #handlers: Record<string, TypeDeclarationHandler> = {
+    business: {
+      register: BusinessRegisterHandler,
+      resign: BusinessResignHandler,
+      update: BusinessUpdateHandler,
+    },
+    bridgechain: {
+      register: BridgechainRegisterHandler,
+      resign: BridgechainResignHandler,
+      update: BridgechainUpdateHandler,
+    },
+    developer: {
+      register: DeveloperRegisterHandler,
+      resign: DeveloperResignHandler,
+      update: DeveloperUpdateHandler,
+    },
+    plugin: {
+      core: {
+        register: CorePluginRegisterHandler,
+        resign: CorePluginResignHandler,
+        update: CorePluginUpdateHandler,
+      },
+      "desktop-wallet": {
+        register: DesktopWalletPluginRegisterHandler,
+        resign: DesktopWalletPluginResignHandler,
+        update: DesktopWalletPluginUpdateHandler,
+      },
+    },
+  };
+
+  // ...
+
+  public async applyToSender(
+    transaction: Interfaces.ITransaction,
+    customWalletRepository?: Contracts.State.WalletRepository
+  ): Promise<void> {
+    let handler: TypeDeclarationHandler = this.#handlers[
+      transaction.asset.type
+    ];
+
+    if (transaction.asset.subType) {
+      handler = handler[transaction.asset.subType];
     }
 
-    // ...
+    handler.applyToSender(transaction, customWalletRepository);
+  }
+
+  // ...
 }
 ```
 
