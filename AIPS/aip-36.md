@@ -88,12 +88,15 @@ All types and sub-types will share a common data schema. The validation schema s
     socialMedia: {
         discord: "https://discord.com/username",
         facebook: "https://facebook.com/username",
+        instagram: "https://instagram.com/username",
+        linkedin: "https://linkedin.com/username",
         medium: "https://medium.com/username",
         reddit: "https://reddit.com/username",
         slack: "https://slack.com/username",
         telegram: "https://telegram.com/username",
         twitter: "https://twitter.com/username",
         wechat: "https://wechat.com/username",
+        youtube: "https://youtube.com/username",
     },
     images: [{
         type: "logo",
