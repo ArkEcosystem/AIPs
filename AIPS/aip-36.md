@@ -95,10 +95,13 @@ All types and sub-types will share a common data schema. The validation schema s
         twitter: "https://twitter.com/username",
         wechat: "https://wechat.com/username",
     },
-    images: [
-        "https://flickr.com/username.png",
-        "https://imgur.com/username.png",
-    ],
+    images: [{
+        type: "logo",
+        link: "https://flickr.com/username.png"
+    }, {
+        type: "image",
+        link: "https://imgur.com/username.png"
+    }],
     videos: [
         "https://youtube.com/username.mp4",
         "https://vimeo.com/username.mp4",
