@@ -81,47 +81,47 @@ All types and sub-types will share a common data schema. The validation schema s
 ```ts
 {
     sourceControl: [{
-        "provider": "bitbucket",
+        "type": "bitbucket",
         "value": "https://bitbucket.com/username"
     }, {
-        "provider": "github",
+        "type": "github",
         "value": "https://github.com/username"
     }, {
-        "provider": "gitlab",
+        "type": "gitlab",
         "value": "https://gitlab.com/username"
     }],
     socialMedia: [{
-        "provider": "discord",
+        "type": "discord",
         "value": "https://discord.com/username"
     }, {
-        "provider": "facebook",
+        "type": "facebook",
         "value": "https://facebook.com/username"
     }, {
-        "provider": "instagram",
+        "type": "instagram",
         "value": "https://instagram.com/username"
     }, {
-        "provider": "linkedin",
+        "type": "linkedin",
         "value": "https://linkedin.com/username"
     }, {
-        "provider": "medium",
+        "type": "medium",
         "value": "https://medium.com/username"
     }, {
-        "provider": "reddit",
+        "type": "reddit",
         "value": "https://reddit.com/username"
     }, {
-        "provider": "slack",
+        "type": "slack",
         "value": "https://slack.com/username"
     }, {
-        "provider": "telegram",
+        "type": "telegram",
         "value": "https://telegram.com/username"
     }, {
-        "provider": "twitter",
+        "type": "twitter",
         "value": "https://twitter.com/username"
     }, {
-        "provider": "wechat",
+        "type": "wechat",
         "value": "https://wechat.com/username"
     }, {
-        "provider": "youtube",
+        "type": "youtube",
         "value": "https://youtube.com/username"
     }],
     images: [{
