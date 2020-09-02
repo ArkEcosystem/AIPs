@@ -66,8 +66,8 @@ All types and sub-types will share a common data schema. The validation schema s
 ```ts
 {
     asset: {
-        type: "business",
-        action: "registration",
+        type: 0,
+        action: 0,
         data: {
             name: "John Doe",
             ipfsData: "Qmbw6QmF6tuZpyV6WyEsTmExkEG3rW4khattQidPfbpmNZ",
@@ -80,24 +80,50 @@ All types and sub-types will share a common data schema. The validation schema s
 
 ```ts
 {
-    sourceControl: {
-        bitbucket: "https://bitbucket.com/username",
-        github: "https://github.com/username",
-        gitlab: "https://gitlab.com/username",
-    },
-    socialMedia: {
-        discord: "https://discord.com/username",
-        facebook: "https://facebook.com/username",
-        instagram: "https://instagram.com/username",
-        linkedin: "https://linkedin.com/username",
-        medium: "https://medium.com/username",
-        reddit: "https://reddit.com/username",
-        slack: "https://slack.com/username",
-        telegram: "https://telegram.com/username",
-        twitter: "https://twitter.com/username",
-        wechat: "https://wechat.com/username",
-        youtube: "https://youtube.com/username",
-    },
+    sourceControl: [{
+        "type": "bitbucket",
+        "value": "https://bitbucket.com/username"
+    }, {
+        "type": "github",
+        "value": "https://github.com/username"
+    }, {
+        "type": "gitlab",
+        "value": "https://gitlab.com/username"
+    }],
+    socialMedia: [{
+        "type": "discord",
+        "value": "https://discord.com/username"
+    }, {
+        "type": "facebook",
+        "value": "https://facebook.com/username"
+    }, {
+        "type": "instagram",
+        "value": "https://instagram.com/username"
+    }, {
+        "type": "linkedin",
+        "value": "https://linkedin.com/username"
+    }, {
+        "type": "medium",
+        "value": "https://medium.com/username"
+    }, {
+        "type": "reddit",
+        "value": "https://reddit.com/username"
+    }, {
+        "type": "slack",
+        "value": "https://slack.com/username"
+    }, {
+        "type": "telegram",
+        "value": "https://telegram.com/username"
+    }, {
+        "type": "twitter",
+        "value": "https://twitter.com/username"
+    }, {
+        "type": "wechat",
+        "value": "https://wechat.com/username"
+    }, {
+        "type": "youtube",
+        "value": "https://youtube.com/username"
+    }],
     images: [{
         type: "logo",
         link: "https://flickr.com/username.png"
@@ -126,9 +152,9 @@ The following example illustrates how the asset part of the entity declaration c
 ```ts
 {
     asset: {
-        type: "plugin",
-        subType: "desktop-wallet",
-        action: "registration",
+        type: 0,
+        subType: 0,
+        action: 0,
         data: {
             name: "...",
             ipfsData: "...",
@@ -142,9 +168,9 @@ The following example illustrates how the asset part of the entity declaration c
 ```ts
 {
     asset: {
-        type: "plugin",
-        subType: "desktop-wallet",
-        action: "resign",
+        type: 0,
+        subType: 0,
+        action: 1,
         registrationId: "ID of Registration Transaction"
     }
 }
@@ -155,89 +181,10 @@ The following example illustrates how the asset part of the entity declaration c
 ```ts
 {
     asset: {
-        type: "plugin",
-        subType: "desktop-wallet",
-        action: "update",
+        type: 0,
+        subType: 0,
+        action: 2,
         registrationId: "ID of Registration Transaction",
-        data: {
-            name: "...",
-            ipfsData: "...",
-        }
-    }
-}
-```
-
-### Examples
-
-#### Business
-
-```ts
-{
-    asset: {
-        type: "business",
-        action: "registration",
-        data: {
-            name: "...",
-            ipfsData: "...",
-        }
-    }
-}
-```
-
-#### Bridgechain
-
-```ts
-{
-    asset: {
-        type: "bridgechain",
-        action: "registration",
-        data: {
-            name: "...",
-            ipfsData: "...",
-        }
-    }
-}
-```
-
-#### Developer
-
-```ts
-{
-    asset: {
-        type: "developer",
-        action: "registration",
-        data: {
-            name: "...",
-            ipfsData: "...",
-        }
-    }
-}
-```
-
-#### Plugin (Core)
-
-```ts
-{
-    asset: {
-        type: "plugin",
-        subType: "core",
-        action: "registration",
-        data: {
-            name: "...",
-            ipfsData: "...",
-        }
-    }
-}
-```
-
-#### Plugin (Desktop Wallet)
-
-```ts
-{
-    asset: {
-        type: "plugin",
-        subType: "desktop-wallet",
-        action: "registration",
         data: {
             name: "...",
             ipfsData: "...",
@@ -250,68 +197,11 @@ The following example illustrates how the asset part of the entity declaration c
 
 This transaction type could in theory also replace the delegate registration and resignation due to how generic it is. This would streamline things and free us from maintaining 2 separate transaction types for the same basic behaviours as other entities.
 
-### Core Implementation (Pseudo Code)
+### Core Implementation
 
 The implementation in Core will slightly differ from other transaction types due to how generic it is kept. The `EntityDeclarationTransactionHandler` will be the transaction handler for that specific type but the actual handler logic will be handled by sub-handlers that are transaction handlers of their own, just not publicly exposed or exported.
 
 Keeping the actual handler logic separated into their own handler classes has 2 benefits. The first being that we make use of existing internals provided by AIP-29 and the second being that things are kept easy to test while still not having to be exposed outside of its usage in the `EntityDeclarationTransactionHandler`.
-
-**`EntityDeclarationTransactionHandler` is basically a proxy to other transaction handlers that are private.**
-
-```ts
-export class EntityDeclarationTransactionHandler extends AbstractTransactionHandler {
-  // ...
-
-  readonly #handlers: Record<string, TypeDeclarationHandler> = {
-    business: {
-      register: BusinessRegisterHandler,
-      resign: BusinessResignHandler,
-      update: BusinessUpdateHandler,
-    },
-    bridgechain: {
-      register: BridgechainRegisterHandler,
-      resign: BridgechainResignHandler,
-      update: BridgechainUpdateHandler,
-    },
-    developer: {
-      register: DeveloperRegisterHandler,
-      resign: DeveloperResignHandler,
-      update: DeveloperUpdateHandler,
-    },
-    plugin: {
-      core: {
-        register: CorePluginRegisterHandler,
-        resign: CorePluginResignHandler,
-        update: CorePluginUpdateHandler,
-      },
-      "desktop-wallet": {
-        register: DesktopWalletPluginRegisterHandler,
-        resign: DesktopWalletPluginResignHandler,
-        update: DesktopWalletPluginUpdateHandler,
-      },
-    },
-  };
-
-  // ...
-
-  public async applyToSender(
-    transaction: Interfaces.ITransaction,
-    customWalletRepository?: Contracts.State.WalletRepository
-  ): Promise<void> {
-    let handler: TypeDeclarationHandler = this.#handlers[
-      transaction.asset.type
-    ];
-
-    if (transaction.asset.subType) {
-      handler = handler[transaction.asset.subType];
-    }
-
-    handler.applyToSender(transaction, customWalletRepository);
-  }
-
-  // ...
-}
-```
 
 ## Benefits
 
