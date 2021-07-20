@@ -1,6 +1,6 @@
 ```
   AIP: 37
-  Title: Multivote Transaction
+  Title: Switch Delegate With Single Vote Transaction
   Authors: Dmitry Tyshchenko <dmitry@ark.io>
   Status: Draft
   Discussions-To: https://github.com/arkecosystem/AIPS/issues
@@ -12,7 +12,7 @@
 
 ## Abstract
 
-Support both unvote and vote actions within a single transaction.
+Support both unvote and vote actions within a single vote transaction.
 
 ## Motivation
 
@@ -46,6 +46,6 @@ Handling vote transaction with asset that contains only a single action (vote or
 
 ## Reference Implementation
 
-It's already implemented, merged, and deployed to devnet. [First multivote transaction] was forged at height 5,640,858 on devnet.
+It's already implemented, merged, published, and [forged on devnet] since height 5,640,858.
 
-[first multivote transaction]: https://dexplorer.ark.io/transactions/004ecc270fbb900c89df36212f85e8f99fa736ad51e2ab06d8307e9af7b89f54
+[forged at devnet]: https://dexplorer.ark.io/transactions/004ecc270fbb900c89df36212f85e8f99fa736ad51e2ab06d8307e9af7b89f54
